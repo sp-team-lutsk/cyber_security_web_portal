@@ -1,2 +1,3 @@
 # docker_polls_group
-Django Polls Team building project
+Django Polls Team building project.
+
