@@ -10,11 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
-import os
 import datetime
+import os
+import sys
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+sys.path.append(os.path.join(BASE_DIR, 'apps/'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
@@ -25,13 +28,13 @@ SECRET_KEY = '#-+2%cfp05=)8q*u1s2itkffi$i^@ir5@bv%!9g3irbfi_)2h5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Update in prod it
+ALLOWED_HOSTS = ['localhost', '0.0.0.0']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-#single django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,18 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles', 
     'django.contrib.sites',
 
-#JWT apps
     'rest_framework',
-#allauth apps
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-#allauth providers
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
-#project apps
-    'authorization',
-    'user'
+
+    'accounts',
     ]
 
 MIDDLEWARE = [
@@ -64,12 +63,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'LNTU_SITE.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'LNTU_SITE.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 
 # Database
@@ -114,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-#settings for rest
+# settings for rest
 REST_FRAMEWORK = {
   
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -128,7 +129,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated', ),
 }
 
-#JWT auth parameters
+# JWT auth parameters
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=14)
 }

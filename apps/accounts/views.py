@@ -1,16 +1,18 @@
-from django.shortcuts import render
-from rest_framework.views import APIView
-from rest_framework.permissions import *
-from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
-from rest_framework import generics
-from user.serializers import UserSerializer
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
+
+from accounts.serializers import UserSerializer
 
 
-
-#create user
 class CreateUserAPIView(APIView):
-    # Allow any user (authenticed or not) to access this url 
+    """
+    Create user
+    """
+    # Allow any user (authenticated or not) to access this url
     permission_classes = (AllowAny,)
  
     def post(self, request):
@@ -20,8 +22,10 @@ class CreateUserAPIView(APIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-#all users in db (for test)
-class UserListAPIView(generics.ListAPIView):
+
+class UserListAPIView(ListAPIView):
+    """
+    All users in db (for test)
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
