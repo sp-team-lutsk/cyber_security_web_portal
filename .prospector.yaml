@@ -1,0 +1,26 @@
+strictness: medium
+test-warnings: true
+doc-warnings: false
+
+ignore-patterns:
+    - "/migrations/(\\d+)_"
+
+pep8:
+    disable:
+        - W605
+        - W504
+    options:
+        max-line-length: 120
+
+pylint:
+    disable:
+        - unused-argument
+        - unnecessary-lambda
+        - keyword-arg-before-vararg
+        - arguments-differ
+        - inconsistent-return-statements
+        - cyclic-import
+        - logging-fstring-interpolation
+    options:
+        max-locals: 20
+        max-args: 10
