@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles', 
     'django.contrib.sites',
-
+    'django_extensions',
 #JWT apps
     'rest_framework',
 #allauth apps
@@ -49,10 +49,58 @@ INSTALLED_APPS = [
 #allauth providers
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
-#project apps
-    'authorization',
+    #project apps
+   # 'authorization',
     'user'
     ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
+        'SCOPE': ['email', 'public_profile', 'user_friends'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time',
+        ],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': lambda request: 'en_US',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.12',
+    },
+    'google': {
+            'SCOPE': [
+               'profile',
+                'email',
+         ],
+            'AUTH_PARAMS': {
+                'access_type': 'online',
+            }
+        }
+    }
+
+LOGIN_REDIRECT_URL="/"
+
+
+AUTHENTICATION_BACKENDS = (
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+ACCOUNT_EMAIL_REQUIRED = True  
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -73,14 +121,34 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.request',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #'user.context_processor.add_variables_to_context',
             ],
         },
     },
 ]
+
+SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
+SOCIALACCOUNT_EMAIL_REQUIRED = False
+SOCIALACCOUNT_QUERY_EMAIL = True
+
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    # from http://django-allauth.readthedocs.org/en/latest/installation.html
+    # Required by allauth template tags
+    "django.core.context_processors.request",
+    # allauth specific context processors
+    "allauth.account.context_processors.account",
+    "allauth.socialaccount.context_processors.socialaccount",
+
+    # and this due to error message
+    "django.contrib.auth.context_processors.auth",
+)
+
 
 WSGI_APPLICATION = 'LNTU_SITE.wsgi.application'
 
@@ -126,6 +194,13 @@ REST_FRAMEWORK = {
     
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated', ),
+    
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework.renderers.TemplateHTMLRenderer',
+    )
+
 }
 
 #JWT auth parameters
@@ -152,4 +227,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-SITE_ID = 1
+SITE_ID = 4 

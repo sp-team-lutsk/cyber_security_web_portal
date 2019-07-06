@@ -1,4 +1,4 @@
-{% extends default.html %}
+
 <form>
   <div class="form-group">
     <label for="exampleInputEmail1">Email address</label>
@@ -14,18 +14,8 @@
     <label class="form-check-label" for="exampleCheck1">Check me out</label>
   </div>
 
-  
-{% load socialaccount %}
-{% get_providers as socialaccount_providers %}
 
-{% for provider in socialaccount_providers %}
-    {% if provider.id == "openid" %}
-        {% for brand in provider.get_brands %}
-          <a title="{{brand.name}}" class="{{provider.id}} {{brand.id}}" href="{% provider_login_url provider.id openid=brand.openid_url process=process %}">{{brand.name}}</a>
-        {% endfor %}
-    {% endif %}
-    <a title="{{provider.name}}" class="{{provider.id}}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">{{provider.name}}</a>
-    {% endfor %}
-  
+  {% load socialaccount %}
+<a href="{% provider_login_url "facebook" method="oauth2" %}">Facebook OAuth2</a><Paste>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
