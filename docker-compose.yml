@@ -1,0 +1,21 @@
+version: '3'
+services:
+  web:
+    build: .
+    command: python manage.py runserver localhost:8000
+    container_name: docker_polls_group
+    volumes:
+      - .:/docker_polls_group
+    ports:
+      - "8000:8000"
+    links:
+      - db
+    depends_on:
+      - db
+  db:
+        image: mongo
+        volumes:
+          - ./data/db
+        ports:
+          - "27017:27017"
+

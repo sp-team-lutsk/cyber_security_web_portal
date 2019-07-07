@@ -110,7 +110,10 @@ WSGI_APPLICATION = 'wsgi.application'
 DATABASES = {
 'default': {
     'ENGINE': 'djongo',
-    'NAME': 'mongodb',
+    'NAME': 'db',
+    'USERS':'',
+    #'DEFAULT_HOST': 'mongo',
+   # 'DEFAULT PORT':'27017',
 }
 }
 
@@ -170,4 +173,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-SITE_ID = 1
+SITE_ID = 2
