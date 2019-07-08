@@ -53,9 +53,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
 
 
-     'accounts',
+    'accounts',
     'djangotoolbox',
-'pages',
+    'pages',
     ]
 
 AUTHENTICATION_BACKENDS = (
@@ -108,13 +108,12 @@ WSGI_APPLICATION = 'wsgi.application'
 
 
 DATABASES = {
-'default': {
-    'ENGINE': 'djongo',
-    'NAME': 'db',
-    'USERS':'',
-    #'DEFAULT_HOST': 'mongo',
-   # 'DEFAULT PORT':'27017',
-}
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'mongodb',
+        'HOST': '172.28.0.1',
+
+    }
 }
 
 # Password validation

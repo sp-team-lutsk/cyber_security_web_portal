@@ -1,21 +1,23 @@
-version: '3'
+version: '3.7'
+
 services:
-  web:
+  api:
     build: .
-    command: python manage.py runserver localhost:8000
-    container_name: docker_polls_group
+    command: >
+      bash -c "python manage.py migrate --noinput &&
+              python manage.py runserver 0.0.0.0:8000"
+    container_name: "dpg_api"
     volumes:
-      - .:/docker_polls_group
+      - .:/opt/docker_polls_group/api
     ports:
       - "8000:8000"
     links:
-      - db
+      - mongodb
     depends_on:
-      - db
-  db:
-        image: mongo
-        volumes:
-          - ./data/db
-        ports:
-          - "27017:27017"
-
+      - mongodb
+  mongodb:
+    container_name: "mongo_db"
+    image: mongo:4.0.10
+    restart: always
+    ports:
+      - "27017:27017"
