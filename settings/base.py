@@ -29,7 +29,7 @@ SECRET_KEY = '#-+2%cfp05=)8q*u1s2itkffi$i^@ir5@bv%!9g3irbfi_)2h5'
 DEBUG = True
 
 # Update in prod it
-ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = ['mongo', 'localhost', '0.0.0.0', '127.0.0.1']
 
 
 # Application definition
@@ -111,9 +111,9 @@ DATABASES = {
 'default': {
     'ENGINE': 'djongo',
     'NAME': 'db',
-    'USERS':'',
-    #'DEFAULT_HOST': 'mongo',
-   # 'DEFAULT PORT':'27017',
+    'HOST': 'localhost',  #тут має бути mongo, але так не запускається
+
+
 }
 }
 
