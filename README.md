@@ -2,8 +2,6 @@
 
 > Subtitle or Short Description Goes Here
 
-
-
 ## Table of Contents (Optional)
 
 > If you're `README` has a lot of info, section headers might be nice.
