@@ -6,7 +6,7 @@
 
 > If you're `README` has a lot of info, section headers might be nice.
 
-- [Last Updates](#last updates)
+- [Last Updates](#last-updates)
 - [Installation](#installation)
 - [Features](#features)
 - [Contributing](#contributing)
@@ -80,15 +80,13 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 > Or Contributors/People
 
-| Name | Role |
-| :---: |:---:|
-| <a href="https://github.com/Martinfree">Martinfree</a> | Back-end |
+| Name                                                       | Role     |
+| ---------------------------------------------------------- | -------: |
+| <a href="https://github.com/Martinfree">Martinfree</a>     | Back-end |
 | <a href="https://github.com/romaoksenyuk">romaoksenyuk</a> | Back-end |
-| <a href="https://github.com/IgnisAvis">IgnisAvis | PM |
-| :---: |:---:|
-| <a href="https://github.com/m-pasha">m-pasha</a> | CEO |
-| <a href="https://github.com/klekhaav">klekhaav</a> | Boss |
-| :---: |:---:|
+| <a href="https://github.com/IgnisAvis">IgnisAvis           | PM       |
+| <a href="https://github.com/m-pasha">m-pasha</a>           | CEO      |
+| <a href="https://github.com/klekhaav">klekhaav</a>         | Boss     |
 
 ---
 
