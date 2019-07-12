@@ -2,10 +2,11 @@
 
 > Subtitle or Short Description Goes Here
 
-## Table of Contents (Optional)
+## Table of Contents
 
 > If you're `README` has a lot of info, section headers might be nice.
 
+- [Last Updates](#last updates)
 - [Installation](#installation)
 - [Features](#features)
 - [Contributing](#contributing)
@@ -14,23 +15,12 @@
 - [Support](#support)
 - [License](#license)
 
-
 ---
 
-## Example JS Code (Optional)
+## Last Updates
 
-```javascript
-// code away!
+> Last changes in project will be here
 
-let generateProject = project => {
-  let code = [];
-  for (let js = 0; js < project.length; js++) {
-    code.push(js);
-  }
-};
-```
-
----
 
 ## Installation
 
@@ -49,16 +39,6 @@ Make this simple steps to run this project. :smile: 😄
 ```shell
 $ pip install -r requirements/base.txt
 ```
-
-> going next step 
-
-```shell
-$ commands doing
-$ any tasks
-```
-
-- For all the possible languages that support syntax highlithing on GitHub (which is basically all of them), refer <a href="https://github.com/github/linguist/blob/master/lib/linguist/languages.yml" target="_blank">here</a>.
-
 ---
 
 ## Features
@@ -84,7 +64,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
     - 🍴 Fork this repo!
 
 - **Option 2**
-    - 👯 Clone this repo to your local machine using `https://github.com/joanaz/HireDot2.git`
+    - 👯 Clone this repo to your local machine using `https://github.com/sp-team-lutsk/docker_polls_group.git`
 
 ### Step 2
 
@@ -92,7 +72,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 ### Step 3
 
-- 🔃 Create a new pull request using <a href="https://github.com/joanaz/HireDot2/compare/" target="_blank">`https://github.com/joanaz/HireDot2/compare/`</a>.
+- 🔃 Create a new pull request using <a href="https://github.com/sp-team-lutsk/docker_polls_group/compare" target="_blank">`https://github.com/sp-team-lutsk/docker_polls_group/compare`</a>.
 
 ---
 
@@ -100,10 +80,15 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 > Or Contributors/People
 
-| HEADER1 | HEADER2 | HEADER3 |
-| :---: |:---:| :---:|
-| Any Info    | Data | Table |
-| TEXT123| text | text |
+| Name | Role |
+| :---: |:---:|
+| <a href="https://github.com/Martinfree">Martinfree</a> | Back-end |
+| <a href="https://github.com/romaoksenyuk">romaoksenyuk</a> | Back-end |
+| <a href="https://github.com/IgnisAvis">IgnisAvis | PM |
+| :---: |:---:|
+| <a href="https://github.com/m-pasha">m-pasha</a> | CEO |
+| <a href="https://github.com/klekhaav">klekhaav</a> | Boss |
+| :---: |:---:|
 
 ---
 
@@ -119,8 +104,6 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 Reach out to me at one of the following places!
 
 - Website that will help you <a href="http://google.com" target="_blank">`google.com`</a>
-- Or use any friends advice <a href="http://twitter.com/" target="_blank">`@friends`</a>
-- Insert more social links here if need.
 
 ## License
 
