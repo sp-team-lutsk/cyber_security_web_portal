@@ -5,7 +5,7 @@ services:
     build: .
     command:
       bash -c "python manage.py migrate --noinput &&
-              python manage.py runserver localhost:8000"
+              python manage.py runserver 0.0.0.0:8000"
     container_name: "dpg_api"
     volumes:
       - .:/opt/docker_polls_group/api

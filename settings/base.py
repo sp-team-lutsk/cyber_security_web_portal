@@ -111,7 +111,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'mongodb',
-        'HOST': '172.20.0.1',
+        'HOST': 'mongodb',
     }
 }
 
