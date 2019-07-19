@@ -29,7 +29,7 @@ SECRET_KEY = '#-+2%cfp05=)8q*u1s2itkffi$i^@ir5@bv%!9g3irbfi_)2h5'
 DEBUG = True
 
 # Update in prod it
-ALLOWED_HOSTS = ['172.20.0.1', 'localhost', '0.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1']
 
 
 # Application definition
