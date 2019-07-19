@@ -1,6 +1,6 @@
 FROM python:3.7.3
 
-ENV PYTHONUNBUFFERED=1 WORKDIR=/opt/docker_polls_group/api
+ENV PYTHONUNBUFFERED=1 WORKDIR=/docker_polls_group/
 
 RUN mkdir -p $WORKDIR
 WORKDIR $WORKDIR
