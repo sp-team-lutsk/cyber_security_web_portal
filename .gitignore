@@ -7,5 +7,6 @@ ENV/
 mongoenv/
 .idea/
 
+# Django
 *.sqlite3
 *.pyc

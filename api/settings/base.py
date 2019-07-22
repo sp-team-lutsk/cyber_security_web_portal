@@ -89,7 +89,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'mongodb',
-        'HOST': 'mongodb',   # if you use docker you should specify  'HOST': 'mongodb'
+        'HOST': 'mongo_db',   # if you use docker you should specify  'HOST': 'mongo_db'
     }
 }
 
