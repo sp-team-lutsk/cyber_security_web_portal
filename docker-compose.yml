@@ -1,25 +1,44 @@
 version: '3.7'
 
 services:
-  api:
-    build: .
-    command:
-      bash -c "python manage.py migrate --noinput &&
-              python manage.py runserver 0.0.0.0:8000"
-    container_name: "dpg_api"
-    volumes:
-      - .:/opt/docker_polls_group/api
-    ports:
-      - "8000:8000"
-    links:
-      - mongodb
-    depends_on:
-      - mongodb
-  mongodb:
-    container_name: "mongo_db"
-    image: mongo:4.0.10
-    restart: always
-    expose:
-      - "27017"
-    ports:
-      - "27017:27017"
+    nginx:
+        image: nginx
+        container_name: nginx
+        build: ./nginx
+        volumes:
+            - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf
+        ports:
+            - "80:80"
+        depends_on:
+            - angularjs
+
+    angularjs:
+        image: node
+        container_name: angularjs
+        build: ./angularJS
+        ports:
+            - "4200:3000"
+        depends_on:
+            - api
+
+    api:
+        build: ./api
+        command: >
+            bash -c "python manage.py migrate --noinput &&
+            python manage.py runserver 0.0.0.0:8000"
+        container_name: "dpg_api"
+        volumes:
+            - ./api:/opt/docker_polls_group/api
+        ports:
+            - "8000"
+        links:
+            - mongodb
+        depends_on:
+            - mongodb
+
+    mongodb:
+        container_name: "mongo_db"
+        image: mongo:4.0.10
+        restart: always
+        ports:
+            - "27017:27017"
