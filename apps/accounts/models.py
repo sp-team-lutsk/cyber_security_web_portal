@@ -7,7 +7,7 @@ class User(models.Model):
     patronymic = models.CharField(max_length=64, blank=False)       # Ivanovych
     email = models.EmailField(max_length=64, blank=False)           # ivanov@gmail.com
     password = models.CharField(max_length=64, blank=False)         # 21kjfs23iuk
-    avatar = models.ImageField(upload_to='apps/accounts/templates/avatar/', blank=True, max_length=1000)     # select image
+    avatar = models.ImageField(upload_to='static/images/', blank=True, max_length=1000)     # select image
 
     # Returns object's name
     def __str__(self):
