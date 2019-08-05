@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'accounts',
     'djangotoolbox',
     'pages',
-    'post',
 ]
 
 AUTHENTICATION_BACKENDS = (
