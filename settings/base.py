@@ -31,6 +31,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'allauth',
+    'rest_framework.authtoken', 
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'accounts',
     'djangotoolbox',
     'pages',
+    
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -89,7 +91,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'mongodb',
-        'HOST': 'mongodb',   # if you use docker you should specify  'HOST': 'mongodb'
+        'HOST': '127.0.0.1',   # if you use docker you should specify  'HOST': 'mongodb'
     }
 }
 
@@ -110,18 +112,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# settings for rest
+# settings for rest framework
 REST_FRAMEWORK = {
   
+#JWT 
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    
+#Permissions
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated', ),
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser'
+        
+    ),
 }
 
 # JWT auth parameters
