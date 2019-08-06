@@ -9,3 +9,6 @@ mongoenv/
 
 *.sqlite3
 *.pyc
+
+# Migrations
+**/**/migrations
