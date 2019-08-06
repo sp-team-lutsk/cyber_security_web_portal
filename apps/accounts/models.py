@@ -13,10 +13,6 @@ class User(models.Model):
     def __str__(self):
         return(self.name)
 
-    # Helps in class inheritance
-    class Meta:
-        abstract = True
-
 # Class for groups
 class Group(models.Model):
     amount = models.IntegerField(blank=False)                                               # 25
