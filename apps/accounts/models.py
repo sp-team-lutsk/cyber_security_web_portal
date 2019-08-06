@@ -35,9 +35,9 @@ class Student(User):
             on_delete=models.CASCADE, 
             primary_key=True,
             blank=True)                                                             # CB-41    
-    language = models.CharField(max_length=24)                                      # Ukrainian
-    faculty = models.CharField(max_length=64)                                       # FKNIT
-    pulpit = models.CharField(max_length=128)                                       # Cathedra of computer systems
+    language = models.CharField(max_length=24, default="Укр")                       # Ukrainian
+    faculty = models.CharField(max_length=64, default="ФКНIТ")                      # FKNIT
+    pulpit = models.CharField(max_length=128, default="КIтаКБ")                     # Cathedra of computer systems
 
 # Class for teachers
 class Teacher(User):
