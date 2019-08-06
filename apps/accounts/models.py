@@ -9,10 +9,6 @@ class User(models.Model):
     password = models.CharField(max_length=64, blank=False)         # 21kjfs23iuk
     avatar = models.ImageField(upload_to='static/images/', blank=True, max_length=1000)     # select image
 
-    # Returns object's name
-    def __str__(self):
-        return(self.name)
-
 # Class for groups
 class Group(models.Model):
     amount = models.IntegerField(blank=False)                                               # 25
