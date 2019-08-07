@@ -1,16 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import User, Group
 
 # Base user class
-class User(models.Model):
+class SiteUser(User):
     name = models.CharField(max_length=64, blank=False)             # Ivan
     surname = models.CharField(max_length=64, blank=False)          # Ivanov
     patronymic = models.CharField(max_length=64, blank=False)       # Ivanovych
-    email = models.EmailField(max_length=64, blank=False)           # ivanov@gmail.com
-    password = models.CharField(max_length=64, blank=False)         # 21kjfs23iuk
     avatar = models.ImageField(upload_to='static/images/', blank=True, max_length=1000)     # select image
 
 # Class for groups
-class Group(models.Model):
+class AcademicGroup(models.Model):
     amount = models.IntegerField(blank=False)                                               # 25
     group_code = models.CharField(max_length=5, blank=False)                                # CB-41
     
@@ -25,7 +24,7 @@ class Group(models.Model):
         return(self.group_code)
 
 # Class for students
-class Student(User):
+class Student(Group):
     record_book_code = models.CharField(max_length=8)                               # requires clarification (smth. like 182.10)
     group = models.OneToOneField(Group, 
             on_delete=models.CASCADE, 
@@ -36,6 +35,6 @@ class Student(User):
     pulpit = models.CharField(max_length=128, default="КIтаКБ")                     # Cathedra of computer systems
 
 # Class for teachers
-class Teacher(User):
+class Teacher(Group):
     faculty = models.CharField(max_length=64)                                       # FKNIT
     pulpit = models.CharField(max_length=128)                                       # Cathedra of computer systems
