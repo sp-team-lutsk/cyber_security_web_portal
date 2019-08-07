@@ -10,8 +10,19 @@ class SiteUser(User):
 
 # Class for groups
 class AcademicGroup(models.Model):
+    GROUP_CHOICES = (
+        ('КБ-11', 'Кiбербезпека 1 курс'),
+        ('КБ-21', 'Кiбербезпека 2 курс'),
+        ('КБ-31', 'Кiбербезпека 3 курс'),
+        ('КБ-41', 'Кiбербезпека 4 курс'),
+        ('КСМ-11', 'Комп. системи та мережi 1 курс'),
+        ('КСМ-21', 'Комп. системи та мережi 2 курс'),
+        ('КСМ-31', 'Комп. системи та мережi 3 курс'),
+        ('КСМ-41', 'Комп. системи та мережi 4 курс')
+    )
+
     amount = models.IntegerField(blank=False)                                               # 25
-    group_code = models.CharField(max_length=5, blank=False)                                # CB-41
+    group_code = models.CharField(max_length=6, choices=GROUP_CHOICES, blank=False)                                # CB-41
     
     # Using 'Student' and 'Teacher' because of cyclic keys
     studens = models.ForeignKey('Student', 
