@@ -7,28 +7,24 @@ from .models import Student, Teacher, AcademicGroup
 class StudentProfileInline(admin.StackedInline):
     model = Student
     can_delete = False
-
     
 class TeacherProfileInline(admin.StackedInline):
     model = Teacher
     can_delete = False
   
-
 class AcademicGroupProfileInline(admin.StackedInline):
     model = AcademicGroup
     can_delete = False
 
 
 class StudentAdmin(UserAdmin):
-    inlines = (UserProfileInline, )
-
+    inlines = (StudentProfileInline, )
     
 class TeacherAdmin(UserAdmin):
-    inlines = (UserProfileInline, )
-
+    inlines = (TeacherProfileInline, )
     
 class AcademicGroupAdmin(UserAdmin):
-    inlines = (UserProfileInline, )
+    inlines = (AcademicGroupProfileInline, )
 
     
 admin.site.unregister(User)
