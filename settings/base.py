@@ -36,10 +36,12 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
 
-    'accounts',
     'djangotoolbox',
     'pages',
+    'authentication',
 ]
+
+AUTH_USER_MODEL = 'authentication.StdUser'
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
@@ -89,7 +91,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'mongodb',
-        'HOST': 'mongodb',   # if you use docker you should specify  'HOST': 'mongodb'
+        'HOST': 'mongodb',   # if you use docker you should specify  'HOST': 'mongodb', but if it is locally 'HOST': '127.0.0.1'
     }
 }
 
