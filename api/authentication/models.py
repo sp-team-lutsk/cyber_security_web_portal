@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
+
 # Base user class
 class StdUser(AbstractUser):
     email = models.EmailField(max_length=64, blank=False, unique=True, default="ltnu.test@gmail.com") # ivanov@gmail.com
