@@ -7,7 +7,7 @@ from django.contrib.auth.models import AbstractUser
 
 # Base user class
 class StdUser(AbstractUser):
-    email = models.EmailField(max_length=64, blank=False, unique=True, default="ltnu.test@gmail.com") # ivanov@gmail.com
+    email = models.EmailField(max_length=64, blank=False, unique=True) # ivanov@gmail.com
     
     date_joined = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
