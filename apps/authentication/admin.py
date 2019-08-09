@@ -1,34 +1,13 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
 
-from .models import Student, Teacher, AcademicGroup
+from .models import StdUser
 
-class StudentProfileInline(admin.StackedInline):
-    model = Student
-    can_delete = False
-    
-class TeacherProfileInline(admin.StackedInline):
-    model = Teacher
-    can_delete = False
-  
-class AcademicGroupProfileInline(admin.StackedInline):
-    model = AcademicGroup
-    can_delete = False
+class StdUserAdmin(UserAdmin):
+    model = StdUser
 
+    list_display = ('email', 'username', 'is_staff', 'is_active',)
+    list_filter = ('email',)
+    readonly_fields = ('date_joined', 'is_staff', 'is_active', 'is_admin')
 
-class StudentAdmin(UserAdmin):
-    inlines = (StudentProfileInline, )
-    
-class TeacherAdmin(UserAdmin):
-    inlines = (TeacherProfileInline, )
-    
-class AcademicGroupAdmin(UserAdmin):
-    inlines = (AcademicGroupProfileInline, )
-
-    
-admin.site.unregister(User)
-
-admin.site.register(Student, StudentAdmin)
-admin.site.register(Teacher, TeacherAdmin)
-admin.site.register(AcademicGroup, AcademicGroupAdmin)
+admin.site.register(StdUser, StdUserAdmin)
