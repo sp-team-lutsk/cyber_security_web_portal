@@ -1,25 +1,25 @@
 version: '3.7'
 
 services:
-  api:
-    build: .
-    command:
-      bash -c "python manage.py migrate --noinput &&
-              python manage.py runserver 0.0.0.0:8000"
-    container_name: "dpg_api"
-    volumes:
-      - .:/opt/docker_polls_group/api
-    ports:
-      - "8000:8000"
-    links:
-      - mongodb
-    depends_on:
-      - mongodb
   mongodb:
-    container_name: "mongo_db"
+    container_name: "mongodb"
     image: mongo:4.0.10
     restart: always
     expose:
       - "27017"
     ports:
       - "27017:27017"
+
+  api:
+    build: ./api
+    container_name: "dpg_api"
+    volumes:
+      - ./api:/opt/docker_polls_group/api
+    ports:
+      - "8000:8000"
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    command: gunicorn wsgi:application -w 2 -b :8000 -t 120
+

@@ -5,7 +5,7 @@ import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(os.path.join(BASE_DIR, 'apps/'))
+sys.path.append(os.path.join(BASE_DIR, 'api/apps/'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
 
     'djangotoolbox',
-    'pages',
     'authentication',
 ]
 

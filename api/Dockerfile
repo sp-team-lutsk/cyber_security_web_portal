@@ -7,3 +7,7 @@ WORKDIR $WORKDIR
 ADD . $WORKDIR
 
 RUN pip install -r $WORKDIR/requirements/dev.txt
+
+CMD python manage.py runserver
+
+
