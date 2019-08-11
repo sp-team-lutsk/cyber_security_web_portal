@@ -80,3 +80,9 @@ class StdUser(AbstractUser):
 
     class Meta:
         abstract = True
+
+class Profession(Group):
+    name = models.CharField(max_length=128, default="", blank=False)
+
+class Faculty(Group):
+    name = models.CharField(max_length=256, default="", blank=False)
