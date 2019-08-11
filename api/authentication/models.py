@@ -2,8 +2,20 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Permission, Group
 
+ACAD_GROUPS_CHOICES = [
+    ("КБ-11", "Кiбербезпека 1 курс"),
+    ("КБ-21", "Кiбербезпека 2 курс"),
+    ("КБ-31", "Кiбербезпека 3 курс"),
+    ("КБ-41", "Кiбербезпека 4 курс"),
+    ("КСМ-11", "Комп'ютерні системи і мережі 1 курс"),
+    ("КСМ-21", "Комп'ютерні системи і мережі 2 курс"), 
+    ("КСМ-31", "Комп'ютерні системи і мережі 3 курс"), 
+    ("КСМ-41", "Комп'ютерні системи і мережi 4 курс"),
+    ("КСМс-11", "Комп'ютерні системи і мережі 1 курс (скорочений)"),
+    ("КСМс-21", "Комп'ютерні системи і мережі 2 курс (скорочений)"),
+]
 
 # Base user class
 class StdUser(AbstractUser):
@@ -23,10 +35,11 @@ class StdUser(AbstractUser):
     is_staff = models.BooleanField(default=False) # staff user non superuser
     active = models.BooleanField(default=True) # can login
     admin = models.BooleanField(default=False) # superuser
+    
+    is_student = models.BooleanField(default=False) # is student
+    is_teacher = models.BooleanField(default=False) # is teacher
 
     USERNAME_FIELD = 'email' # Email as username
-    # USERNAME_FIELD and password are required by default
-
     REQUIRED_FIELDS = ['username']
 
     @property
@@ -39,6 +52,9 @@ class StdUser(AbstractUser):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def authenticate(self):
+         pass
 
     def get_full_name(self):
         """ Returns full name with spaces between """
@@ -62,7 +78,5 @@ class StdUser(AbstractUser):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-    # Commented for tests
-    # Abstract class
-    # class Meta:
-    #    abstract = True 
+    class Meta:
+        abstract = True
