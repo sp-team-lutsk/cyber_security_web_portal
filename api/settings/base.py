@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'authentication',
 ]
 
-AUTH_USER_MODEL = 'authentication.StdUser'
+AUTH_USER_MODEL = 'authentication.Person'
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",

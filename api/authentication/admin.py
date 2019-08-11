@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 
-from .models import StdUser
+from .models import StdUser, Person
 
 class StdUserAdmin(UserAdmin):
     model = StdUser
@@ -42,4 +42,7 @@ class StdUserAdmin(UserAdmin):
             }),
     )
 
-admin.site.register(StdUser, StdUserAdmin)
+class PersonAdmin(StdUserAdmin):
+    model = Person
+
+admin.register(Person, PersonAdmin)

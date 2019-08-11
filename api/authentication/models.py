@@ -10,36 +10,34 @@ ACAD_GROUPS_CHOICES = [
     ("КБ-31", "Кiбербезпека 3 курс"),
     ("КБ-41", "Кiбербезпека 4 курс"),
     ("КСМ-11", "Комп'ютерні системи і мережі 1 курс"),
-    ("КСМ-21", "Комп'ютерні системи і мережі 2 курс"), 
-    ("КСМ-31", "Комп'ютерні системи і мережі 3 курс"), 
+    ("КСМ-21", "Комп'ютерні системи і мережі 2 курс"),
+    ("КСМ-31", "Комп'ютерні системи і мережі 3 курс"),
     ("КСМ-41", "Комп'ютерні системи і мережi 4 курс"),
     ("КСМс-11", "Комп'ютерні системи і мережі 1 курс (скорочений)"),
     ("КСМс-21", "Комп'ютерні системи і мережі 2 курс (скорочений)"),
 ]
 
+
 # Base user class
 class StdUser(AbstractUser):
-    email = models.EmailField(max_length=64, blank=False, unique=True) # ivanov@gmail.com
-    
+    email = models.EmailField(max_length=64, blank=False, unique=True)  # ivanov@gmail.com
+
     date_joined = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
-    
-    username = models.CharField(max_length=18, blank=False, unique=True) # Azrael
-    first_name = models.CharField(max_length=64, blank=False)            # Ivan
-    last_name = models.CharField(max_length=64, blank=False)             # Ivanov
-    patronymic = models.CharField(max_length=64, blank=False)            # Ivanovych
-    avatar = models.ImageField(upload_to='static/images/', blank=True, max_length=1000)     # select image
+
+    username = models.CharField(max_length=18, blank=False, unique=True)  # Azrael
+    first_name = models.CharField(max_length=64, blank=False)  # Ivan
+    last_name = models.CharField(max_length=64, blank=False)  # Ivanov
+    patronymic = models.CharField(max_length=64, blank=False)  # Ivanovych
+    avatar = models.ImageField(upload_to='static/images/', blank=True, max_length=1000)  # select image
     bio = models.CharField(max_length=256, blank=True)
     date_of_birth = models.DateField(default=timezone.now)
 
-    is_staff = models.BooleanField(default=False) # staff user non superuser
-    active = models.BooleanField(default=True) # can login
-    admin = models.BooleanField(default=False) # superuser
-    
-    is_student = models.BooleanField(default=False) # is student
-    is_teacher = models.BooleanField(default=False) # is teacher
+    is_staff = models.BooleanField(default=False)  # staff user non superuser
+    active = models.BooleanField(default=True)  # can login
+    admin = models.BooleanField(default=False)  # superuser
 
-    USERNAME_FIELD = 'email' # Email as username
+    USERNAME_FIELD = 'email'  # Email as username
     REQUIRED_FIELDS = ['username']
 
     @property
@@ -54,7 +52,7 @@ class StdUser(AbstractUser):
         super().__init__(*args, **kwargs)
 
     def authenticate(self):
-         pass
+        pass
 
     def get_full_name(self):
         """ Returns full name with spaces between """
@@ -65,7 +63,7 @@ class StdUser(AbstractUser):
         """ Returns short name """
         short_name = "%s" % (self.first_name)
         return short_name.strip()
-    
+
     def email_user(self):
         """ Send email to user """
         pass
@@ -81,8 +79,20 @@ class StdUser(AbstractUser):
     class Meta:
         abstract = True
 
+
+class Person(StdUser):
+    is_student = models.BooleanField(default=False)
+    is_teacher = models.BooleanField(default=False)
+
+
+class Student(models.Model):
+    user = models.OneToOneField(Person, on_delete=models.CASCADE)
+    acad_group = models.CharField(max_length=256, choices=ACAD_GROUPS_CHOICES, default="")
+
+
 class Profession(Group):
-    name = models.CharField(max_length=128, default="", blank=False)
+    pass
+
 
 class Faculty(Group):
-    name = models.CharField(max_length=256, default="", blank=False)
+    pass
