@@ -65,7 +65,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, '/static/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -146,6 +146,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
+STATIC_ROOT = "/opt/docker_polls_group/api/static/"
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "/opt/docker_polls_group/api/static/"),
+    '/opt/docker_polls_group/api/static/',
+]
 
 SITE_ID = 2
