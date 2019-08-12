@@ -7,14 +7,16 @@ from .models import StdUser, Profession, Faculty, Student
 class StdUserAdmin(UserAdmin):
     model = StdUser
 
-    list_display = ('email', 'username', 'is_staff', 'is_active', 'is_teacher', 'is_student')
+    list_display = ('email', 'is_staff', 'is_active', 'is_teacher', 'is_student')
     list_filter = ('email',)
     readonly_fields = ('date_joined', 'last_update', 'is_staff', 'is_active', 'is_admin',)
     
     fieldsets = (
+            ('Active status', {
+                'fields': ('is_active',)
+            }),
             ('Personal Info', {
                 'fields': ('email',
-                           'username', 
                            'password', 
                            'first_name', 
                            'last_name',
@@ -23,8 +25,7 @@ class StdUserAdmin(UserAdmin):
                            'avatar',)
                 }),
             ('Permissions', {
-                'fields': ('is_active',
-                           'is_staff',
+                'fields': ('is_staff',
                            'is_admin',
                            'is_student',
                            'is_teacher')
@@ -40,7 +41,6 @@ class StdUserAdmin(UserAdmin):
             (None, {
                 'classes': ('wide', ),
                 'fields': ('email',
-                           'username',
                            'password1',
                            'password2',)
             }),
