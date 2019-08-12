@@ -12,3 +12,6 @@ mongoenv/
 
 # Migrations
 **/**/migrations
+
+# Tests coverage
+.coverage

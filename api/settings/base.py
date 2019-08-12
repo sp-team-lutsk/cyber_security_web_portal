@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'authentication',
 ]
 
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 AUTH_USER_MODEL = 'authentication.StdUser'
 
 AUTHENTICATION_BACKENDS = (
