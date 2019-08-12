@@ -67,7 +67,6 @@ class StdUser(AbstractUser):
     date_joined = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
 
-    username = models.CharField(max_length=64, unique=True, default="")  # Azrael
     first_name = models.CharField(max_length=64, blank=False, default="")  # Ivan
     last_name = models.CharField(max_length=64, blank=False, default="")  # Ivanov
     patronymic = models.CharField(max_length=64, blank=False, default="")  # Ivanovych
@@ -120,7 +119,7 @@ class Student(models.Model):
     faculty = models.ForeignKey("Faculty", on_delete=models.SET_DEFAULT, default="")
 
     def __str__(self):
-        return self.user.username
+        return self.user.email
 
 
 class Teacher(models.Model):
@@ -128,7 +127,7 @@ class Teacher(models.Model):
     faculty = models.ForeignKey("Faculty", on_delete=models.SET_DEFAULT, default="")
 
     def __str__(self):
-        return self.user.username
+        return self.user.email
 
 
 class Profession(Group):
