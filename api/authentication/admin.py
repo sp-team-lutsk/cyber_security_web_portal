@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import Group
 
-from .models import StdUser, Person
+from .models import StdUser, Profession, Faculty, Student
+
 
 class StdUserAdmin(UserAdmin):
     model = StdUser
@@ -36,13 +36,17 @@ class StdUserAdmin(UserAdmin):
 
     add_fieldsets = (
             (None, {
-                'fields': ('email', 
-                           'password', 
-                           'username')
+                'classes': ('wide', ),
+                'fields': ('email',
+                           'username',
+                           'password1',
+                           'password2',)
             }),
     )
 
-class PersonAdmin(StdUserAdmin):
-    model = Person
 
-admin.register(Person, PersonAdmin)
+admin.site.register(StdUser, StdUserAdmin)
+admin.site.register(Student)
+
+admin.site.register(Profession)
+admin.site.register(Faculty)

@@ -1,8 +1,9 @@
 import datetime
 
+from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import AbstractUser, Permission, Group
+from django.contrib.auth.models import AbstractUser, Group
 
 ACAD_GROUPS_CHOICES = [
     ("КБ-11", "Кiбербезпека 1 курс"),
@@ -25,17 +26,20 @@ class StdUser(AbstractUser):
     date_joined = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
 
-    username = models.CharField(max_length=18, blank=False, unique=True)  # Azrael
+    username = models.CharField(max_length=64, blank=False, unique=True)  # Azrael
     first_name = models.CharField(max_length=64, blank=False)  # Ivan
     last_name = models.CharField(max_length=64, blank=False)  # Ivanov
     patronymic = models.CharField(max_length=64, blank=False)  # Ivanovych
     avatar = models.ImageField(upload_to='static/images/', blank=True, max_length=1000)  # select image
-    bio = models.CharField(max_length=256, blank=True)
+    bio = models.CharField(max_length=512, blank=True)
     date_of_birth = models.DateField(default=timezone.now)
 
     is_staff = models.BooleanField(default=False)  # staff user non superuser
     active = models.BooleanField(default=True)  # can login
     admin = models.BooleanField(default=False)  # superuser
+
+    is_student = models.BooleanField('student status', default=False)
+    is_teacher = models.BooleanField('teacher status', default=False)
 
     USERNAME_FIELD = 'email'  # Email as username
     REQUIRED_FIELDS = ['username']
@@ -61,12 +65,12 @@ class StdUser(AbstractUser):
 
     def get_short_name(self):
         """ Returns short name """
-        short_name = "%s" % (self.first_name)
+        short_name = "%s" % self.first_name
         return short_name.strip()
 
-    def email_user(self):
-        """ Send email to user """
-        pass
+    def email_user(self, subject, message, from_email=None, **kwargs):
+        """Send an email to this user."""
+        send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def get_avatar(self):
         """ Returns avatar (use Pillow) """
@@ -76,18 +80,22 @@ class StdUser(AbstractUser):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-    class Meta:
-        abstract = True
-
-
-class Person(StdUser):
-    is_student = models.BooleanField(default=False)
-    is_teacher = models.BooleanField(default=False)
-
 
 class Student(models.Model):
-    user = models.OneToOneField(Person, on_delete=models.CASCADE)
-    acad_group = models.CharField(max_length=256, choices=ACAD_GROUPS_CHOICES, default="")
+    user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
+    profession = models.ForeignKey('Profession', on_delete=models.SET_DEFAULT, default="")
+    faculty = models.ForeignKey("Faculty", on_delete=models.SET_DEFAULT, default="")
+
+    def __str__(self):
+        return self.user.username
+
+
+class Teacher(models.Model):
+    user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
+    faculty = models.ForeignKey("Faculty", on_delete=models.SET_DEFAULT, default="")
+
+    def __str__(self):
+        return self.user.username
 
 
 class Profession(Group):
