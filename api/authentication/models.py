@@ -3,6 +3,7 @@ import datetime
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import UserManager
 from django.contrib.auth.models import AbstractUser, Group
 
 ACAD_GROUPS_CHOICES = [
@@ -19,38 +20,70 @@ ACAD_GROUPS_CHOICES = [
 ]
 
 
+class StdUserManager(UserManager):
+    def create_student(self, email, username=None, first_name=None, last_name=None, password=None):
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = self.model(
+            email=self.normalize_email(email),
+            username=username,
+            first_name=first_name,
+            last_name=last_name
+        )
+
+        user.is_student = True
+        user.set_password(password)
+        user.date_joined = timezone.now()
+        user.last_update = timezone.now()
+        user.save(using=self._db)
+        return user
+
+    def create_teacher(self, email, username=None, first_name=None, last_name=None, password=None):
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = self.model(
+            email=self.normalize_email(email),
+            username=username,
+            first_name=first_name,
+            last_name=last_name
+        )
+
+        user.is_teacher = True
+        user.set_password(password)
+        user.date_joined = timezone.now()
+        user.last_update = timezone.now()
+        user.save(using=self._db)
+        return user
+
+
 # Base user class
 class StdUser(AbstractUser):
+    objects = StdUserManager()
+
     email = models.EmailField(max_length=64, blank=False, unique=True)  # ivanov@gmail.com
 
     date_joined = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
 
-    username = models.CharField(max_length=64, blank=False, unique=True)  # Azrael
-    first_name = models.CharField(max_length=64, blank=False)  # Ivan
-    last_name = models.CharField(max_length=64, blank=False)  # Ivanov
-    patronymic = models.CharField(max_length=64, blank=False)  # Ivanovych
+    username = models.CharField(max_length=64, unique=True, default="")  # Azrael
+    first_name = models.CharField(max_length=64, blank=False, default="")  # Ivan
+    last_name = models.CharField(max_length=64, blank=False, default="")  # Ivanov
+    patronymic = models.CharField(max_length=64, blank=False, default="")  # Ivanovych
     avatar = models.ImageField(upload_to='static/images/', blank=True, max_length=1000)  # select image
-    bio = models.CharField(max_length=512, blank=True)
+    bio = models.CharField(max_length=512, blank=True, default="")
     date_of_birth = models.DateField(default=timezone.now)
 
     is_staff = models.BooleanField(default=False)  # staff user non superuser
-    active = models.BooleanField(default=True)  # can login
-    admin = models.BooleanField(default=False)  # superuser
+    is_active = models.BooleanField(default=True)  # can login
+    is_admin = models.BooleanField(default=False)  # superuser
 
     is_student = models.BooleanField('student status', default=False)
     is_teacher = models.BooleanField('teacher status', default=False)
 
     USERNAME_FIELD = 'email'  # Email as username
     REQUIRED_FIELDS = ['username']
-
-    @property
-    def is_admin(self):
-        return self.admin
-
-    @property
-    def is_active(self):
-        return self.active
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
