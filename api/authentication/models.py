@@ -66,7 +66,7 @@ class StdUserManager(UserManager):
         user.save(using=self._db)
         return user
 
-    def create_teacher(self, email, username=None, first_name=None, last_name=None, password=None):
+    def create_teacher(self, email, first_name=None, last_name=None, password=None):
         if not email:
             raise ValueError('Users must have an email address')
 
