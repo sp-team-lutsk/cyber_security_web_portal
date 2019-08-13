@@ -30,13 +30,19 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'allauth',
+    'rest_framework.authtoken', 
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
 
     'djangotoolbox',
+<<<<<<< HEAD:api/settings/base.py
     'authentication',
+=======
+    'pages',
+    
+>>>>>>> master:settings/base.py
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -111,18 +117,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# settings for rest
+# settings for rest framework
 REST_FRAMEWORK = {
   
+#JWT 
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    
+#Permissions
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated', ),
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser'
+        
+    ),
 }
 
 # JWT auth parameters
