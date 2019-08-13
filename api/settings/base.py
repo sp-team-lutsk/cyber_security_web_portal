@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
 
-    'django_nose',
+    #'django_nose',
 
     'djangotoolbox',
     'authentication',
@@ -158,7 +158,7 @@ MEDIA_URL = 'api/media/'
 
 # Static files (CSS, JavaScript, Images)
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'files', 'static')
 STATIC_URL = 'api/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
