@@ -150,13 +150,13 @@ USE_TZ = True
 
 # Media files
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'api/media/'
 
 
 # Static files (CSS, JavaScript, Images)
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = "/opt/docker_polls_group/api/static"
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
