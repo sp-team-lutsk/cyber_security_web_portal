@@ -37,12 +37,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
 
     'djangotoolbox',
-<<<<<<< HEAD:api/settings/base.py
     'authentication',
-=======
-    'pages',
-    
->>>>>>> master:settings/base.py
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
