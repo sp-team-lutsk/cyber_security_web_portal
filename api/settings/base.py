@@ -152,14 +152,14 @@ USE_TZ = True
 
 # Media files
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = 'api/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files')
+MEDIA_URL = '/media/'
 
 
 # Static files (CSS, JavaScript, Images)
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'files', 'static')
-STATIC_URL = 'api/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'allstatic')
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
