@@ -102,7 +102,7 @@ class StdUser(AbstractUser):
 
     is_staff = models.BooleanField(default=False)  # staff user non superuser
     is_active = models.BooleanField(default=True)  # can login
-    is_admin = models.BooleanField(default=False)  # superuser
+    is_superuser = models.BooleanField(default=False)  # superuser
 
     is_student = models.BooleanField('student status', default=False)
     is_teacher = models.BooleanField('teacher status', default=False)
