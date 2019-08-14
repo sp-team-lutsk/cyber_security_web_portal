@@ -71,6 +71,7 @@ class TestTeacher(TestCase):
 
 
 class TestStudent(TestCase):
+
     def setUpTestData(self):
         self.user = models.StdUser.objects.create_student(email="student@example.com", first_name='Mykola', last_name='Danyliuk', password="password123")
 
