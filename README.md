@@ -21,6 +21,7 @@
 
 - 18.07.19 Django version changed to 2.2.3
 - 19.07.19 Mongodb integrated
+- 05.07.19 Added models 
 
 ## Installation
 
@@ -37,7 +38,7 @@ Make this simple steps to run this project. :smile: 😄
 > use Python 3
 
 ```shell
-$ pip install -r requirements/base.txt
+$ pip install -r requirements/dev.txt
 ```
 ---
 

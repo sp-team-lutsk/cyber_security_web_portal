@@ -2,10 +2,9 @@ import datetime
 import os
 import sys
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(os.path.join(BASE_DIR, 'apps/'))
+sys.path.append(os.path.join(BASE_DIR, ''))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
@@ -36,12 +35,14 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
-
-    'accounts',
-    'djangotoolbox',
-    'pages',
     
+    'django_nose',
+    'djangotoolbox',
+    'authentication',
 ]
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+AUTH_USER_MODEL = 'authentication.StdUser'
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
@@ -91,7 +92,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'mongodb',
-        'HOST': 'mongodb',   # if you use docker you should specify  'HOST': 'mongodb'
+        'HOST': 'mongodb',   # if you use docker you should specify  'HOST': 'mongodb', but if it is locally 'HOST': '127.0.0.1'
     }
 }
 

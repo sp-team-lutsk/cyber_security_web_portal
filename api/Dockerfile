@@ -6,4 +6,9 @@ RUN mkdir -p $WORKDIR
 WORKDIR $WORKDIR
 ADD . $WORKDIR
 
+RUN pip install --upgrade pip
 RUN pip install -r $WORKDIR/requirements/dev.txt
+
+CMD python manage.py runserver
+
+

@@ -9,3 +9,10 @@ mongoenv/
 
 *.sqlite3
 *.pyc
+
+# Migrations
+**/**/migrations
+
+# Tests coverage
+.coverage
+**/**/htmlcov
