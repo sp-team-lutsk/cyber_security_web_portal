@@ -4,7 +4,7 @@ import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(os.path.join(BASE_DIR, ''))
+sys.path.append(os.path.join(BASE_DIR, 'static'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
@@ -30,10 +30,13 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'allauth',
+    'rest_framework.authtoken', 
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
+
+    #'django_nose',
 
     'djangotoolbox',
     'authentication',
@@ -111,18 +114,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# settings for rest
+# settings for rest framework
 REST_FRAMEWORK = {
   
+#JWT 
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    
+#Permissions
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated', ),
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser'
+        
+    ),
 }
 
 # JWT auth parameters
@@ -143,10 +150,21 @@ USE_L10N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/dev/howto/static-files/
+# Media files
 
-STATIC_ROOT = "/opt/docker_polls_group/api/static/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files')
+MEDIA_URL = '/media/'
+
+
+# Static files (CSS, JavaScript, Images)
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'allstatic')
 STATIC_URL = '/static/'
-DEBUG = True
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 SITE_ID = 2

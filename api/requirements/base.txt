@@ -2,6 +2,7 @@ gunicorn
 Django==2.2.4
 django-rest-auth==0.9.5
 django-allauth==0.39.1
+djangorestframework==3.9.4
 djangorestframework-jwt==1.11.0
 djangorestframework-simplejwt==4.3.0
 djangotoolbox==1.8.0
@@ -14,4 +15,5 @@ sqlparse==0.2.4
 psycopg2
 
 # tests
+django_nose==1.4.6
 coverage==4.5.4
