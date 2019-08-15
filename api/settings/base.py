@@ -148,5 +148,5 @@ USE_TZ = True
 
 STATIC_ROOT = "/opt/docker_polls_group/api/static/"
 STATIC_URL = '/static/'
-
+DEBUG = True
 SITE_ID = 2
