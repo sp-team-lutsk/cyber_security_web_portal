@@ -9,7 +9,7 @@ class StdUserAdmin(UserAdmin):
 
     list_display = ('email', 'is_staff', 'is_active', 'is_teacher', 'is_student')
     list_filter = ('email',)
-    readonly_fields = ('date_joined', 'last_update', 'is_staff', 'is_active', 'is_admin',)
+    readonly_fields = ('date_joined', 'last_update', 'is_staff', 'is_active', 'is_superuser',)
     
     fieldsets = (
             ('Active status', {
@@ -26,7 +26,7 @@ class StdUserAdmin(UserAdmin):
                 }),
             ('Permissions', {
                 'fields': ('is_staff',
-                           'is_admin',
+                           'is_superuser',
                            'is_student',
                            'is_teacher')
                 }),

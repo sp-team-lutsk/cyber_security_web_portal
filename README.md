@@ -22,6 +22,7 @@
 - 18.07.19 Django version changed to 2.2.3
 - 19.07.19 Mongodb integrated
 - 05.07.19 Added models 
+- 14.08.19 Added tests for models
 
 ## Installation
 
