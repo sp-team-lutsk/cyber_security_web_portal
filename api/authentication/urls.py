@@ -10,4 +10,3 @@ urlpatterns = [
     path('refreshtoken/', TokenRefreshView.as_view(), name='refresh-token'),   # refresh access token
     path('list/', UserListAPIView.as_view(), name='list'),
 ]
-
