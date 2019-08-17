@@ -28,7 +28,8 @@ class StdUserAdmin(UserAdmin):
                 'fields': ('is_staff',
                            'is_superuser',
                            'is_student',
-                           'is_teacher')
+                           'is_teacher',
+                           'user_permissions',)
                 }),
             ('Important Dates', {
                 'fields': ('date_of_birth',

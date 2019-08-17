@@ -109,6 +109,9 @@ class StdUser(AbstractUser):
 
     USERNAME_FIELD = 'email'  # Email as username
     REQUIRED_FIELDS = []
+    
+    class Meta:
+        permissions = [('read_news','Читати новини',),]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -147,6 +150,9 @@ class Student(models.Model):
     def __str__(self):
         return self.user.email
 
+    class Meta:
+        permissions = [('write_to_teacher', 'Писати викладачу'),]
+
 
 class Teacher(models.Model):
     user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
@@ -154,6 +160,12 @@ class Teacher(models.Model):
 
     def __str__(self):
         return self.user.email
+
+    class Meta:
+        permissions = [('add_post', 'Створити пост'),
+                       ('edit_post', 'Змiнювати пост'),
+                       ('delete_post', 'Видалити пост'),
+                       ('change_student_perm', 'Змiнювати права стундентiв'),]
 
 
 class Profession(Group):
