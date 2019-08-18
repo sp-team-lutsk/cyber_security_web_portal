@@ -8,9 +8,6 @@ djangorestframework-simplejwt==4.3.0
 djangotoolbox==1.8.0
 Pillow==6.1.0
 
-# mongo_db
-djongo>=1.2.33
-sqlparse==0.2.4
 
 psycopg2
 
