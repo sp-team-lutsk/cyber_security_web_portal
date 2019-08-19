@@ -16,3 +16,7 @@ mongoenv/
 # Tests coverage
 .coverage
 **/**/htmlcov
+
+# Static
+api/collected_static/
+api/static/
