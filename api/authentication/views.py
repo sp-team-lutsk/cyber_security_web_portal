@@ -6,7 +6,8 @@ from rest_framework.response import Response
 
 from django.contrib.auth import get_user_model
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer, StudentSerializer, TeacherSerializer
+from .models import Student, Teacher
 
 User = get_user_model()
 
@@ -31,3 +32,17 @@ class UserListAPIView(ListAPIView):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class StudentListAPIView(ListAPIView):
+    """
+    All students in db (for test)
+    """
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+class TeacherListAPIView(UserListAPIView):
+    """
+    All teachers in db (for test)
+    """
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer

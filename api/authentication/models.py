@@ -171,8 +171,12 @@ class Teacher(models.Model):
 
 
 class Profession(Group):
-    pass
+    
+    def __str__(self):
+        return self.name
 
 
 class Faculty(Group):
-    pass
+    
+    def __str__(self):
+        return self.name
