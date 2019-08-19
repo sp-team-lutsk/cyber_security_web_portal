@@ -25,5 +25,5 @@ services:
       - postgres
     depends_on:
       - postgres
-    command: gunicorn --reload wsgi:application -w 2 -b :8000 -t 120
+    command: gunicorn wsgi:application -w 2 -b :8000 -t 120
 
