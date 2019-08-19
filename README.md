@@ -23,6 +23,7 @@
 - 19.07.19 Mongodb integrated
 - 05.07.19 Added models 
 - 14.08.19 Added tests for models
+- 16.08.19 Changed db engine from mongodb to postgresql
 
 ## Installation
 
