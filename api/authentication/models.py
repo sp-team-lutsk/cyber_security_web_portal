@@ -88,7 +88,8 @@ class StdUserManager(UserManager):
 class StdUser(AbstractUser):
     objects = StdUserManager()
 
-    username = None
+    # We need this, because in AbstractUser 'unique=True'
+    username = models.CharField(max_length=64, blank=True, unique=False)
     email = models.EmailField(max_length=64, blank=False, unique=True)  # ivanov@gmail.com
 
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -110,6 +111,9 @@ class StdUser(AbstractUser):
 
     USERNAME_FIELD = 'email'  # Email as username
     REQUIRED_FIELDS = []
+    
+    class Meta:
+        permissions = [('read_news','Читати новини',),]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -148,6 +152,9 @@ class Student(models.Model):
     def __str__(self):
         return self.user.email
 
+    class Meta:
+        permissions = [('write_to_teacher', 'Писати викладачу'),]
+
 
 class Teacher(models.Model):
     user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
@@ -155,6 +162,12 @@ class Teacher(models.Model):
 
     def __str__(self):
         return self.user.email
+
+    class Meta:
+        permissions = [('add_post', 'Створити пост'),
+                       ('edit_post', 'Змiнювати пост'),
+                       ('delete_post', 'Видалити пост'),
+                       ('change_student_perm', 'Змiнювати права стундентiв'),]
 
 
 class Profession(Group):

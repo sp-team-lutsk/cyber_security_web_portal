@@ -7,7 +7,7 @@ from .models import StdUser, Profession, Faculty, Student
 class StdUserAdmin(UserAdmin):
     model = StdUser
 
-    ordering = ('email',)
+    ordering = ('email', )
     list_display = ('email', 'is_staff', 'is_active', 'is_teacher', 'is_student')
     list_filter = ('email',)
     readonly_fields = ('date_joined', 'last_update', 'is_staff', 'is_active', 'is_superuser',)
@@ -29,7 +29,8 @@ class StdUserAdmin(UserAdmin):
                 'fields': ('is_staff',
                            'is_superuser',
                            'is_student',
-                           'is_teacher')
+                           'is_teacher',
+                           'user_permissions',)
                 }),
             ('Important Dates', {
                 'fields': ('date_of_birth',

@@ -1,14 +1,18 @@
 version: '3.7'
 
 services:
-  mongodb:
-    container_name: "mongodb"
-    image: mongo:4.0.10
+  postgres:
+    container_name: "postgresql"
+    image: postgres:12
     restart: always
     expose:
-      - "27017"
+      - "5432"
     ports:
-      - "27017:27017"
+      - "5432:5432"
+    environment:
+        POSTGRES_PASSWORD: Admin123!
+        POSTGRES_USER: admin
+        POSTGRES_DB: postgresql
 
   api:
     build: ./api
@@ -18,8 +22,8 @@ services:
     ports:
       - "8000:8000"
     links:
-      - mongodb
+      - postgres
     depends_on:
-      - mongodb
+      - postgres
     command: gunicorn wsgi:application -w 2 -b :8000 -t 120
 

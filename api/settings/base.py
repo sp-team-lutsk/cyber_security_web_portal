@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
 
-    #'django_nose',
+    'django_nose',
 
     'djangotoolbox',
     'authentication',
@@ -67,7 +67,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, '/static/templates'),
+            os.path.join(BASE_DIR, 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -90,9 +90,12 @@ WSGI_APPLICATION = 'wsgi.application'
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'mongodb',
-        'HOST': 'mongodb',   # if you use docker you should specify  'HOST': 'mongodb', but if it is locally 'HOST': '127.0.0.1'
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgresql',
+        'USER': 'admin',
+        'PASSWORD': 'Admin123!',
+        'HOST': 'postgresql',
+        'PORT': '5432',# if you use docker you should specify  'HOST': 'mongodb', but if it is locally 'HOST': '127.0.0.1'
     }
 }
 
@@ -157,7 +160,7 @@ MEDIA_URL = '/media/'
 
 # Static files (CSS, JavaScript, Images)
 
-STATIC_ROOT = os.path.join(BASE_DIR, "collected_static")
+STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATICFILES_FINDERS = (
