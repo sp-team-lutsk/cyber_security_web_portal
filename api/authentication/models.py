@@ -88,6 +88,8 @@ class StdUserManager(UserManager):
 class StdUser(AbstractUser):
     objects = StdUserManager()
 
+    # We need this, because in AbstractUser 'unique=True'
+    username = models.CharField(max_length=64, blank=True, unique=False)
     email = models.EmailField(max_length=64, blank=False, unique=True)  # ivanov@gmail.com
 
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -169,8 +171,12 @@ class Teacher(models.Model):
 
 
 class Profession(Group):
-    pass
+    
+    def __str__(self):
+        return self.name
 
 
 class Faculty(Group):
-    pass
+    
+    def __str__(self):
+        return self.name
