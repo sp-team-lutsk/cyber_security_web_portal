@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles', 
     'django.contrib.sites',
-
+    
     'rest_framework',
     'allauth',
     'rest_framework.authtoken', 
@@ -151,12 +151,13 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
+#Tokens
+FACEBOOK_ACCESS_TOKEN = 'EAAgle6HjRBMBADa77o2vU677BjkKelUIRNQzUJ2ovdnfa8R7xNGQSMzD26M6pb4xjZANvGKNmZA9MW0DXK8TneTFdf9R3Nld2rth8AqZApcC8WB9b3slZCzZByllkROFViUPVediHHJRm63USistvZAY88OLIXuvHmybA0vEa7ZAdMCIZCEfqyLZCsnsgjj8jKsEQpufuRyZClYAZDZD'
 # Media files
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files')
 MEDIA_URL = '/media/'
-
+REST_USE_JWT = True
 
 # Static files (CSS, JavaScript, Images)
 

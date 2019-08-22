@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 
 from .models import Student, Teacher, Faculty, Profession
 
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+
 User = get_user_model()
 
 class FacultySerializer(serializers.ModelSerializer):
@@ -77,3 +79,4 @@ class SocialSerializer(serializers.Serializer):
     """
     provider = serializers.CharField(max_length=255, required=True)
     access_token = serializers.CharField(max_length=4096, required=True, trim_whitespace=True)
+

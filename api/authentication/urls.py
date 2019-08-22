@@ -1,7 +1,8 @@
 from django.urls import path
+#from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .views import CreateUserAPIView, UserListAPIView, StudentListAPIView, TeacherListAPIView, AuthenticationAPIView
+from .views import CreateUserAPIView, UserListAPIView, StudentListAPIView, TeacherListAPIView, FacebookLogin
 
 
 urlpatterns = [
@@ -12,5 +13,5 @@ urlpatterns = [
     path('user_list/', UserListAPIView.as_view(), name='list'),
     path('student_list/', StudentListAPIView.as_view(), name='slist'),
     path('teacher_list/', TeacherListAPIView.as_view(), name='tlist'),
-    path('authentication/',AuthenticationAPIView.as_view(), name='authentication'),
+    path('authentication/', FacebookLogin.as_view(), name='fb_login'),
 ]

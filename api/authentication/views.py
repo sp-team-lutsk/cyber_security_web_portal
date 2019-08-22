@@ -3,10 +3,13 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
+import settings
+from rest_auth.registration.views import SocialLoginView
+from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 
 from django.contrib.auth import get_user_model
 
-from .serializers import UserSerializer, StudentSerializer, TeacherSerializer
+from .serializers import UserSerializer, StudentSerializer, TeacherSerializer, SocialSerializer
 from .models import Student, Teacher
 
 User = get_user_model()
@@ -47,12 +50,6 @@ class TeacherListAPIView(UserListAPIView):
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
 
-class AuthenticationAPIView(APIView):
-    """
-    Authentication endpoint
-    """
-    serializer_class = UserSerializer
-    def post(self, request):
-        user = request.data
-        serializer = UserSerializer()
-        serializer.save()
+class FacebookLogin(SocialLoginView):
+    adapter_class = FacebookOAuth2Adapter
+    access_token = settings.base.FACEBOOK_ACCESS_TOKEN
