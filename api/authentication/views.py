@@ -46,3 +46,13 @@ class TeacherListAPIView(UserListAPIView):
     """
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
+
+class AuthenticationAPIView(APIView):
+    """
+    Authentication endpoint
+    """
+    serializer_class = UserSerializer
+    def post(self, request):
+        user = request.data
+        serializer = UserSerializer()
+        serializer.save()
