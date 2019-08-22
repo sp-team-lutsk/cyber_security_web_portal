@@ -31,7 +31,7 @@ docker exec dpg_api python manage.py makemigrations authentication
 docker exec dpg_api python manage.py migrate --noinput      
 
 echo -e "\n[ Creating superuser ]\n"
-docker exec -it dpg_api python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', 'Admin123!')"        
-echo "Username: admin"
+docker exec -it dpg_api python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin@example.com', 'Admin123!')"        
+
 echo "Email: admin@example.com"
 echo "Password: Admin123!"
