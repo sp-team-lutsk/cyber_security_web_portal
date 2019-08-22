@@ -6,7 +6,6 @@ from rest_framework.response import Response
 import settings
 from rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
-
 from django.contrib.auth import get_user_model
 
 from .serializers import UserSerializer, StudentSerializer, TeacherSerializer, SocialSerializer
