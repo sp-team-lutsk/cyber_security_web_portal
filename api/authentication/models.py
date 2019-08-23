@@ -22,7 +22,6 @@ ACAD_GROUPS_CHOICES = [
     ("КСМс-21", "Комп'ютерні системи і мережі 2 курс (скорочений)"),
 ]
 
-
 class StdUserManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
         if not email:
@@ -52,21 +51,23 @@ class StdUserManager(UserManager):
 
         return self._create_user(email, password, **extra_fields)
 
-    def create_student(self, email, first_name=None, last_name=None, password=None):
+    def create_student(self, email, profession, faculty, password=None):
         if not email:
             raise ValueError('Users must have an email address')
 
         user = self.model(
             email=self.normalize_email(email),
-            first_name=first_name,
-            last_name=last_name
         )
 
         user.is_student = True
         user.set_password(password)
+
         user.date_joined = timezone.now()
         user.last_update = timezone.now()
         user.save(using=self._db)
+        
+        Student.objects.create(user, profession, faculty)
+
         return user
 
     def create_teacher(self, email, first_name=None, last_name=None, password=None):
@@ -103,7 +104,7 @@ class StdUser(AbstractUser):
     patronymic = models.CharField(max_length=64, blank=False, default="")  # Ivanovych
     avatar = models.ImageField(upload_to='static/media/', blank=True, max_length=1000)  # select image
     bio = models.CharField(max_length=512, blank=True, default="")
-    date_of_birth = models.DateField(default=timezone.now)
+    date_of_birth = models.DateField(default=timezone.now().date())
     gender = models.CharField(max_length=64, blank=True, default="man") # Man/Wpman
 
     is_staff = models.BooleanField(default=False)  # staff user non superuser
@@ -172,7 +173,7 @@ class Student(models.Model):
     user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
     profession = models.ForeignKey('Profession', on_delete=models.SET_DEFAULT, default="")
     faculty = models.ForeignKey("Faculty", on_delete=models.SET_DEFAULT, default="")
-
+    
     def __str__(self):
         return self.user.email
 
@@ -192,7 +193,6 @@ class Teacher(models.Model):
                        ('edit_post', 'Змiнювати пост'),
                        ('delete_post', 'Видалити пост'),
                        ('change_student_perm', 'Змiнювати права стундентiв'),]
-
 
 class Profession(Group):
     

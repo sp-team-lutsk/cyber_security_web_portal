@@ -1,9 +1,9 @@
 from rest_framework import serializers
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from django.contrib.auth import get_user_model 
+from django.contrib.auth import authenticate
 
 from .models import Student, Teacher, Faculty, Profession
-
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 
 User = get_user_model()
 
@@ -17,8 +17,81 @@ class ProfessionSerializer(serializers.ModelSerializer):
         model = Profession
         fields = ('name',)
 
+class LoginUserSerializer(serializers.Serializer):
+    email = serializers.CharField(max_length=64)
+    password = serializers.CharField(max_length=128, write_only=True)
+    token = serializers.CharField(max_length=255, read_only=True)
+
+    class Meta(object):
+        model = User
+        fields = (
+            'email',
+            'password',
+            'token'
+        )
+    
+    def validate(self, data):
+        email = data.get('email', None)
+        password = data.get('password', None)
+
+        if email is None:
+            raise serializers.ValidationError("Email is required")
+
+        if password is None:
+            raise serializers.ValidationError("Password is required")
+    
+        user = authenticate(email=email, password=password)
+
+        if user is None:
+            raise serializers.ValidationError("User with such email not found")
+
+        if not user.is_active:
+            raise serializers.ValidationError("User is deactivated")
+
+        return {
+            'email': user.email,
+            'password': user.password,
+            'token': user.token
+        }
+
+class CreateUserSerializer(serializers.ModelSerializer):
+    read_only_fields = ('date_joined', 'token')
+
+    class Meta(object):
+        model = User
+        fields = (
+            'email',
+            'password',
+            'token',
+        )
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
+
+class TeacherSerializer(serializers.ModelSerializer):
+    faculty = FacultySerializer(many=False)
+
+    class Meta(object):
+        model = Teacher
+        fields = (
+            'user',
+            'faculty',
+        )
+
+class StudentSerializer(serializers.ModelSerializer):
+    faculty = FacultySerializer(many=False)
+    profession = ProfessionSerializer(many=False)
+
+    class Meta(object):
+        model = Student
+        fields = ( 
+            'user',
+            'faculty',
+            'profession',
+        )
+
 class UserSerializer(serializers.ModelSerializer):
     date_joined = serializers.ReadOnlyField() 
+    student = StudentSerializer(many=False, read_only=True)
 
     class Meta(object):
         model = User
@@ -42,36 +115,14 @@ class UserSerializer(serializers.ModelSerializer):
 
             'is_student',
             'is_teacher',
+            'student',
+            'teacher',
 
             'password',
         )
 
         extra_kwargs = {'password': {'write_only': True}}
 
-class TeacherSerializer(serializers.ModelSerializer):
-    user = UserSerializer(many=False)
-    faculty = FacultySerializer(many=False)
-
-    class Meta(object):
-        model = Teacher
-        fields = (
-            'user',
-            'faculty',
-        )
-
-
-class StudentSerializer(serializers.ModelSerializer):
-    user = UserSerializer(many=False)
-    faculty = FacultySerializer(many=False)
-    profession = ProfessionSerializer(many=False)
-
-    class Meta(object):
-        model = Student
-        fields = ( 
-            'user',
-            'faculty',
-            'profession',
-        )
 
 class SocialSerializer(serializers.Serializer):
     """
