@@ -58,6 +58,12 @@ class StdUserManager(UserManager):
         user = self.model(
             email=self.normalize_email(email),
         )
+        
+        try:
+            profession = Profession.objects.get(name=profession)
+            faculty = Faculty.objects.get(name=faculty)
+        except:
+            raise ValueError('Not found such object')
 
         user.is_student = True
         user.set_password(password)
@@ -66,27 +72,34 @@ class StdUserManager(UserManager):
         user.last_update = timezone.now()
         user.save(using=self._db)
         
-        Student.objects.create(user, profession, faculty)
+        student = Student.objects.create(user=user, profession=profession, faculty=faculty)
+        student.save()
 
         return user
 
-    def create_teacher(self, email, first_name=None, last_name=None, password=None):
+    def create_teacher(self, email, faculty, password=None):
         if not email:
             raise ValueError('Users must have an email address')
 
         user = self.model(
             email=self.normalize_email(email),
-            first_name=first_name,
-            last_name=last_name
         )
+
+        try:
+            faculty = Faculty.objects.get(name=faculty)
+        except:
+            raise ValueError('Not found such object')
 
         user.is_teacher = True
         user.set_password(password)
+        
         user.date_joined = timezone.now()
         user.last_update = timezone.now()
         user.save(using=self._db)
-        return user
 
+        teacher = Teacher.objects.create(user=user, faculty=faculty)
+
+        return user
 
 # Base user class
 class StdUser(AbstractUser):
@@ -173,7 +186,7 @@ class Student(models.Model):
     user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
     profession = models.ForeignKey('Profession', on_delete=models.SET_DEFAULT, default="")
     faculty = models.ForeignKey("Faculty", on_delete=models.SET_DEFAULT, default="")
-    
+   
     def __str__(self):
         return self.user.email
 
