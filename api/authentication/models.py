@@ -1,10 +1,13 @@
 import datetime
+import jwt
 
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import UserManager
 from django.contrib.auth.models import AbstractUser, Group
+
+from settings import base
 
 ACAD_GROUPS_CHOICES = [
     ("КБ-11", "Кiбербезпека 1 курс"),
@@ -116,6 +119,13 @@ class StdUser(AbstractUser):
     class Meta:
         permissions = [('read_news','Читати новини',),]
 
+    @property
+    def token(self):
+        """
+        Get token not as func, but as value
+        """
+        return self._generate_jwt_token()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -139,6 +149,19 @@ class StdUser(AbstractUser):
     def get_avatar(self):
         """ Returns avatar (use Pillow) """
         pass
+
+    def _generate_jwt_token(self):
+        """
+        Generates a JSON Web Token 
+        """
+        df = datetime.datetime.now() + datetime.timedelta(days=60)
+
+        token = jwt.encode({
+            'id': self.pk,
+            'exp': int(df.strftime('%s'))
+        }, base.SECRET_KEY, algorithm='HS256')
+
+        return token.decode('utf-8')
 
     # Saving
     def save(self, *args, **kwargs):

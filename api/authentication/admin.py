@@ -3,14 +3,13 @@ from django.contrib.auth.admin import UserAdmin
 
 from .models import StdUser, Profession, Faculty, Student, Teacher
 
-
 class StdUserAdmin(UserAdmin):
     model = StdUser
 
     ordering = ('email', )
     list_display = ('email', 'is_staff', 'is_active', 'is_teacher', 'is_student')
     list_filter = ('email',)
-    readonly_fields = ('date_joined', 'last_update', 'is_staff', 'is_active', 'is_superuser',)
+    readonly_fields = ('date_joined', 'token', 'last_update', 'is_staff', 'is_active', 'is_superuser',)
     
     fieldsets = (
             ('Active status', {
@@ -23,7 +22,8 @@ class StdUserAdmin(UserAdmin):
                            'last_name',
                            'patronymic',
                            'bio',
-                           'avatar',)
+                           'avatar',
+                           'token',)
                 }),
             ('Permissions', {
                 'fields': ('is_staff',
