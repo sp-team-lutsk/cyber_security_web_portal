@@ -73,7 +73,6 @@ class TeacherSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Teacher
         fields = (
-            'user',
             'faculty',
         )
 
@@ -84,7 +83,6 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Student
         fields = ( 
-            'user',
             'faculty',
             'profession',
         )
