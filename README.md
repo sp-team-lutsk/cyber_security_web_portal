@@ -37,10 +37,20 @@ Make this simple steps to run this project. :smile: 😄
 
 - Install all dependencies from file `dev.txt` via command :point_down::
 
-> use Python 3
+> Using Python 3
 
 ```shell
 $ pip install -r requirements/dev.txt
+```
+> Using Docker scripts
+```
+- docker_all-in.sh - you can run this script when you start project first time. It will clean your docker, init new container, make migrations and create admin user
+- docker_clean_all.sh - deletes old containers
+- docker_init.sg - inits new docker-container
+- docker_update_db.sh - updates migrations
+- docker_api_create_su.sh - creates superuser
+- docker_start.sh - starts docker-container
+- docker-nosetests.sh - runs tests 
 ```
 ---
 
