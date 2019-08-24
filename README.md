@@ -97,7 +97,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 | ---------------------------------------------------------- | -------: |
 | <a href="https://github.com/Martinfree">Martinfree</a>     | Back-end |
 | <a href="https://github.com/romaoksenyuk">romaoksenyuk</a> | Back-end |
-| <a href="https://github.com/IgnisAvis">IgnisAvis           | PM       |
+| <a href="https://github.com/Azrael-git">Azrael</a>         | PM       |
 | <a href="https://github.com/m-pasha">m-pasha</a>           | CEO      |
 | <a href="https://github.com/klekhaav">klekhaav</a>         | Boss     |
 
