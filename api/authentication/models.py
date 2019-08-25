@@ -186,7 +186,8 @@ class Student(models.Model):
     user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
     profession = models.ForeignKey('Profession', on_delete=models.SET_DEFAULT, default="")
     faculty = models.ForeignKey("Faculty", on_delete=models.SET_DEFAULT, default="")
-   
+    acad_group = models.CharField(max_length=256, choices=ACAD_GROUPS_CHOICES, default="")  
+
     def __str__(self):
         return self.user.email
 
