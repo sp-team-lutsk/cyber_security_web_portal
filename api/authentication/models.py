@@ -9,6 +9,7 @@ from django.contrib.auth.models import AbstractBaseUser, AbstractUser, Group
 
 from settings import base
 
+
 ACAD_GROUPS_CHOICES = [
     ("КБ-11", "Кiбербезпека 1 курс"),
     ("КБ-21", "Кiбербезпека 2 курс"),
@@ -21,6 +22,7 @@ ACAD_GROUPS_CHOICES = [
     ("КСМс-11", "Комп'ютерні системи і мережі 1 курс (скорочений)"),
     ("КСМс-21", "Комп'ютерні системи і мережі 2 курс (скорочений)"),
 ]
+
 
 class StdUserManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
@@ -100,6 +102,21 @@ class StdUserManager(UserManager):
         teacher = Teacher.objects.create(user=user, faculty=faculty)
 
         return user
+
+
+class SocialUserManager(UserManager):
+    def _create_user(self, email, username, **extra_fields):     
+        email = email                      
+        
+        username=username
+        
+        user = self.model(email=email, username=username, **extra_fields)           
+        user.save(using=self._db)                                
+        return user                                              
+                                                             
+    def create_user(self, email, username, **extra_fields): 
+        return self._create_user(email, username, **extra_fields)
+
 
 # Base user class
 class StdUser(AbstractUser):
@@ -183,10 +200,21 @@ class StdUser(AbstractUser):
 
 
 class SocialUser(AbstractBaseUser):
+    objects = SocialUserManager()
+
+    email = models.EmailField(default="", max_length=128, blank=True, null=True)
+    username = models.CharField(default="Пасхалка", max_length=128, blank=True, null=True)
     password = models.CharField(default="",max_length=2)
     #user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
     provider = models.CharField(max_length=10)
-    social_id = models.CharField(max_length=32)
+    uid = models.CharField(max_length=32, default="")
+    name = models.CharField(max_length=128, default="")
+
+    USERNAME_FIELD = 'email'
+
+    def __str__(self):
+        return self.uid
+
 
 class Student(models.Model):
     user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
@@ -213,6 +241,7 @@ class Teacher(models.Model):
                        ('edit_post', 'Змiнювати пост'),
                        ('delete_post', 'Видалити пост'),
                        ('change_student_perm', 'Змiнювати права стундентiв'),]
+
 
 class Profession(Group):
     
