@@ -79,4 +79,3 @@ class TeacherListAPIView(ListAPIView):
 
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
-    access_token = settings.base.FACEBOOK_ACCESS_TOKEN

@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import UserManager
-from django.contrib.auth.models import AbstractUser, Group
+from django.contrib.auth.models import AbstractBaseUser, AbstractUser, Group
 
 from settings import base
 
@@ -181,6 +181,12 @@ class StdUser(AbstractUser):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
+
+class SocialUser(AbstractBaseUser):
+    password = models.CharField(default="",max_length=2)
+    #user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
+    provider = models.CharField(max_length=10)
+    social_id = models.CharField(max_length=32)
 
 class Student(models.Model):
     user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")

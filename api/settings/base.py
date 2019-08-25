@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 
     'djangotoolbox',
     'authentication',
+    'social_django',
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -47,8 +48,12 @@ AUTH_USER_MODEL = 'authentication.StdUser'
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
+    'social_core.backends.facebook.FacebookOAuth2',
+
 )
 
+SOCIAL_AUTH_FACEBOOK_KEY = '2293012740916243'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'b9fa3a771d57fba2b045886162e5b685'  # App Secret
 #LOGIN_REDIRECT_URL = 'home'
 
 MIDDLEWARE = [
@@ -59,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'urls'
@@ -78,6 +84,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
+                'social_django.context_processors.backends',  
+                'social_django.context_processors.login_redirect', 
             ],
 
         },
@@ -151,14 +159,22 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-#Tokens
-FACEBOOK_ACCESS_TOKEN = 'EAAgle6HjRBMBADa77o2vU677BjkKelUIRNQzUJ2ovdnfa8R7xNGQSMzD26M6pb4xjZANvGKNmZA9MW0DXK8TneTFdf9R3Nld2rth8AqZApcC8WB9b3slZCzZByllkROFViUPVediHHJRm63USistvZAY88OLIXuvHmybA0vEa7ZAdMCIZCEfqyLZCsnsgjj8jKsEQpufuRyZClYAZDZD'
 # Media files
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files')
 MEDIA_URL = '/media/'
 REST_USE_JWT = True
 
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    #'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+)
+
+SOCIAL_AUTH_USER_MODEL = 'authentication.SocialUser'
 # Static files (CSS, JavaScript, Images)
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
