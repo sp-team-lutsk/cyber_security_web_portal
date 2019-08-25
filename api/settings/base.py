@@ -48,12 +48,14 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
     'social_core.backends.facebook.FacebookOAuth2',
-
+    'social_core.backends.google.GoogleOAuth2',
 )
 
+USE_UNIQUE_USER_ID = True
 SOCIAL_AUTH_FACEBOOK_KEY = '2293012740916243'  # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = 'b9fa3a771d57fba2b045886162e5b685'  # App Secret
-#LOGIN_REDIRECT_URL = 'home'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '139031750986-d7jnj1ogdmtbg271bsegbiafj6qrshlb.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'A8KihEKp4CiiM7rJnRqFYWYb'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

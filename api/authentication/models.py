@@ -205,7 +205,6 @@ class SocialUser(AbstractBaseUser):
     email = models.EmailField(default="", max_length=128, blank=True, null=True)
     username = models.CharField(default="Пасхалка", max_length=128, blank=True, null=True)
     password = models.CharField(default="",max_length=2)
-    #user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
     provider = models.CharField(max_length=10)
     uid = models.CharField(max_length=32, default="")
     name = models.CharField(max_length=128, default="")
