@@ -67,6 +67,7 @@ class StudentListAPIView(ListAPIView):
     """
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    permission_classes = [IsAdminUser]
 
 class TeacherListAPIView(ListAPIView):
     """
@@ -74,6 +75,7 @@ class TeacherListAPIView(ListAPIView):
     """
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
+    permission_classes = [IsAdminUser]
 
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
