@@ -120,13 +120,19 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
         extra_kwargs = {'password': {'write_only': True}}
+    
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+
+        for (key, value) in validated_data.items():
+            setattr(instance, key, value)
+        if password is not None:
+            instance.set_password(password)
+
+        instance.save()
+
+        return instance
+    
 
 
-class SocialSerializer(serializers.Serializer):
-    """
-    Serializer which accepts an OAuth2 access token and provider.
-    """
-    provider = serializers.CharField(max_length=255, required=True)
-    access_token = serializers.CharField(max_length=4096, required=True, trim_whitespace=True)
-
-
+    
