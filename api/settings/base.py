@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 
     'djangotoolbox',
     'authentication',
+    'ext_news',
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -94,8 +95,8 @@ DATABASES = {
         'NAME': 'postgresql',
         'USER': 'admin',
         'PASSWORD': 'Admin123!',
-        'HOST': 'postgresql',
-        'PORT': '5432',# if you use docker you should specify  'HOST': 'mongodb', but if it is locally 'HOST': '127.0.0.1'
+        'HOST': 'postgresql',    # if you use docker you should specify  'HOST': 'postgresql', but if it is locally 'HOST': '127.0.0.1'
+        'PORT': '5432',
     }
 }
 
