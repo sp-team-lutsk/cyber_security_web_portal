@@ -8,9 +8,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.generics import (ListAPIView,
                                      UpdateAPIView,
-                                    )
+                                     CreateAPIView)
 from rest_framework.response import Response
-
 
 from .serializers import (
     UserSerializer, 
@@ -29,7 +28,7 @@ class UserListAPIView(ListAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
 
-class CreateUserAPIView(APIView):
+class CreateUserAPIView(CreateAPIView):
     """
     Create user
     """
@@ -38,8 +37,7 @@ class CreateUserAPIView(APIView):
     serializer_class = CreateUserSerializer
 
     def post(self, request):
-        user = request.data
-        serializer = UserSerializer(data=user)
+        serializer = self.serializer_class(data=request.data)
         
         if serializer.is_valid(raise_exception=True):
             user_saved = serializer.save()
@@ -52,13 +50,15 @@ class LoginUserAPIView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = LoginUserSerializer
     
-    def post(self, request):
-        user = request.data
-
-        serializer = self.serializer_class(data=user)
-        serializer.is_valid(raise_exception=True)
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        serializer = self.serializer_class(data=data)
         
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if(serializer.is_valid(raise_exception=True)):
+            new_data = serializer.data
+            return Response(new_data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class StudentListAPIView(ListAPIView):
     """

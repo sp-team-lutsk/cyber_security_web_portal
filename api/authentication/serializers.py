@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from django.contrib.auth import get_user_model 
-from django.contrib.auth import authenticate
+from django.contrib.auth import (
+        get_user_model, 
+        authenticate,)
+from django.db.models import Q
 
 from .models import Student, Teacher, Faculty, Profession
 
@@ -39,20 +41,25 @@ class LoginUserSerializer(serializers.Serializer):
 
         if password is None:
             raise serializers.ValidationError("Password is required")
-    
-        user = authenticate(email=email, password=password)
+   
+        user = User.objects.filter(
+                Q(email=email)).distinct()
 
-        if user is None:
-            raise serializers.ValidationError("User with such email not found")
+        if user.exists() and user.count() == 1:
+            user_obj = user.first()
+        else:
+            raise serializers.ValidationError("This email is not valid")
 
-        if not user.is_active:
-            raise serializers.ValidationError("User is deactivated")
+        if user_obj:
+            if not user_obj.check_password(password):
+                raise serializers.ValidationError("Password incorrect")
+            
+            if not user_obj.is_active:
+                raise serializers.ValidationError("User has been deactivated")
+        
+        data["token"] = user_obj.token
 
-        return {
-            'email': user.email,
-            'password': user.password,
-            'token': user.token
-        }
+        return data
 
 class CreateUserSerializer(serializers.ModelSerializer):
     read_only_fields = ('date_joined', 'token')
@@ -64,6 +71,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
             'password',
             'token',
         )
+
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
 
@@ -121,7 +129,7 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
         extra_kwargs = {'password': {'write_only': True}}
-    
+   
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
 
@@ -133,7 +141,3 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
-    
-
-
-    
