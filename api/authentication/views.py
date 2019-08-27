@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.generics import (ListAPIView,
                                      UpdateAPIView,
                                      DestroyAPIView,
-                                     RetrieveAPIView,)
+                                     RetrieveAPIView,
                                      CreateAPIView)
 from rest_framework.response import Response
 
