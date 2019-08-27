@@ -7,20 +7,21 @@ from .views import (
     LoginUserAPIView,
     StudentListAPIView, 
     TeacherListAPIView, 
-    FacebookLogin
+    UpdateUserAPIView,
 )
 
 urlpatterns = [
-    path('user_list/', UserListAPIView.as_view(), name='user_list'), # user list page
-    path('register/', CreateUserAPIView.as_view(), name='register'), # register page
-    path('login/', LoginUserAPIView.as_view(), name='login'),        # login page
-
-
-    path('token/', TokenObtainPairView.as_view(), name='token'),     # generate JWT token
-    path('refreshtoken/', TokenRefreshView.as_view(), name='refresh-token'),   # refresh access token
     
-    path('social/', include('social_django.urls', namespace='social')),
+        #user api
+    path('register/', CreateUserAPIView.as_view(), name='register'),    # register page
+    path('login/', LoginUserAPIView.as_view(), name='login'),           # login page
+    path('social/', include('social_django.urls', namespace='social')), # social authentication pages
+    path('update/', UpdateUserAPIView.as_view(),name='update'),
+        #admin api
+    path('user_list/', UserListAPIView.as_view(), name='user_list'), # user list page
     path('student_list/', StudentListAPIView.as_view(), name='slist'),
     path('teacher_list/', TeacherListAPIView.as_view(), name='tlist'),
-    path('authentication/', FacebookLogin.as_view(), name='fb_login'),
+    
+        #garbage
+    path('refreshtoken/', TokenRefreshView.as_view(), name='refresh-token'),   # refresh access token
 ]

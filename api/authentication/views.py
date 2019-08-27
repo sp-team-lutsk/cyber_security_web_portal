@@ -5,20 +5,19 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAdminUser
-from rest_framework.generics import ListAPIView
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.generics import (ListAPIView,
+                                     UpdateAPIView,
+                                    )
 from rest_framework.response import Response
 
-from rest_auth.registration.views import SocialLoginView
-from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 
 from .serializers import (
     UserSerializer, 
     StudentSerializer, 
     TeacherSerializer, 
-    SocialSerializer,
     CreateUserSerializer,
-    LoginUserSerializer
+    LoginUserSerializer,
 )
 
 from .models import Student, Teacher
@@ -77,5 +76,19 @@ class TeacherListAPIView(ListAPIView):
     serializer_class = TeacherSerializer
     permission_classes = [IsAdminUser]
 
-class FacebookLogin(SocialLoginView):
-    adapter_class = FacebookOAuth2Adapter
+
+class UpdateUserAPIView(UpdateAPIView):
+    """
+    Update User
+    """
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+
+    def put(self, request):
+        user = request.data
+
+        serializer = self.serializer_class(request.user,data=user, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
