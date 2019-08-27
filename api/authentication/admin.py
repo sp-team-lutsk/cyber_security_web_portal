@@ -9,7 +9,7 @@ class StdUserAdmin(UserAdmin):
     ordering = ('email', )
     list_display = ('email', 'is_staff', 'is_active', 'is_teacher', 'is_student')
     list_filter = ('email',)
-    readonly_fields = ('date_joined', 'token', 'last_update', 'is_staff', 'is_active', 'is_superuser',)
+    readonly_fields = ('date_joined', 'token', 'last_update', 'is_staff', 'is_superuser',)
     
     fieldsets = (
             ('Active status', {
