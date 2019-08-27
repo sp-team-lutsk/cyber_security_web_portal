@@ -19,8 +19,7 @@ from .serializers import (
     StudentSerializer, 
     TeacherSerializer, 
     CreateUserSerializer,
-    LoginUserSerializer,
-)
+    LoginUserSerializer,)
 
 from .models import Student, Teacher
 
