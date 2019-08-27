@@ -8,12 +8,14 @@ from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.generics import (ListAPIView,
                                      UpdateAPIView,
-                                     DestroyAPIView,)
+                                     DestroyAPIView,
+                                     RetrieveAPIView,)
 from rest_framework.response import Response
 
 
 from .serializers import (
     UserSerializer, 
+    FindUserSerializer,
     StudentSerializer, 
     TeacherSerializer, 
     CreateUserSerializer,
@@ -24,10 +26,18 @@ from .models import Student, Teacher
 
 User = get_user_model()
 
+class FindUserAPIView(RetrieveAPIView):
+    lookup_field = 'email'
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]
+
+
 class UserListAPIView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
+
 
 class CreateUserAPIView(APIView):
     """
@@ -100,10 +110,10 @@ class DeleteUserAPIView(DestroyAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
-    def delete(self, request):
+    def post(self, request):
 
         serializer = self.serializer_class(request.user,data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.delete()
+        serializer.delete(request)
 
         return Response({'Status':'OK'},status=status.HTTP_200_OK)

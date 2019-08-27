@@ -3,6 +3,8 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from django.contrib.auth import get_user_model 
 from django.contrib.auth import authenticate
 
+from rest_framework.response import Response
+
 from .models import Student, Teacher, Faculty, Profession
 
 User = get_user_model()
@@ -87,6 +89,21 @@ class StudentSerializer(serializers.ModelSerializer):
             'profession',
         )
 
+class FindUserSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(max_length=20)
+
+    class Meta(object):
+        model = User
+        
+        fields = (
+                'email',
+                )
+
+    def post(self, data):
+         email = data.get('email')                                                          
+         user = User.objects.get(email=email).first()
+         return UserSerializer(user)    
+
 class UserSerializer(serializers.ModelSerializer):
     date_joined = serializers.ReadOnlyField() 
     student = StudentSerializer(many=False, read_only=True)
@@ -122,6 +139,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         extra_kwargs = {'password': {'write_only': True}}
     
+
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
 
