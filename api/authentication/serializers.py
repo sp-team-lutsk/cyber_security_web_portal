@@ -90,6 +90,7 @@ class StudentSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     date_joined = serializers.ReadOnlyField() 
     student = StudentSerializer(many=False, read_only=True)
+    teacher = TeacherSerializer(many=False, read_only=True)
 
     class Meta(object):
         model = User
