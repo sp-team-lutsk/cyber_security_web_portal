@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.generics import (ListAPIView,
                                      UpdateAPIView,
-                                    )
+                                     DestroyAPIView,)
 from rest_framework.response import Response
 
 
@@ -85,10 +85,25 @@ class UpdateUserAPIView(UpdateAPIView):
     serializer_class = UserSerializer
 
     def put(self, request):
-        user = request.data
 
-        serializer = self.serializer_class(request.user,data=user, partial=True)
+        serializer = self.serializer_class(request.user,data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class DeleteUserAPIView(DestroyAPIView):
+    """
+    Delete User
+    """
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+
+    def delete(self, request):
+
+        serializer = self.serializer_class(request.user,data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.delete()
+
+        return Response({'Status':'OK'},status=status.HTTP_200_OK)

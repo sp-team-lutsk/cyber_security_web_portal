@@ -8,7 +8,7 @@ from .views import (
     StudentListAPIView, 
     TeacherListAPIView, 
     UpdateUserAPIView,
-)
+    DeleteUserAPIView,)
 
 urlpatterns = [
     
@@ -17,6 +17,7 @@ urlpatterns = [
     path('login/', LoginUserAPIView.as_view(), name='login'),           # login page
     path('social/', include('social_django.urls', namespace='social')), # social authentication pages
     path('update/', UpdateUserAPIView.as_view(),name='update'),
+    path('delete/', DeleteUserAPIView.as_view(),name='delete'),
         #admin api
     path('user_list/', UserListAPIView.as_view(), name='user_list'), # user list page
     path('student_list/', StudentListAPIView.as_view(), name='slist'),

@@ -133,6 +133,11 @@ class UserSerializer(serializers.ModelSerializer):
 
         return instance
     
+    def delete(self, request, pk=None, **kwargs):
+        request.user.is_active = False
+        request.user.save()
+        return Response(status=204)
+     
 
 
-    
+
