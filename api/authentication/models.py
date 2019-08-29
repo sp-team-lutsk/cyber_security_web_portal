@@ -105,17 +105,15 @@ class StdUserManager(UserManager):
 
 
 class SocialUserManager(UserManager):
-    def _create_user(self, email, username, **extra_fields):     
+    def _create_user(self, email, **extra_fields):     
         email = email                      
         
-        username=username
-        
-        user = self.model(email=email, username=username, **extra_fields)           
+        user = self.model(email=email, **extra_fields)           
         user.save(using=self._db)                                
         return user                                              
                                                              
-    def create_user(self, email, username, **extra_fields): 
-        return self._create_user(email, username, **extra_fields)
+    def create_user(self, email, **extra_fields): 
+        return self._create_user(email, **extra_fields)
 
 
 # Base user class
@@ -203,16 +201,13 @@ class SocialUser(AbstractBaseUser):
     objects = SocialUserManager()
 
     email = models.EmailField(default="", max_length=128, blank=True, null=True)
-    username = models.CharField(default="Пасхалка", max_length=128, blank=True, null=True)
-    password = models.CharField(default="",max_length=2)
-    provider = models.CharField(max_length=10)
-    uid = models.CharField(max_length=32, default="")
-    name = models.CharField(max_length=128, default="")
+    #password = models.CharField(default="",max_length=2)
 
     USERNAME_FIELD = 'email'
-
+    
     def __str__(self):
-        return self.uid
+        print(self.social_auth.all()[0]._meta.get_fields())
+        return self.social_auth.all()[0].provider
 
 
 class Student(models.Model):

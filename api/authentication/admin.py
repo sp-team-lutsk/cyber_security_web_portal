@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import StdUser, Profession, Faculty, Student, Teacher
+from .models import StdUser, SocialUser, Profession, Faculty, Student, Teacher
 
 class StdUserAdmin(UserAdmin):
     model = StdUser
@@ -52,6 +52,6 @@ class StdUserAdmin(UserAdmin):
 admin.site.register(StdUser, StdUserAdmin)
 admin.site.register(Student)
 admin.site.register(Teacher)
-
+admin.site.register(SocialUser)
 admin.site.register(Profession)
 admin.site.register(Faculty)
