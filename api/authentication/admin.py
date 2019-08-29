@@ -48,10 +48,13 @@ class StdUserAdmin(UserAdmin):
             }),
     )
 
+class SocialUserAdmin(UserAdmin):
+    model = SocialUser
 
+admin.site.register(SocialUser, SocialUserAdmin)
 admin.site.register(StdUser, StdUserAdmin)
+
 admin.site.register(Student)
 admin.site.register(Teacher)
-admin.site.register(SocialUser)
 admin.site.register(Profession)
 admin.site.register(Faculty)

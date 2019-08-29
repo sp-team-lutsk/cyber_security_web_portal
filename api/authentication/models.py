@@ -201,13 +201,27 @@ class SocialUser(AbstractBaseUser):
     objects = SocialUserManager()
 
     email = models.EmailField(default="", max_length=128, blank=True, null=True)
-    #password = models.CharField(default="",max_length=2)
 
     USERNAME_FIELD = 'email'
-    
-    def __str__(self):
-        print(self.social_auth.all()[0]._meta.get_fields())
+
+    @property
+    def provider(self):
         return self.social_auth.all()[0].provider
+
+    @property
+    def uid(self):
+        return self.social_auth.all()[0].uid
+
+    @property
+    def acces_token(self):
+        return self.social_auth.all()[0].acces_token
+
+    @property
+    def extra_fields(self):
+        return self.social_auth.all()[0].extra_fields
+
+    def __str__(self):
+        print(self.social_auth.all()[0].uid
 
 
 class Student(models.Model):
