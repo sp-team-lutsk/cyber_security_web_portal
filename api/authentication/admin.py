@@ -50,6 +50,20 @@ class StdUserAdmin(UserAdmin):
 
 class SocialUserAdmin(UserAdmin):
     model = SocialUser
+    list_filter = ()
+    list_display = ('email',)
+    filter_horizontal = ()
+    ordering = ('email',)
+    readonly_fields = ('provider','uid','access_token','extra_fields')
+
+    fieldsets = (
+            (None,{
+                'fields':('provider',
+                          'uid',
+                          'access_token',
+                          'extra_fields',)
+                }),
+            )
 
 admin.site.register(SocialUser, SocialUserAdmin)
 admin.site.register(StdUser, StdUserAdmin)

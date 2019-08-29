@@ -213,15 +213,15 @@ class SocialUser(AbstractBaseUser):
         return self.social_auth.all()[0].uid
 
     @property
-    def acces_token(self):
-        return self.social_auth.all()[0].acces_token
+    def access_token(self):
+        return self.social_auth.all()[0].access_token
 
     @property
     def extra_fields(self):
-        return self.social_auth.all()[0].extra_fields
+        return self.social_auth.all()[0].extra_data
 
     def __str__(self):
-        print(self.social_auth.all()[0].uid
+        return self.social_auth.all()[0].uid
 
 
 class Student(models.Model):
