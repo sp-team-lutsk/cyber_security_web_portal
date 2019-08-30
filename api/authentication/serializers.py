@@ -77,6 +77,21 @@ class CreateUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
 
+class DeleteUserSerializer(serializers.ModelSerializer):
+    class Meta(object):
+        model = User
+
+        fields = (
+                'email',
+                'password',
+                )
+        extra_kwargs = {'password': {'write_only' : True}}
+
+    def delete(self, request, pk=None, **kwargs):
+        request.user.is_active = False
+        request.user.save()
+        return Response(status = 204)
+
 class TeacherSerializer(serializers.ModelSerializer):
     faculty = FacultySerializer(many=False)
 
@@ -159,11 +174,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         return instance
     
-    def delete(self, request, pk=None, **kwargs):
-        request.user.is_active = False
-        request.user.save()
-        return Response(status=204)
-     
-
-
+class ConfirmEmailSerializer(serializers.Serializer):
+    class Meta(object):
+        model = User
 

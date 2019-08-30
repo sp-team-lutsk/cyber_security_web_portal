@@ -16,15 +16,14 @@ urlpatterns = [
         #user api
     path('register/', CreateUserAPIView.as_view(), name='register'),    # register page
     path('login/', LoginUserAPIView.as_view(), name='login'),           # login page
-    path('social/', include('social_django.urls', namespace='social')), # social authentication pages
-    path('update/', UpdateUserAPIView.as_view(),name='update'),
-    path('delete/', DeleteUserAPIView.as_view(),name='delete'),
-    path('info/',FindUserAPIView.as_view(),name='info'),
+    path('social/', include('social_django.urls', namespace='social')), # authentication and login pages for social networks ('facebook','google-oauth2')
+    path('update/', UpdateUserAPIView.as_view(),name='update'),         # update user information
+    path('delete/', DeleteUserAPIView.as_view(),name='delete'),         # delete user
         #admin api
-        path('users/', UserListAPIView.as_view(), name='users'), # user list page
-    path('users/<str:email>/',FindUserAPIView.as_view(),name='user'),
-    path('student_list/', StudentListAPIView.as_view(), name='slist'),
-    path('teacher_list/', TeacherListAPIView.as_view(), name='tlist'),
+    path('users/', UserListAPIView.as_view(), name='users'),            # all activated user list page
+    path('users/<str:email>/',FindUserAPIView.as_view(),name='user'),   # info about user by email search
+    path('student_list/', StudentListAPIView.as_view(), name='slist'),  # students list page
+    path('teacher_list/', TeacherListAPIView.as_view(), name='tlist'),  # teachers list page
     
         #garbage
     path('refreshtoken/', TokenRefreshView.as_view(), name='refresh-token'),   # refresh access token

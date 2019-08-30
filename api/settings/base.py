@@ -50,7 +50,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.google.GoogleOAuth2',
 )
-
+# social_django provider settings
 USE_UNIQUE_USER_ID = True
 SOCIAL_AUTH_FACEBOOK_KEY = '2293012740916243'  # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = 'b9fa3a771d57fba2b045886162e5b685'  # App Secret
@@ -166,6 +166,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files')
 MEDIA_URL = '/media/'
 REST_USE_JWT = True
 
+# social_django user settings
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_uid',
     'social_core.pipeline.social_auth.social_user',
@@ -175,6 +176,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
 )
 
+# social_django user relation
 SOCIAL_AUTH_USER_MODEL = 'authentication.SocialUser'
 # Static files (CSS, JavaScript, Images)
 

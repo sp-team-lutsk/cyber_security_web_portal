@@ -14,12 +14,14 @@ from rest_framework.generics import (ListAPIView,
 from rest_framework.response import Response
 
 from .serializers import (
-    UserSerializer, 
+    UserSerializer,
+    DeleteUserSerializer,
     FindUserSerializer,
     StudentSerializer, 
     TeacherSerializer, 
     CreateUserSerializer,
-    LoginUserSerializer,)
+    LoginUserSerializer,
+    ConfirmEmailSerializer,)
 
 from .models import Student, Teacher
 
@@ -108,7 +110,7 @@ class DeleteUserAPIView(DestroyAPIView):
     Delete User
     """
     permission_classes = (IsAuthenticated,)
-    serializer_class = UserSerializer
+    serializer_class = DeleteUserSerializer
 
     def post(self, request):
 
@@ -117,3 +119,10 @@ class DeleteUserAPIView(DestroyAPIView):
         serializer.delete(request)
 
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
+
+class ConfirmEmailAPIView(APIView):
+    """
+    Send email for confirm
+    """
+    permission_classes = (AllowAny,)
+    serializer_class = ConfirmEmailSerializer
