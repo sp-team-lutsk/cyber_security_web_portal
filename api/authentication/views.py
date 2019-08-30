@@ -1,7 +1,5 @@
-import settings
-
+import settings 
 from django.contrib.auth import get_user_model
-
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
@@ -47,11 +45,13 @@ class CreateUserAPIView(CreateAPIView):
     # Allow any user (authenticated or not) to access this url
     permission_classes = (AllowAny,)
     serializer_class = CreateUserSerializer
+    queryset = ''
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
-        
+       
         if serializer.is_valid(raise_exception=True):
+
             user_saved = serializer.save()
         
         return Response(

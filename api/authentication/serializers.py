@@ -1,3 +1,5 @@
+from django.contrib.auth.password_validation import validate_password 
+
 from rest_framework import serializers
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from django.contrib.auth import (
@@ -43,7 +45,7 @@ class LoginUserSerializer(serializers.Serializer):
 
         if password is None:
             raise serializers.ValidationError("Password is required")
-   
+
         user = User.objects.filter(
                 Q(email=email)).distinct()
 
@@ -75,6 +77,10 @@ class CreateUserSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
+      
+        if validate_password(password=validated_data.get('password',), user=validated_data.get('email'), password_validators=None) is not None:
+            raise serializers.ValidationError("Password must have at least 8 characters")
+        
         return User.objects.create_user(**validated_data)
 
 class DeleteUserSerializer(serializers.ModelSerializer):
@@ -169,7 +175,6 @@ class UserSerializer(serializers.ModelSerializer):
             setattr(instance, key, value)
         if password is not None:
             instance.set_password(password)
-
         instance.save()
 
         return instance
