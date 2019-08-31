@@ -1,7 +1,20 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from allauth.socialaccount.models import SocialAccount 
 
 from .models import StdUser, Profession, Faculty, Student, Teacher
+
+class StudentInline(admin.TabularInline):
+    model = Student
+    extra = 0
+
+class TeacherInline(admin.TabularInline):
+    model = Teacher
+    extra = 0
+
+class SocialUserInline(admin.TabularInline):
+    model = SocialAccount
+    extra = 0
 
 class StdUserAdmin(UserAdmin):
     model = StdUser
@@ -10,7 +23,8 @@ class StdUserAdmin(UserAdmin):
     list_display = ('email', 'is_staff', 'is_active', 'is_teacher', 'is_student')
     list_filter = ('email',)
     readonly_fields = ('date_joined', 'token', 'last_update', 'is_staff', 'is_superuser',)
-    
+    inlines = [SocialUserInline, StudentInline, TeacherInline,]
+
     fieldsets = (
             ('Active status', {
                 'fields': ('is_active',)
