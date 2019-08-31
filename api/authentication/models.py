@@ -132,11 +132,11 @@ class StdUser(AbstractUser):
     patronymic = models.CharField(max_length=64, blank=True, default="")  # Ivanovych
     avatar = models.ImageField(upload_to='static/media/', blank=True, max_length=1000)  # select image
     bio = models.CharField(max_length=512, blank=True, default="")
-    date_of_birth = models.DateField(default=timezone.now().date())
+    date_of_birth = models.DateField(default=timezone.now)
     gender = models.CharField(max_length=64, blank=True, default="man") # Man/Wpman
 
     is_staff = models.BooleanField(default=False)  # staff user non superuser
-    is_active = models.BooleanField(default=True)  # can login
+    is_active = models.BooleanField(default=False)  # can login
     is_superuser = models.BooleanField(default=False)  # superuser
 
     is_student = models.BooleanField('student status', default=False)
@@ -195,33 +195,6 @@ class StdUser(AbstractUser):
     # Saving
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-
-
-class SocialUser(AbstractBaseUser):
-    objects = SocialUserManager()
-
-    email = models.EmailField(default="", max_length=128, blank=True, null=True)
-
-    USERNAME_FIELD = 'email'
-
-    @property
-    def provider(self):
-        return self.social_auth.all()[0].provider
-
-    @property
-    def uid(self):
-        return self.social_auth.all()[0].uid
-
-    @property
-    def access_token(self):
-        return self.social_auth.all()[0].access_token
-
-    @property
-    def extra_fields(self):
-        return self.social_auth.all()[0].extra_data
-
-    def __str__(self):
-        return self.social_auth.all()[0].uid
 
 
 class Student(models.Model):

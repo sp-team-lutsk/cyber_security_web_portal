@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import StdUser, SocialUser, Profession, Faculty, Student, Teacher
+from .models import StdUser, Profession, Faculty, Student, Teacher
 
 class StdUserAdmin(UserAdmin):
     model = StdUser
@@ -48,24 +48,6 @@ class StdUserAdmin(UserAdmin):
             }),
     )
 
-class SocialUserAdmin(UserAdmin):
-    model = SocialUser
-    list_filter = ()
-    list_display = ('email',)
-    filter_horizontal = ()
-    ordering = ('email',)
-    readonly_fields = ('provider','uid','access_token','extra_fields')
-
-    fieldsets = (
-            (None,{
-                'fields':('provider',
-                          'uid',
-                          'access_token',
-                          'extra_fields',)
-                }),
-            )
-
-admin.site.register(SocialUser, SocialUserAdmin)
 admin.site.register(StdUser, StdUserAdmin)
 
 admin.site.register(Student)

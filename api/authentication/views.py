@@ -18,8 +18,7 @@ from .serializers import (
     StudentSerializer, 
     TeacherSerializer, 
     CreateUserSerializer,
-    LoginUserSerializer,
-    ConfirmEmailSerializer,)
+    LoginUserSerializer,)
 
 from .models import Student, Teacher
 
@@ -121,9 +120,3 @@ class DeleteUserAPIView(DestroyAPIView):
 
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
 
-class ConfirmEmailAPIView(APIView):
-    """
-    Send email for confirm
-    """
-    permission_classes = (AllowAny,)
-    serializer_class = ConfirmEmailSerializer

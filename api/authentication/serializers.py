@@ -180,7 +180,3 @@ class UserSerializer(serializers.ModelSerializer):
 
         return instance
     
-class ConfirmEmailSerializer(serializers.Serializer):
-    class Meta(object):
-        model = User
-
