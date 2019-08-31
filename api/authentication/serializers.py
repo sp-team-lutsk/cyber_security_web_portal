@@ -79,7 +79,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
       
         if validate_password(password=validated_data.get('password',), user=validated_data.get('email'), password_validators=None) is not None:
-            raise serializers.ValidationError("Password must have at least 8 characters")
+            raise serializers.ValidationError(
+            "Password must have at least:8 characters, one uppercase/lowercase letter, one symbol, one digit")
         
         return User.objects.create_user(**validated_data)
 

@@ -61,7 +61,8 @@ class CreateUserAPIView(CreateAPIView):
 class LoginUserAPIView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = LoginUserSerializer
-    
+    redirect_to = settings.base.LOGIN_REDIRECT_URL
+
     def post(self, request, *args, **kwargs):
         data = request.data
         serializer = self.serializer_class(data=data)
