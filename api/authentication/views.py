@@ -18,7 +18,9 @@ from .serializers import (
     StudentSerializer, 
     TeacherSerializer, 
     CreateUserSerializer,
-    LoginUserSerializer,)
+    LoginUserSerializer,
+    SendMailSerializer,
+    VerifyUserSerializer,)
 
 from .models import Student, Teacher
 
@@ -57,6 +59,24 @@ class CreateUserAPIView(CreateAPIView):
             data={"success": "User '{}' created successfully".format(str(user_saved))},
             status=status.HTTP_201_CREATED)
 
+class SendMailAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = SendMailSerializer
+    
+    def send(self,request):
+        data = request.data
+        msg = User.send_mail(email=validated_data.get['email'])
+        return Response({'Status':'OK'},status=status.HTTP_200_OK)
+
+class VerifyUserAPIView(APIView):
+    """
+    Verify User by email
+    """
+    serializer_class = VerifyUserSerializer
+    
+    def verify(self,request):
+        return Response({'Status':'OK'},status=status.HTTP_200_OK)
+
 class LoginUserAPIView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = LoginUserSerializer
@@ -88,6 +108,12 @@ class TeacherListAPIView(ListAPIView):
     serializer_class = TeacherSerializer
     permission_classes = [IsAdminUser]
 
+class RecoveryAPIView(APIView):
+    """
+    Recover pasword
+    """
+    def post(self, request):
+        return None
 
 class UpdateUserAPIView(UpdateAPIView):
     """

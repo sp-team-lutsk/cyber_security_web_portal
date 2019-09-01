@@ -9,7 +9,7 @@ from django.db.models import Q
 
 from rest_framework.response import Response
 
-from .models import Student, Teacher, Faculty, Profession
+from .models import StdUser,Student, Teacher, Faculty, Profession
 
 User = get_user_model()
 
@@ -82,8 +82,30 @@ class CreateUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
             "Password must have at least:8 characters, one uppercase/lowercase letter, one symbol, one digit")
         
-        return User.objects.create_user(**validated_data)
+        email = validated_data.get('email')
+        user = User.objects.create_user(**validated_data) 
+        user.send_mail(email=email)
+        return user
 
+class SendMailSerializer(serializers.Serializer):
+    class Meta(object):
+        model=User
+    
+    def send(self,request):
+        if request.User.is_active is not True:
+            request.StdUser.send_mail(request.data.email)
+            return Response({'Status':'OK'},status=status.HTTP_200_OK)
+        return Response(status = 204)
+
+class VerifyUserSerializer(serializers.ModelSerializer):
+    class Meta(object):
+        model = User
+        fields = (
+                'code',
+                )
+    def post(self, request):
+        return None
+        
 class DeleteUserSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User

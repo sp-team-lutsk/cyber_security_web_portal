@@ -1,12 +1,14 @@
 import datetime
 import jwt
 
+from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
+from django.core.signing import TimestampSigner, b64_encode
+from django.core.mail import EmailMessage
 from django.contrib.auth.models import UserManager
 from django.contrib.auth.models import AbstractBaseUser, AbstractUser, Group
-
 from settings import base
 
 
@@ -158,9 +160,6 @@ class StdUser(AbstractUser):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def authenticate(self):
-        pass
-
     def get_full_name(self):
         """ Returns full name with spaces between """
         full_name = "%s %s %s" % (self.first_name, self.last_name, self.patronymic)
@@ -170,10 +169,6 @@ class StdUser(AbstractUser):
         """ Returns short name """
         short_name = "%s" % self.first_name
         return short_name.strip()
-
-    def email_user(self, subject, message, from_email=None, **kwargs):
-        """Send an email to this user."""
-        send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def get_avatar(self):
         """ Returns avatar (use Pillow) """
@@ -191,7 +186,37 @@ class StdUser(AbstractUser):
         }, base.SECRET_KEY, algorithm='HS256')
 
         return token.decode('utf-8')
+    
+    def get_verification_code(self):
+        # verification token 
+        signer = TimestampSigner()
+        return b64_encode(bytes(signer.sign(self.get_email_field_name()), encoding='utf-8'))
+        
+    @classmethod
+    def verify(self,code):
+        return ValueError('No code to verify')
+    
+    def send_mail(self,email):
+        print("1")
+        verification_code = self.get_verification_code()
+        context = {'user': self,
+                'settings': base,
+                'VERIFICATION_URL': base.VERIFICATION_URL,
+                'code': verification_code,
+                'link': datetime.datetime.today() + datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED)   
+                }
+        
+        msg = EmailMessage(subject='subject',
+                body=render_to_string('authentication/mail/verification_body.html',context),
+                to=[email])
+        msg.content_subtype = 'html'
+        print('msg')
+        print(msg)
+        msg.send()
 
+    def send_recovery_password(self):
+        return ValueError('write some code for send_recovery_password')
+    
     # Saving
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
