@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('authentication.urls')),
     path('accounts/', include('allauth.urls')),
+    path('extnews/', include('ext_news.urls')),
 ]  
 
 if settings.base.DEBUG == True:
