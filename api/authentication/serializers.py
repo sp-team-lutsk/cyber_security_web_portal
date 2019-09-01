@@ -24,7 +24,7 @@ class ProfessionSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 class LoginUserSerializer(serializers.Serializer):
-    email = serializers.CharField(max_length=64)
+    email = serializers.CharField(max_length=64, write_only=True)
     password = serializers.CharField(max_length=128, write_only=True)
     token = serializers.CharField(max_length=255, read_only=True)
 
@@ -61,9 +61,9 @@ class LoginUserSerializer(serializers.Serializer):
             if not user_obj.is_active:
                 raise serializers.ValidationError("User has been deactivated")
         
-        data["token"] = user_obj.token
+        new_data = {"token": user_obj.token}
 
-        return data
+        return new_data
 
 class CreateUserSerializer(serializers.ModelSerializer):
     read_only_fields = ('date_joined', 'token')
