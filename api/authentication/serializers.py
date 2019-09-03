@@ -169,14 +169,19 @@ class UserSerializer(serializers.ModelSerializer):
 
         extra_kwargs = {'password': {'write_only': True}}
 
-    def update(self, instance, validated_data):
-        password = validated_data.pop('password', None)
 
-        for (key, value) in validated_data.items():
-            setattr(instance, key, value)
-        if password is not None:
-            instance.set_password(password)
-        instance.save()
-
-        return instance
-    
+class UpdateUserSerializer(serializers.ModelSerializer):
+   
+    class Meta(object):
+        model = User
+        exclude = (
+                'password',
+                'is_staff', 
+                'is_active', 
+                'is_superuser', 
+                'is_student', 
+                'is_teacher',
+                'username',
+                'last_login',
+                'groups',
+                'user_permissions') 
