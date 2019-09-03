@@ -104,8 +104,12 @@ class UpdateUserAPIView(GenericAPIView, UpdateModelMixin):
 
     def patch(self, request, *args, **kwargs):
         kwargs['partial'] = True
-        self.partial_update(request, *args, **kwargs)
-        return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
+        serializer = self.serializer_class(request.user, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            self.partial_update(request, *args, **kwargs) 
+            return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, *args, **kwargs):
         self.update(request, *args, **kwargs)

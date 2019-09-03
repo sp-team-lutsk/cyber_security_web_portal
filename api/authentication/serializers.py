@@ -175,6 +175,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
         exclude = (
+                'email',
                 'password',
                 'is_staff', 
                 'is_active', 
