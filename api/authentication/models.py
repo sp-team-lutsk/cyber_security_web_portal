@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
-from django.core.signing import TimestampSigner, b64_encode
+from django.core.signing import TimestampSigner, b64_encode,b64_decode, BadSignature, SignatureExpired,force_bytes
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import UserManager
 from django.contrib.auth.models import AbstractBaseUser, AbstractUser, Group
@@ -143,7 +143,8 @@ class StdUser(AbstractUser):
 
     is_student = models.BooleanField('student status', default=False)
     is_teacher = models.BooleanField('teacher status', default=False)
-
+    
+    code = models.CharField(max_length=256,blank=True,default="")
     USERNAME_FIELD = 'email'  # Email as username
     REQUIRED_FIELDS = []
     
@@ -193,16 +194,36 @@ class StdUser(AbstractUser):
         return b64_encode(bytes(signer.sign(self.get_email_field_name()), encoding='utf-8'))
         
     @classmethod
-    def verify(self,code):
-        return ValueError('No code to verify')
+    def verify_by_code(self,code):
+        if code:
+            signer = TimestampSigner()
+            try:
+                code = code.encode('utf-8')
+                print(code)
+                max_age = datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED).total_seconds()
+                email = signer.unsign(b64_decode(force_bytes(code)), max_age=max_age)
+                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email,'is_active':False})
+                print(email)
+                print(user)        
+                user.is_active = True
+                user.save()
+                return True, ('Your account has been activated.')  
+            except SignatureExpired:
+                print('1')
+                return False, ('Your time to activate by link expired')
+            except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
+                print(e)
+                pass
+            return False, ('Activation link is incorrect, please resend request')
     
     def send_mail(self,email):
-        print("1")
         verification_code = self.get_verification_code()
+        #self.code = verification_code
+        #self.save()
         context = {'user': self,
                 'settings': base,
                 'VERIFICATION_URL': base.VERIFICATION_URL,
-                'code': verification_code,
+                'code': verification_code.decode(),
                 'link': datetime.datetime.today() + datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED)   
                 }
         
@@ -210,8 +231,6 @@ class StdUser(AbstractUser):
                 body=render_to_string('authentication/mail/verification_body.html',context),
                 to=[email])
         msg.content_subtype = 'html'
-        print('msg')
-        print(msg)
         msg.send()
 
     def send_recovery_password(self):

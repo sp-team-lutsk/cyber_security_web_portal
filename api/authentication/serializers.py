@@ -87,24 +87,18 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user.send_mail(email=email)
         return user
 
-class SendMailSerializer(serializers.Serializer):
-    class Meta(object):
-        model=User
-    
-    def send(self,request):
-        if request.User.is_active is not True:
-            request.StdUser.send_mail(request.data.email)
-            return Response({'Status':'OK'},status=status.HTTP_200_OK)
-        return Response(status = 204)
-
 class VerifyUserSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
         fields = (
                 'code',
                 )
-    def post(self, request):
-        return None
+    def get(self, data, code):
+        user = User.objects.get(code=code)
+        print(user)
+        user.verify_by_code(code)
+        #user.is_active = True
+        #user.save()
         
 class DeleteUserSerializer(serializers.ModelSerializer):
     class Meta(object):

@@ -19,10 +19,9 @@ from .serializers import (
     TeacherSerializer, 
     CreateUserSerializer,
     LoginUserSerializer,
-    SendMailSerializer,
     VerifyUserSerializer,)
 
-from .models import Student, Teacher
+from .models import StdUser,Student, Teacher
 
 User = get_user_model()
 
@@ -59,24 +58,26 @@ class CreateUserAPIView(CreateAPIView):
             data={"success": "User '{}' created successfully".format(str(user_saved))},
             status=status.HTTP_201_CREATED)
 
-class SendMailAPIView(APIView):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = SendMailSerializer
-    
-    def send(self,request):
-        data = request.data
-        msg = User.send_mail(email=validated_data.get['email'])
-        return Response({'Status':'OK'},status=status.HTTP_200_OK)
-
 class VerifyUserAPIView(APIView):
     """
     Verify User by email
     """
+    lookup_field = 'code'
+    #queryset = User.objects.all()
     serializer_class = VerifyUserSerializer
+    permission_classes = (AllowAny,)
     
-    def verify(self,request):
-        return Response({'Status':'OK'},status=status.HTTP_200_OK)
-
+    def get(self,request,**kwargs):
+        code = kwargs.get('code')
+        #user = User.objects.get(code=code)
+        StdUser.verify_by_code(code)
+        serializer = self.serializer_class(code,data=request.data)                                
+                                 
+        if serializer.is_valid(raise_exception=True):
+            return Response({'Status':'OK'},status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors,status=status.HTTP_200_OK)
+        
 class LoginUserAPIView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = LoginUserSerializer
