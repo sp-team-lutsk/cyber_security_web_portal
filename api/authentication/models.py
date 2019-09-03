@@ -151,13 +151,6 @@ class StdUser(AbstractUser):
     class Meta:
         permissions = [('read_news','Читати новини',),]
 
-    @property
-    def token(self):
-        """
-        Get token not as func, but as value
-        """
-        return self._generate_jwt_token()
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -175,19 +168,6 @@ class StdUser(AbstractUser):
         """ Returns avatar (use Pillow) """
         pass
 
-    def _generate_jwt_token(self):
-        """
-        Generates a JSON Web Token 
-        """
-        df = datetime.datetime.now() + datetime.timedelta(days=60)
-
-        token = jwt.encode({
-            'id': self.pk,
-            'exp': int(df.strftime('%s'))
-        }, base.SECRET_KEY, algorithm='HS256')
-
-        return token.decode('utf-8')
-    
     def get_verification_code(self):
         # verification token 
         signer = TimestampSigner()
