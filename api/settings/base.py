@@ -2,10 +2,8 @@ import datetime
 import os
 import sys
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(os.path.join(BASE_DIR, 'apps/'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
@@ -31,15 +29,20 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'allauth',
+    'rest_framework.authtoken', 
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
 
-    'accounts',
+    'django_nose',
+
     'djangotoolbox',
-    'pages',
+    'authentication',
 ]
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+AUTH_USER_MODEL = 'authentication.StdUser'
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
@@ -87,9 +90,12 @@ WSGI_APPLICATION = 'wsgi.application'
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'mongodb',
-        'HOST': 'mongo_db',   # if you use docker you should specify  'HOST': 'mongo_db'
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgresql',
+        'USER': 'admin',
+        'PASSWORD': 'Admin123!',
+        'HOST': 'postgresql',
+        'PORT': '5432',# if you use docker you should specify  'HOST': 'mongodb', but if it is locally 'HOST': '127.0.0.1'
     }
 }
 
@@ -110,18 +116,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# settings for rest
+# settings for rest framework
 REST_FRAMEWORK = {
   
+#JWT 
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    
+#Permissions
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated', ),
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser'
+        
+    ),
 }
 
 # JWT auth parameters
@@ -142,9 +152,19 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Media files
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files')
+MEDIA_URL = '/media/'
+
+
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/dev/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 STATIC_URL = '/static/'
-
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 SITE_ID = 2
