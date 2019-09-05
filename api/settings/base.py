@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -41,8 +42,28 @@ INSTALLED_APPS = [
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 AUTH_USER_MODEL = 'authentication.StdUser'
+# email confirm configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'lntu.website.it@gmail.com'
+EMAIL_HOST_PASSWORD = 'GRPKiT8izUCGUB2'
+DEFAULT_FROM_EMAIL = 'lntu.webstie.it@gmail.com'
+VERIFICATION_URL = 'verify'
+RECOVER_URL = 'verify'
+VERIFICATION_CODE_EXPIRED = 1
+RECOVER_CODE_EXPIRED = 1
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.SHA1PasswordHasher',
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+    'django.contrib.auth.hashers.CryptPasswordHasher',
+        )
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",

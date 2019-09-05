@@ -1,8 +1,13 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from allauth.socialaccount.models import SocialAccount 
+from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 
 from .models import StdUser, Profession, Faculty, Student, Teacher
+
+class OutstandingTokenInline(admin.StackedInline):
+    model = OutstandingToken 
+    extra = 0
 
 class StudentInline(admin.TabularInline):
     model = Student
@@ -22,8 +27,12 @@ class StdUserAdmin(UserAdmin):
     ordering = ('email', )
     list_display = ('email', 'is_staff', 'is_active', 'is_teacher', 'is_student')
     list_filter = ('email',)
-    readonly_fields = ('date_joined', 'token', 'last_update', 'is_staff', 'is_superuser',)
-    inlines = [SocialUserInline, StudentInline, TeacherInline,]
+    readonly_fields = ('date_joined', 'last_update', 'is_staff', 'is_superuser',)
+    inlines = [
+            SocialUserInline, 
+            StudentInline, 
+            TeacherInline,
+            OutstandingTokenInline]
 
     fieldsets = (
             ('Active status', {
@@ -36,8 +45,7 @@ class StdUserAdmin(UserAdmin):
                            'last_name',
                            'patronymic',
                            'bio',
-                           'avatar',
-                           'token',)
+                           'avatar',)
                 }),
             ('Permissions', {
                 'fields': ('is_staff',

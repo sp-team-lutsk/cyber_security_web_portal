@@ -1,12 +1,14 @@
 import datetime
 import jwt
 
+from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
+from django.core.signing import TimestampSigner, b64_encode,b64_decode, BadSignature, SignatureExpired,force_bytes
+from django.core.mail import EmailMessage
 from django.contrib.auth.models import UserManager
 from django.contrib.auth.models import AbstractBaseUser, AbstractUser, Group
-
 from settings import base
 
 
@@ -141,25 +143,16 @@ class StdUser(AbstractUser):
 
     is_student = models.BooleanField('student status', default=False)
     is_teacher = models.BooleanField('teacher status', default=False)
-
+    
+    code = models.CharField(max_length=256,blank=True,default="")
     USERNAME_FIELD = 'email'  # Email as username
     REQUIRED_FIELDS = []
     
     class Meta:
         permissions = [('read_news','Читати новини',),]
 
-    @property
-    def token(self):
-        """
-        Get token not as func, but as value
-        """
-        return self._generate_jwt_token()
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-    def authenticate(self):
-        pass
 
     def get_full_name(self):
         """ Returns full name with spaces between """
@@ -171,26 +164,69 @@ class StdUser(AbstractUser):
         short_name = "%s" % self.first_name
         return short_name.strip()
 
-    def email_user(self, subject, message, from_email=None, **kwargs):
-        """Send an email to this user."""
-        send_mail(subject, message, from_email, [self.email], **kwargs)
-
     def get_avatar(self):
         """ Returns avatar (use Pillow) """
         pass
 
-    def _generate_jwt_token(self):
-        """
-        Generates a JSON Web Token 
-        """
-        df = datetime.datetime.now() + datetime.timedelta(days=60)
+    def get_verification_code(self):
+        # verification token 
+        signer = TimestampSigner()
+        return b64_encode(bytes(signer.sign(self.get_email_field_name()), encoding='utf-8'))
+        
+    @classmethod
+    def verify_by_code(self,code):
+        if code:
+            signer = TimestampSigner()
+            try:
+                code = code.encode('utf-8')
+                print(code)
+                max_age = datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED).total_seconds()
+                email = signer.unsign(b64_decode(force_bytes(code)), max_age=max_age)
+                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email,'is_active':False})
+                print(email)
+                print(user)        
+                user.is_active = True
+                user.save()
+                return True, ('Your account has been activated.')  
+            except SignatureExpired:
+                print('1')
+                return False, ('Your time to activate by link expired')
+            except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
+                print(e)
+                pass
+            return False, ('Activation link is incorrect, please resend request')
+    
+    def send_mail(self,email):
+        verification_code = self.get_verification_code()
+        #self.code = verification_code
+        #self.save()
+        context = {'user': self,
+                'settings': base,
+                'VERIFICATION_URL': base.VERIFICATION_URL,
+                'code': verification_code.decode(),
+                'link': datetime.datetime.today() + datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED)   
+                }
+        
+        msg = EmailMessage(subject='subject',
+                body=render_to_string('authentication/mail/verification_body.html',context),
+                to=[email])
+        msg.content_subtype = 'html'
+        msg.send()
 
-        token = jwt.encode({
-            'id': self.pk,
-            'exp': int(df.strftime('%s'))
-        }, base.SECRET_KEY, algorithm='HS256')
-
-        return token.decode('utf-8')
+    def send_recovery_password(self, email):
+        verification_code = self.get_verification_code()
+        
+        context = {'user': self,
+                    'settings': base,
+                    'RECOVER_URL': base.RECOVER_URL,
+                    'code': verification_code.decode(),
+                    'link': datetime.datetime.today() + datetime.timedelta(days=base.RECOVER_CODE_EXPIRED)
+                    }
+        msg = EmailMessage(subject='subject',
+                body=render_to_string('authentication/mail/reset_body.html',context),
+                to = [email])
+        msg.content_subtype = 'html'
+        msg.send()
 
     # Saving
     def save(self, *args, **kwargs):

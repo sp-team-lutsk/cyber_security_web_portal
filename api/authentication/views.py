@@ -20,9 +20,11 @@ from .serializers import (
     TeacherSerializer, 
     CreateUserSerializer,
     LoginUserSerializer,
+    VerifyUserSerializer,
+    RecoverySerializer,
     UpdateUserSerializer,)
 
-from .models import Student, Teacher
+from .models import StdUser,Student, Teacher
 
 User = get_user_model()
 
@@ -59,7 +61,43 @@ class CreateUserAPIView(CreateAPIView):
             data={"success": "User '{}' created successfully".format(str(user_saved))},
             status=status.HTTP_201_CREATED)
 
+class VerifyUserAPIView(APIView):
+    """
+    Verify User by email
+    """
+    lookup_field = 'code'
+    #queryset = User.objects.all()
+    serializer_class = VerifyUserSerializer
+    permission_classes = (AllowAny,)
+    
+    def get(self,request,**kwargs):
+        code = kwargs.get('code')
+        #user = User.objects.get(code=code)
+        StdUser.verify_by_code(code)
+        serializer = self.serializer_class(code,data=request.data)                                
+                                 
+        if serializer.is_valid(raise_exception=True):
+            return Response({'Status':'OK'},status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors,status=status.HTTP_200_OK)
 
+class RecoveryAPIView(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = RecoverySerializer
+    redirect_to = settings.base.LOGIN_REDIRECT_URL
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        serializer = self.serializer_class(data=data)
+        serializer.post(data)
+        #StdUser.send_recovery_password(email)
+
+        if(serializer.is_valid(raise_exception=True)):
+            new_data = serializer.data
+            return Response(new_data, status=status.HTTP_200_OK)                                
+                                 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+        
 class LoginUserAPIView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = LoginUserSerializer
