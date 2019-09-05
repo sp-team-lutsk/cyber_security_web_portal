@@ -21,13 +21,13 @@ urlpatterns = [
     #user api
     path('register/', CreateUserAPIView.as_view(), name='register'),    # register page
     path('login/', LoginUserAPIView.as_view(), name='login'),           # login page with obtain token
-    path('update/', UpdateUserAPIView.as_view(),name='update'),         # update user information
     path('delete/', DeleteUserAPIView.as_view(),name='delete'),         # delete user
     path('verify/<str:code>/', VerifyUserAPIView.as_view(),name='verify'),
     path('recover_pass/', RecoveryAPIView.as_view(),name='recover'),
     #admin api
     path('users/', UserListAPIView.as_view(), name='users'),            # all activated user list page
-    path('users/<str:email>/',FindUserAPIView.as_view(),name='user'),   # info about user by email search
+    path('users/<str:email>/',FindUserAPIView.as_view(), name='user'),   # info about user by email search
+    path('update/<int:pk>/', UpdateUserAPIView.as_view(), name='update'),
     path('student_list/', StudentListAPIView.as_view(), name='slist'),  # students list page
     path('teacher_list/', TeacherListAPIView.as_view(), name='tlist'),  # teachers list page
    

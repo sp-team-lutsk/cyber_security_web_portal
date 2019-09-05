@@ -5,10 +5,11 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.generics import (ListAPIView,
-                                     UpdateAPIView,
                                      DestroyAPIView,
                                      RetrieveAPIView,
-                                     CreateAPIView)
+                                     CreateAPIView,
+                                     GenericAPIView)
+from rest_framework.mixins import UpdateModelMixin
 from rest_framework.response import Response
 
 from .serializers import (
@@ -20,7 +21,8 @@ from .serializers import (
     CreateUserSerializer,
     LoginUserSerializer,
     VerifyUserSerializer,
-    RecoverySerializer,)
+    RecoverySerializer,
+    UpdateUserSerializer,)
 
 from .models import StdUser,Student, Teacher
 
@@ -111,6 +113,7 @@ class LoginUserAPIView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class StudentListAPIView(ListAPIView):
     """
     All students in db (for test)
@@ -118,6 +121,7 @@ class StudentListAPIView(ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     permission_classes = [IsAdminUser]
+
 
 class TeacherListAPIView(ListAPIView):
     """
@@ -128,20 +132,26 @@ class TeacherListAPIView(ListAPIView):
     permission_classes = [IsAdminUser]
 
 
-class UpdateUserAPIView(UpdateAPIView):
+class UpdateUserAPIView(GenericAPIView, UpdateModelMixin):
     """
     Update User
     """
     permission_classes = (IsAuthenticated,)
-    serializer_class = UserSerializer
+    serializer_class = UpdateUserSerializer
+    queryset = User.objects.all()
 
-    def put(self, request):
+    def patch(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        serializer = self.serializer_class(request.user, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            self.partial_update(request, *args, **kwargs) 
+            return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = self.serializer_class(request.user,data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def put(self, request, *args, **kwargs):
+        self.update(request, *args, **kwargs)
+        return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
 
 
 class DeleteUserAPIView(DestroyAPIView):
@@ -158,4 +168,3 @@ class DeleteUserAPIView(DestroyAPIView):
         serializer.delete(request)
 
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
-

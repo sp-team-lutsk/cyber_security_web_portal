@@ -24,7 +24,7 @@ class ProfessionSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 class LoginUserSerializer(serializers.Serializer):
-    email = serializers.CharField(max_length=64)
+    email = serializers.CharField(max_length=64, write_only=True)
     password = serializers.CharField(max_length=128, write_only=True)
     token = serializers.CharField(max_length=255, read_only=True)
 
@@ -61,8 +61,10 @@ class LoginUserSerializer(serializers.Serializer):
             if not user_obj.is_active:
                 raise serializers.ValidationError("User has been deactivated")
         
-        
-        return data
+        new_data = {"token": user_obj.token}
+
+        return new_data
+
 
 class CreateUserSerializer(serializers.ModelSerializer):
     read_only_fields = ('date_joined', 'token')
@@ -213,14 +215,20 @@ class UserSerializer(serializers.ModelSerializer):
 
         extra_kwargs = {'password': {'write_only': True}}
 
-    def update(self, instance, validated_data):
-        password = validated_data.pop('password', None)
 
-        for (key, value) in validated_data.items():
-            setattr(instance, key, value)
-        if password is not None:
-            instance.set_password(password)
-        instance.save()
-
-        return instance
-    
+class UpdateUserSerializer(serializers.ModelSerializer):
+   
+    class Meta(object):
+        model = User
+        exclude = (
+                'email',
+                'password',
+                'is_staff', 
+                'is_active', 
+                'is_superuser', 
+                'is_student', 
+                'is_teacher',
+                'username',
+                'last_login',
+                'groups',
+                'user_permissions') 
