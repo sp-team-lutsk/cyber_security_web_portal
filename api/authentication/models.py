@@ -230,6 +230,10 @@ class StdUser(AbstractUser):
 
     # Saving
     def save(self, *args, **kwargs):
+        print('=================================================================================')
+        print(args)
+        print('=================================================================================')
+        print(kwargs)
         super().save(*args, **kwargs)
 
 
