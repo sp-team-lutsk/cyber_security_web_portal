@@ -57,12 +57,11 @@ class LoginUserSerializer(serializers.Serializer):
         if user_obj:
             if not user_obj.check_password(password):
                 raise serializers.ValidationError("Password incorrect")
-            
+
             if not user_obj.is_active:
                 raise serializers.ValidationError("User has been deactivated")
         
-        data["token"] = user_obj.token
-
+        
         return data
 
 class CreateUserSerializer(serializers.ModelSerializer):
@@ -77,7 +76,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-      
+
         if validate_password(password=validated_data.get('password',), user=validated_data.get('email'), password_validators=None) is not None:
             raise serializers.ValidationError(
             "Password must have at least:8 characters, one uppercase/lowercase letter, one symbol, one digit")
@@ -86,6 +85,36 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data) 
         user.send_mail(email=email)
         return user
+
+class RecoverySerializer(serializers.ModelSerializer):
+    email = serializers.CharField(max_length=64)
+    
+    class Meta(object):
+        model = User
+        fields = (
+                'email',
+                )
+        
+    def post(self,data):
+        print('tyt')
+        email = data.get('email', None)
+        
+        if email is None:
+            raise serializers.ValidationError("Email is required")                                
+                                 
+        user = User.objects.filter(Q(email=email)).distinct()                                
+                                 
+        if user.exists() and user.count() == 1:
+            user_obj = user.first()                                
+            print(email)
+            user_obj.send_recovery_password(email=email)
+        else:
+            raise serializers.ValidationError("This email is not valid")                                
+                                 
+        if user_obj:
+            if not user_obj.is_active:
+                raise serializers.ValidationError("User not active")
+        return data
 
 class VerifyUserSerializer(serializers.ModelSerializer):
     class Meta(object):

@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from allauth.socialaccount.models import SocialAccount 
-
 from .models import StdUser, Profession, Faculty, Student, Teacher
 
 class StudentInline(admin.TabularInline):
@@ -63,7 +62,6 @@ class StdUserAdmin(UserAdmin):
     )
 
 admin.site.register(StdUser, StdUserAdmin)
-
 admin.site.register(Student)
 admin.site.register(Teacher)
 admin.site.register(Profession)

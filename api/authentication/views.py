@@ -19,7 +19,8 @@ from .serializers import (
     TeacherSerializer, 
     CreateUserSerializer,
     LoginUserSerializer,
-    VerifyUserSerializer,)
+    VerifyUserSerializer,
+    RecoverySerializer,)
 
 from .models import StdUser,Student, Teacher
 
@@ -77,6 +78,23 @@ class VerifyUserAPIView(APIView):
             return Response({'Status':'OK'},status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors,status=status.HTTP_200_OK)
+
+class RecoveryAPIView(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = RecoverySerializer
+    redirect_to = settings.base.LOGIN_REDIRECT_URL
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        serializer = self.serializer_class(data=data)
+        serializer.post(data)
+        #StdUser.send_recovery_password(email)
+
+        if(serializer.is_valid(raise_exception=True)):
+            new_data = serializer.data
+            return Response(new_data, status=status.HTTP_200_OK)                                
+                                 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
         
 class LoginUserAPIView(APIView):
     permission_classes = (AllowAny,)
@@ -109,12 +127,6 @@ class TeacherListAPIView(ListAPIView):
     serializer_class = TeacherSerializer
     permission_classes = [IsAdminUser]
 
-class RecoveryAPIView(APIView):
-    """
-    Recover pasword
-    """
-    def post(self, request):
-        return None
 
 class UpdateUserAPIView(UpdateAPIView):
     """

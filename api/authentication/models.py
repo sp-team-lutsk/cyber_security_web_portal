@@ -233,9 +233,21 @@ class StdUser(AbstractUser):
         msg.content_subtype = 'html'
         msg.send()
 
-    def send_recovery_password(self):
-        return ValueError('write some code for send_recovery_password')
-    
+    def send_recovery_password(self, email):
+        verification_code = self.get_verification_code()
+        
+        context = {'user': self,
+                    'settings': base,
+                    'RECOVER_URL': base.RECOVER_URL,
+                    'code': verification_code.decode(),
+                    'link': datetime.datetime.today() + datetime.timedelta(days=base.RECOVER_CODE_EXPIRED)
+                    }
+        msg = EmailMessage(subject='subject',
+                body=render_to_string('authentication/mail/reset_body.html',context),
+                to = [email])
+        msg.content_subtype = 'html'
+        msg.send()
+
     # Saving
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

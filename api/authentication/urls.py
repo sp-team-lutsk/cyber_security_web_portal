@@ -13,7 +13,8 @@ from .views import (
     TeacherListAPIView, 
     UpdateUserAPIView,
     DeleteUserAPIView,
-    VerifyUserAPIView,)
+    VerifyUserAPIView,
+    RecoveryAPIView,)
 
 urlpatterns = [
     
@@ -23,6 +24,7 @@ urlpatterns = [
     path('update/', UpdateUserAPIView.as_view(),name='update'),         # update user information
     path('delete/', DeleteUserAPIView.as_view(),name='delete'),         # delete user
     path('verify/<str:code>/', VerifyUserAPIView.as_view(),name='verify'),
+    path('recover_pass/', RecoveryAPIView.as_view(),name='recover'),
     #admin api
     path('users/', UserListAPIView.as_view(), name='users'),            # all activated user list page
     path('users/<str:email>/',FindUserAPIView.as_view(),name='user'),   # info about user by email search
