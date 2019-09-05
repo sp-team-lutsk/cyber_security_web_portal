@@ -72,7 +72,6 @@ class CreateUserSerializer(serializers.ModelSerializer):
         fields = (
             'email',
             'password',
-            'token',
         )
 
     def create(self, validated_data):
