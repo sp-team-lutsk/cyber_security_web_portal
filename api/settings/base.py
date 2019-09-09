@@ -43,6 +43,9 @@ INSTALLED_APPS = [
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 AUTH_USER_MODEL = 'authentication.StdUser'
 # email confirm configuration
+
+ACCOUNT_EMAIL_REQUIRED = True
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_USE_TLS = True
@@ -55,6 +58,7 @@ VERIFICATION_URL = 'verify'
 RECOVER_URL = 'completerecover'
 VERIFICATION_CODE_EXPIRED = 1
 RECOVER_CODE_EXPIRED = 1
+
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',

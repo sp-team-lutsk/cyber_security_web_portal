@@ -23,51 +23,9 @@ class ProfessionSerializer(serializers.ModelSerializer):
         model = Profession
         fields = ('name',)
 
-class LoginUserSerializer(serializers.Serializer):
-    email = serializers.CharField(max_length=64, write_only=True)
-    password = serializers.CharField(max_length=128, write_only=True)
-    token = serializers.CharField(max_length=255, read_only=True)
-
-    class Meta(object):
-        model = User
-        fields = (
-            'email',
-            'password',
-            'token'
-        )
-    
-    def validate(self, data):
-        email = data.get('email', None)
-        password = data.get('password', None)
-
-        if email is None:
-            raise serializers.ValidationError("Email is required")
-
-        if password is None:
-            raise serializers.ValidationError("Password is required")
-
-        user = User.objects.filter(
-                Q(email=email)).distinct()
-
-        if user.exists() and user.count() == 1:
-            user_obj = user.first()
-        else:
-            raise serializers.ValidationError("This email is not valid")
-
-        if user_obj:
-            if not user_obj.check_password(password):
-                raise serializers.ValidationError("Password incorrect")
-
-            if not user_obj.is_active:
-                raise serializers.ValidationError("User has been deactivated")
-        
-        new_data = {"token": user_obj.token}
-
-        return new_data
-
 
 class CreateUserSerializer(serializers.ModelSerializer):
-    read_only_fields = ('date_joined', 'token')
+    read_only_fields = ('date_joined',)
 
     class Meta(object):
         model = User
@@ -94,19 +52,11 @@ class RecoverySerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
         fields = (
-                'email',
-                'password'
-                )
+                'email')
         
     def post(self,data):
-        print('password = ',data.get('password'))
-        if validate_password(password=data.get('password',), user=data.get('email'), password_validators=None) is not None:
-            raise serializers.ValidationError(                                
-            "Password must have at least:8 characters, one uppercase/lowercase letter, one symbol, one digit")
-        print('tyt')
         email = data.get('email', None)
-        password = data.get('password',None)
-        
+                
         if email is None:
             raise serializers.ValidationError("Email is required")
                                  
