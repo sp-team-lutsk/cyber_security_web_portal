@@ -55,7 +55,7 @@ EMAIL_HOST_USER = 'lntu.website.it@gmail.com'
 EMAIL_HOST_PASSWORD = 'GRPKiT8izUCGUB2'
 DEFAULT_FROM_EMAIL = 'lntu.webstie.it@gmail.com'
 VERIFICATION_URL = 'verify'
-RECOVER_URL = 'verify'
+RECOVER_URL = 'completerecover'
 VERIFICATION_CODE_EXPIRED = 1
 RECOVER_CODE_EXPIRED = 1
 

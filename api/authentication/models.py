@@ -168,41 +168,65 @@ class StdUser(AbstractUser):
         """ Returns avatar (use Pillow) """
         pass
 
-    def get_verification_code(self):
+    def get_verification_code(self,email):
         # verification token 
         signer = TimestampSigner()
-        return b64_encode(bytes(signer.sign(self.get_email_field_name()), encoding='utf-8'))
+        return b64_encode(bytes(signer.sign(email), encoding='utf-8'))
         
     @classmethod
-    def verify_by_code(self,code):
+    def verify_email(self,code):
         if code:
             signer = TimestampSigner()
             try:
+                
                 code = code.encode('utf-8')
-                print(code)
                 max_age = datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED).total_seconds()
-                email = signer.unsign(b64_decode(force_bytes(code)), max_age=max_age)
+                code = force_bytes(code)
+                code = b64_decode(code)
+                code = code.decode()
+                email = signer.unsign(code, max_age=max_age)
+                
                 user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email,'is_active':False})
-                print(email)
-                print(user)        
                 user.is_active = True
                 user.save()
                 return True, ('Your account has been activated.')  
             except SignatureExpired:
-                print('1')
                 return False, ('Your time to activate by link expired')
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
                 print(e)
                 pass
             return False, ('Activation link is incorrect, please resend request')
     
+    @classmethod
+    def verify_password(self,code,password):
+        if code:
+            signer = TimestampSigner()
+            try:
+                code = code.encode('utf-8')
+                max_age = datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED).total_seconds()
+                code = force_bytes(code)
+                code = b64_decode(code)
+                code = code.decode()
+                email = signer.unsign(code, max_age=max_age)
+                
+                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email})
+                AbstractUser.set_password(raw_password=password)
+                user.save()
+                return True
+            except SignatureExpired:
+                return False, ('Your time to activate by link expired')
+            except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
+                print(e)
+                pass
+            return False, ('Activation link is incorrect, please resend request')
+            
     def send_mail(self,email):
-        verification_code = self.get_verification_code()
+        verification_code = self.get_verification_code(email=email)
         #self.code = verification_code
         #self.save()
         context = {'user': self,
                 'settings': base,
-                'VERIFICATION_URL': base.VERIFICATION_URL,
+                'VERIFICATION_URL': base.RECOVER_URL,
                 'code': verification_code.decode(),
                 'link': datetime.datetime.today() + datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED)   
                 }
@@ -214,7 +238,7 @@ class StdUser(AbstractUser):
         msg.send()
 
     def send_recovery_password(self, email):
-        verification_code = self.get_verification_code()
+        verification_code = self.get_verification_code(email=email)
         
         context = {'user': self,
                     'settings': base,
@@ -230,10 +254,6 @@ class StdUser(AbstractUser):
 
     # Saving
     def save(self, *args, **kwargs):
-        print('=================================================================================')
-        print(args)
-        print('=================================================================================')
-        print(kwargs)
         super().save(*args, **kwargs)
 
 

@@ -8,21 +8,22 @@ from .views import (
     FindUserAPIView,
     UserListAPIView,
     CreateUserAPIView, 
-    LoginUserAPIView,
     StudentListAPIView, 
     TeacherListAPIView, 
     UpdateUserAPIView,
     DeleteUserAPIView,
     VerifyUserAPIView,
-    RecoveryAPIView,)
+    RecoveryAPIView,
+    VerifyPassUserAPIView,)
 
 urlpatterns = [
     
     #user api
     path('register/', CreateUserAPIView.as_view(), name='register'),    # register page
-    path('login/', LoginUserAPIView.as_view(), name='login'),           # login page with obtain token
+    path('login/', token_obtain_pair, name='login'),           # login page with obtain token
     path('delete/', DeleteUserAPIView.as_view(),name='delete'),         # delete user
     path('verify/<str:code>/', VerifyUserAPIView.as_view(),name='verify'),
+    path('recovery/<str:code>/', VerifyPassUserAPIView.as_view(),name='completerecover'),
     path('recover_pass/', RecoveryAPIView.as_view(),name='recover'),
     #admin api
     path('users/', UserListAPIView.as_view(), name='users'),            # all activated user list page
@@ -31,8 +32,7 @@ urlpatterns = [
     path('student_list/', StudentListAPIView.as_view(), name='slist'),  # students list page
     path('teacher_list/', TeacherListAPIView.as_view(), name='tlist'),  # teachers list page
    
-    path('token/obtain/', token_obtain_pair, name='obtain'),            # obtain token 
-    path('token/refresh/',token_refresh, name='refresh'),               # refresh token
+    path('login/refresh/',token_refresh, name='refresh'),               # refresh token
 ]
 
 # This is for social auth 

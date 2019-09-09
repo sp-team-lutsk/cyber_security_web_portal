@@ -19,8 +19,8 @@ from .serializers import (
     StudentSerializer, 
     TeacherSerializer, 
     CreateUserSerializer,
-    LoginUserSerializer,
     VerifyUserSerializer,
+    VerifyUserPassSerializer,
     RecoverySerializer,
     UpdateUserSerializer,)
 
@@ -73,7 +73,7 @@ class VerifyUserAPIView(APIView):
     def get(self,request,**kwargs):
         code = kwargs.get('code')
         #user = User.objects.get(code=code)
-        StdUser.verify_by_code(code)
+        StdUser.verify_email(code)
         serializer = self.serializer_class(code,data=request.data)                                
                                  
         if serializer.is_valid(raise_exception=True):
@@ -81,6 +81,25 @@ class VerifyUserAPIView(APIView):
         else:
             return Response(serializer.errors,status=status.HTTP_200_OK)
 
+class VerifyPassUserAPIView(APIView):
+    lookup_field = 'code'
+    #queryset = User.objects.all()
+    serializer_class = VerifyUserPassSerializer
+    permission_classes = (AllowAny,)
+    
+    def post(self,request,**kwargs):
+        code = kwargs.get('code')
+        #user = User.objects.get(code=code)
+        if StdUser.verify_password(code,password) is False:
+            return Response(serializer.errors,status=status.HTTP_200_OK)
+
+        serializer = self.serializer_class(code,data=request.data)                                
+
+        if serializer.is_valid(raise_exception=True):
+            return Response({'Status':'OK'},status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors,status=status.HTTP_200_OK)
+        
 class RecoveryAPIView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = RecoverySerializer
@@ -98,21 +117,6 @@ class RecoveryAPIView(APIView):
                                  
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
         
-class LoginUserAPIView(APIView):
-    permission_classes = (AllowAny,)
-    serializer_class = LoginUserSerializer
-    redirect_to = settings.base.LOGIN_REDIRECT_URL
-
-    def post(self, request, *args, **kwargs):
-        data = request.data
-        serializer = self.serializer_class(data=data)
-        
-        if(serializer.is_valid(raise_exception=True)):
-            new_data = serializer.data
-            return Response(new_data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class StudentListAPIView(ListAPIView):
     """
