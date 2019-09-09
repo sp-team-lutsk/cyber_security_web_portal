@@ -14,7 +14,8 @@ from .views import (
     UpdateUserAPIView,
     DeleteUserAPIView,
     VerifyUserAPIView,
-    RecoveryAPIView,)
+    RecoveryAPIView,
+    VerifyPassUserAPIView,)
 
 urlpatterns = [
     
@@ -23,6 +24,7 @@ urlpatterns = [
     path('login/', LoginUserAPIView.as_view(), name='login'),           # login page with obtain token
     path('delete/', DeleteUserAPIView.as_view(),name='delete'),         # delete user
     path('verify/<str:code>/', VerifyUserAPIView.as_view(),name='verify'),
+    path('recovery/<str:code>/', VerifyPassUserAPIView.as_view(),name='completerecover'),
     path('recover_pass/', RecoveryAPIView.as_view(),name='recover'),
     #admin api
     path('users/', UserListAPIView.as_view(), name='users'),            # all activated user list page

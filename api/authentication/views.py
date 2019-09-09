@@ -21,6 +21,7 @@ from .serializers import (
     CreateUserSerializer,
     LoginUserSerializer,
     VerifyUserSerializer,
+    VerifyUserPassSerializer,
     RecoverySerializer,
     UpdateUserSerializer,)
 
@@ -73,7 +74,7 @@ class VerifyUserAPIView(APIView):
     def get(self,request,**kwargs):
         code = kwargs.get('code')
         #user = User.objects.get(code=code)
-        StdUser.verify_by_code(code)
+        StdUser.verify_email(code)
         serializer = self.serializer_class(code,data=request.data)                                
                                  
         if serializer.is_valid(raise_exception=True):
@@ -81,6 +82,25 @@ class VerifyUserAPIView(APIView):
         else:
             return Response(serializer.errors,status=status.HTTP_200_OK)
 
+class VerifyPassUserAPIView(APIView):
+    lookup_field = 'code'
+    #queryset = User.objects.all()
+    serializer_class = VerifyUserPassSerializer
+    permission_classes = (AllowAny,)
+    
+    def post(self,request,**kwargs):
+        code = kwargs.get('code')
+        #user = User.objects.get(code=code)
+        if StdUser.verify_password(code,password) is False:
+            return Response(serializer.errors,status=status.HTTP_200_OK)
+
+        serializer = self.serializer_class(code,data=request.data)                                
+
+        if serializer.is_valid(raise_exception=True):
+            return Response({'Status':'OK'},status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors,status=status.HTTP_200_OK)
+        
 class RecoveryAPIView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = RecoverySerializer
