@@ -7,7 +7,7 @@ from django.contrib.auth import views as auth_views
 from .views import (
     FindUserAPIView,
     UserListAPIView,
-    CreateUserAPIView, 
+    CreateUserAPIView,
     StudentListAPIView, 
     TeacherListAPIView, 
     UpdateUserAPIView,
@@ -46,3 +46,4 @@ for provider in providers.registry.get_list():
     if prov_urlpatterns:
         provider_urlpatterns += prov_urlpatterns
 urlpatterns += provider_urlpatterns
+print(provider_urlpatterns)

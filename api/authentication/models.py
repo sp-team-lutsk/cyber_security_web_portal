@@ -254,6 +254,7 @@ class StdUser(AbstractUser):
 
     # Saving
     def save(self, *args, **kwargs):
+        print(args,kwargs)
         super().save(*args, **kwargs)
 
 

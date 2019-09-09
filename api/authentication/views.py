@@ -12,6 +12,16 @@ from rest_framework.generics import (ListAPIView,
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.response import Response
 
+from allauth.socialaccount import app_settings, providers
+from allauth.socialaccount.providers.facebook.provider import GRAPH_API_URL, GRAPH_API_VERSION, FacebookProvider
+from allauth.socialaccount.providers.oauth2.views import (
+            OAuth2Adapter,
+                OAuth2CallbackView,
+                    OAuth2LoginView,
+                    
+        )
+from allauth.socialaccount.models import SocialLogin, SocialToken
+from allauth.socialaccount.providers.facebook.forms import FacebookConnectForm
 from .serializers import (
     UserSerializer,
     DeleteUserSerializer,
@@ -39,7 +49,6 @@ class UserListAPIView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
-
 
 class CreateUserAPIView(CreateAPIView):
     """
