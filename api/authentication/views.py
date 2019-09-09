@@ -19,7 +19,6 @@ from .serializers import (
     StudentSerializer, 
     TeacherSerializer, 
     CreateUserSerializer,
-    LoginUserSerializer,
     VerifyUserSerializer,
     RecoverySerializer,
     UpdateUserSerializer,)
@@ -98,21 +97,6 @@ class RecoveryAPIView(APIView):
                                  
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
         
-class LoginUserAPIView(APIView):
-    permission_classes = (AllowAny,)
-    serializer_class = LoginUserSerializer
-    redirect_to = settings.base.LOGIN_REDIRECT_URL
-
-    def post(self, request, *args, **kwargs):
-        data = request.data
-        serializer = self.serializer_class(data=data)
-        
-        if(serializer.is_valid(raise_exception=True)):
-            new_data = serializer.data
-            return Response(new_data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class StudentListAPIView(ListAPIView):
     """
