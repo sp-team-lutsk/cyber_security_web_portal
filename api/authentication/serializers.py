@@ -47,20 +47,20 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
 class RecoverySerializer(serializers.ModelSerializer):
     email = serializers.CharField(max_length=64)
+    password = serializers.CharField(max_length=64)
     
     class Meta(object):
         model = User
         fields = (
-                'email',
-                )
+                'email')
         
     def post(self,data):
         email = data.get('email', None)
-        
+                
         if email is None:
-            raise serializers.ValidationError("Email is required")                                
+            raise serializers.ValidationError("Email is required")
                                  
-        user = User.objects.filter(Q(email=email)).distinct()                                
+        user = User.objects.filter(Q(email=email)).distinct()
                                  
         if user.exists() and user.count() == 1:
             user_obj = user.first()                                
@@ -82,11 +82,18 @@ class VerifyUserSerializer(serializers.ModelSerializer):
                 )
     def get(self, data, code):
         user = User.objects.get(code=code)
-        print(user)
-        user.verify_by_code(code)
-        #user.is_active = True
-        #user.save()
         
+class VerifyUserPassSerializer(serializers.ModelSerializer):
+    class Meta(object):
+        model = User
+        fields = (
+                'code',
+                'password',
+                )
+    def post(self, data, code):
+        user = User.objects.get(code=code)
+        
+
 class DeleteUserSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
