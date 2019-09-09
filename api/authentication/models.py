@@ -168,10 +168,10 @@ class StdUser(AbstractUser):
         """ Returns avatar (use Pillow) """
         pass
 
-    def get_verification_code(self):
+    def get_verification_code(self,email):
         # verification token 
         signer = TimestampSigner()
-        return b64_encode(bytes(signer.sign(self.get_email_field_name()), encoding='utf-8'))
+        return b64_encode(bytes(signer.sign(email), encoding='utf-8'))
         
     @classmethod
     def verify_by_code(self,code):
@@ -179,9 +179,16 @@ class StdUser(AbstractUser):
             signer = TimestampSigner()
             try:
                 code = code.encode('utf-8')
-                print(code)
+                print('first=',code,type(code))
                 max_age = datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED).total_seconds()
-                email = signer.unsign(b64_decode(force_bytes(code)), max_age=max_age)
+                code = force_bytes(code)
+                print('force_bytes:',code,':::',type(code))
+                code = b64_decode(code)
+                print('decode:',code,':::',type(code))
+                code = code.decode()
+                print('step by step = ', code, type(code))
+                email = signer.unsign(code, max_age=max_age)
+                print('email =',email)
                 user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email,'is_active':False})
                 print(email)
                 print(user)        
@@ -197,7 +204,7 @@ class StdUser(AbstractUser):
             return False, ('Activation link is incorrect, please resend request')
     
     def send_mail(self,email):
-        verification_code = self.get_verification_code()
+        verification_code = self.get_verification_code(email=email)
         #self.code = verification_code
         #self.save()
         context = {'user': self,
