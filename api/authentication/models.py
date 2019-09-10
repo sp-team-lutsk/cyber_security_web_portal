@@ -226,7 +226,7 @@ class StdUser(AbstractUser):
         #self.save()
         context = {'user': self,
                 'settings': base,
-                'VERIFICATION_URL': base.RECOVER_URL,
+                'VERIFICATION_URL': base.VERIFICATION_URL,
                 'code': verification_code.decode(),
                 'link': datetime.datetime.today() + datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED)   
                 }
@@ -284,7 +284,6 @@ class Teacher(models.Model):
                        ('delete_post', 'Видалити пост'),
                        ('change_student_perm', 'Змiнювати права стундентiв'),]
 
-
 class Profession(Group):
     
     def __str__(self):
@@ -295,3 +294,17 @@ class Faculty(Group):
     
     def __str__(self):
         return self.name
+
+class Mail(models.Model):
+    email = models.EmailField(max_length=64, blank=False, unique=False)
+    subject = models.CharField(max_length=256,blank=False,unique=False)
+    body = models.CharField(max_length=2048,blank=False,unique=False)
+
+    @classmethod
+    def send_mail(self, email, subject, body):
+        
+        msg = EmailMessage(subject=subject,
+                body=body,
+                to=[email])
+        msg.content_subtype = 'html'
+        msg.send()

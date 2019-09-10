@@ -9,7 +9,8 @@ from .views import (
     UserListAPIView,
     CreateUserAPIView,
     StudentListAPIView, 
-    TeacherListAPIView, 
+    TeacherListAPIView,
+    SendMailAPIView,
     UpdateUserAPIView,
     DeleteUserAPIView,
     VerifyUserAPIView,
@@ -31,7 +32,8 @@ urlpatterns = [
     path('update/<int:pk>/', UpdateUserAPIView.as_view(), name='update'),
     path('student_list/', StudentListAPIView.as_view(), name='slist'),  # students list page
     path('teacher_list/', TeacherListAPIView.as_view(), name='tlist'),  # teachers list page
-   
+    path('send_mail/', SendMailAPIView.as_view(), name='sendmail'),
+    
     path('login/refresh/',token_refresh, name='refresh'),               # refresh token
 ]
 
@@ -46,4 +48,3 @@ for provider in providers.registry.get_list():
     if prov_urlpatterns:
         provider_urlpatterns += prov_urlpatterns
 urlpatterns += provider_urlpatterns
-print(provider_urlpatterns)

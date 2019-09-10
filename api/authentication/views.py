@@ -28,6 +28,7 @@ from .serializers import (
     FindUserSerializer,
     StudentSerializer, 
     TeacherSerializer, 
+    SendMailSerializer,
     CreateUserSerializer,
     VerifyUserSerializer,
     VerifyUserPassSerializer,
@@ -98,7 +99,6 @@ class VerifyPassUserAPIView(APIView):
     
     def post(self,request,**kwargs):
         code = kwargs.get('code')
-        #user = User.objects.get(code=code)
         if StdUser.verify_password(code,password) is False:
             return Response(serializer.errors,status=status.HTTP_200_OK)
 
@@ -144,7 +144,25 @@ class TeacherListAPIView(ListAPIView):
     serializer_class = TeacherSerializer
     permission_classes = [IsAdminUser]
 
+class SendMailAPIView(APIView):
+    """
+    Send mail from admin to user
+    """
+    serializer_class = SendMailSerializer
+    permission_classes = [IsAdminUser]
+    queryset = User.objects.all()
+    
+    def post(self, request):
+        serializer = SendMailSerializer(data=request.data)
+        user = self.queryset.get(email=request.data.get('email'))
+        if user is not None:
+            print(user)
+            if serializer.is_valid(raise_exception=True):
+                serializer.send(data=request.data)
+                return Response({'Status': 'Mail Send'}, status=status.HTTP_200_OK)
 
+        return Response(serializer.errors, status=status.HTTP_200_OK)
+    
 class UpdateUserAPIView(GenericAPIView, UpdateModelMixin):
     """
     Update User
