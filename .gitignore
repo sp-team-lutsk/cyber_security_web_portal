@@ -17,5 +17,9 @@ mongoenv/
 .coverage
 **/**/htmlcov
 
-# Static files
+
 **/**/collected_static
+
+# Media
+media_files/
+
