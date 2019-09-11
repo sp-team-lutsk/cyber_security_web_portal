@@ -1,10 +1,9 @@
-from django.urls import path, include
-from .views import Post
-from rest_framework import routers
+from django.urls import path
+from .views import Post, News_Details
 
-router = routers.DefaultRouter()
-router.register('post', Post)
+
 
 urlpatterns = [
-    path ('',include(router.urls))
+    path('', Post.as_view()),
+    path('<int:pk>/', News_Details.as_view()),
 ]
