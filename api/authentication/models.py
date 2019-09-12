@@ -188,7 +188,7 @@ class StdUser(AbstractUser):
                 print('do delete ::::',user.code)
                 print(user.email)
                 if user.is_active == True:
-                    print('Your account active now')
+                    return False
                 user.is_active = True
                 user.code = "None code"
                 user.save()
@@ -213,7 +213,8 @@ class StdUser(AbstractUser):
                 email = signer.unsign(code, max_age=max_age)
                  
                 user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email})
-                self.set_password(self=user,raw_password=password)
+                print('========================',password)
+                user.set_password(password)
                 user.code = 'None code'
                 user.save()
                 return True

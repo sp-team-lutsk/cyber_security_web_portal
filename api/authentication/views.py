@@ -98,7 +98,7 @@ class VerifyPassUserAPIView(APIView):
     
     def post(self,request,**kwargs):
         code = kwargs.get('code')
-        password = kwargs.get('password')
+        password = request.data.get('password')
         if StdUser.verify_password(code=code,password=password) is False:
             return Response(serializer.errors,status=status.HTTP_200_OK)
 
