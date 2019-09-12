@@ -47,12 +47,13 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
 class RecoverySerializer(serializers.ModelSerializer):
     email = serializers.CharField(max_length=64)
-    password = serializers.CharField(max_length=64)
+    #password = serializers.CharField(max_length=64)
     
     class Meta(object):
         model = User
         fields = (
-                'email')
+                'email',
+                )
         
     def post(self,data):
         email = data.get('email', None)
@@ -81,9 +82,11 @@ class VerifyUserSerializer(serializers.ModelSerializer):
                 'code',
                 )
     def get(self, data, code):
-        user = User.objects.get(code=code)
-        
+       return True
+
 class VerifyUserPassSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(max_length=64)
+
     class Meta(object):
         model = User
         fields = (

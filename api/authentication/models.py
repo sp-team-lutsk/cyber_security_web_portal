@@ -178,20 +178,23 @@ class StdUser(AbstractUser):
         if code:
             signer = TimestampSigner()
             try:
-                
                 code = code.encode('utf-8')
                 max_age = datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED).total_seconds()
                 code = force_bytes(code)
                 code = b64_decode(code)
                 code = code.decode()
                 email = signer.unsign(code, max_age=max_age)
-                
                 user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email,'is_active':False})
+                print('do delete ::::',user.code)
+                print(user.email)
+                if user.is_active == True:
+                    print('Your account active now')
                 user.is_active = True
+                user.code = "None code"
                 user.save()
                 return True, ('Your account has been activated.')  
             except SignatureExpired:
-                return False, ('Your time to activate by link expired')
+                return False, ('Your code to activate by link expired')
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
                 print(e)
                 pass
@@ -208,27 +211,25 @@ class StdUser(AbstractUser):
                 code = b64_decode(code)
                 code = code.decode()
                 email = signer.unsign(code, max_age=max_age)
-                
+                 
                 user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email})
-                AbstractUser.set_password(raw_password=password)
+                self.set_password(self=user,raw_password=password)
+                user.code = 'None code'
                 user.save()
                 return True
             except SignatureExpired:
                 return False, ('Your time to activate by link expired')
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
-                print(e)
+                print('exception ::: ',e)
                 pass
             return False, ('Activation link is incorrect, please resend request')
             
     def send_mail(self,email):
         verification_code = self.get_verification_code(email=email)
-        #self.code = verification_code
-        #self.save()
         context = {'user': self,
-                'settings': base,
-                'VERIFICATION_URL': base.VERIFICATION_URL,
-                'code': verification_code.decode(),
-                'link': datetime.datetime.today() + datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED)   
+                   'VERIFICATION_URL': base.VERIFICATION_URL,
+                   'code': verification_code.decode(),
+                   'link': datetime.datetime.today() + datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED)   
                 }
         
         msg = EmailMessage(subject='subject',
@@ -241,10 +242,9 @@ class StdUser(AbstractUser):
         verification_code = self.get_verification_code(email=email)
         
         context = {'user': self,
-                    'settings': base,
-                    'RECOVER_URL': base.RECOVER_URL,
-                    'code': verification_code.decode(),
-                    'link': datetime.datetime.today() + datetime.timedelta(days=base.RECOVER_CODE_EXPIRED)
+                   'RECOVER_URL': base.RECOVER_URL,
+                   'code': verification_code.decode(),
+                   'link': datetime.datetime.today() + datetime.timedelta(days=base.RECOVER_CODE_EXPIRED)
                     }
         msg = EmailMessage(subject='subject',
                 body=render_to_string('authentication/mail/reset_body.html',context),
@@ -254,7 +254,7 @@ class StdUser(AbstractUser):
 
     # Saving
     def save(self, *args, **kwargs):
-        print(args,kwargs)
+        print('save user ::: ',self,args,kwargs)
         super().save(*args, **kwargs)
 
 

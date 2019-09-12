@@ -76,13 +76,12 @@ class VerifyUserAPIView(APIView):
     Verify User by email
     """
     lookup_field = 'code'
-    #queryset = User.objects.all()
+    queryset = User.objects.all()
     serializer_class = VerifyUserSerializer
     permission_classes = (AllowAny,)
     
     def get(self,request,**kwargs):
         code = kwargs.get('code')
-        #user = User.objects.get(code=code)
         StdUser.verify_email(code)
         serializer = self.serializer_class(code,data=request.data)                                
                                  
@@ -99,7 +98,8 @@ class VerifyPassUserAPIView(APIView):
     
     def post(self,request,**kwargs):
         code = kwargs.get('code')
-        if StdUser.verify_password(code,password) is False:
+        password = kwargs.get('password')
+        if StdUser.verify_password(code=code,password=password) is False:
             return Response(serializer.errors,status=status.HTTP_200_OK)
 
         serializer = self.serializer_class(code,data=request.data)                                
@@ -118,7 +118,6 @@ class RecoveryAPIView(APIView):
         data = request.data
         serializer = self.serializer_class(data=data)
         serializer.post(data)
-        #StdUser.send_recovery_password(email)
 
         if(serializer.is_valid(raise_exception=True)):
             new_data = serializer.data
