@@ -136,7 +136,8 @@ class StdUser(AbstractUser):
     bio = models.CharField(max_length=512, blank=True, default="")
     date_of_birth = models.DateField(default=timezone.now)
     gender = models.CharField(max_length=64, blank=True, default="man") # Man/Wpman
-
+    
+    news_subscription = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)  # staff user non superuser
     is_active = models.BooleanField(default=False)  # can login
     is_superuser = models.BooleanField(default=False)  # superuser

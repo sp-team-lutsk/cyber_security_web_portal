@@ -184,6 +184,7 @@ class UserSerializer(serializers.ModelSerializer):
             'date_joined',
             'last_update',
             
+            'news_subscription',
             'is_staff',
             'is_active',
             'is_superuser',
@@ -215,4 +216,5 @@ class UpdateUserSerializer(serializers.ModelSerializer):
                 'username',
                 'last_login',
                 'groups',
+                'code',
                 'user_permissions') 

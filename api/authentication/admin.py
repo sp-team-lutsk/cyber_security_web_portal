@@ -45,7 +45,8 @@ class StdUserAdmin(UserAdmin):
                            'last_name',
                            'patronymic',
                            'bio',
-                           'avatar',)
+                           'avatar',
+                           'news_subscription',)
                 }),
             ('Permissions', {
                 'fields': ('is_staff',
