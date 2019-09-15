@@ -71,6 +71,10 @@ class CreateUserAPIView(CreateAPIView):
             data={"success": "User '{}' created successfully".format(str(user_saved))},
             status=status.HTTP_201_CREATED)
 
+class UserInactiveAPIView(APIView):
+    def post(self, request, **kwargs):
+        return Response({"Accout inactive!"}, status=status.HTTP_400_BAD_REQUEST)
+
 class VerifyUserAPIView(APIView):
     """
     Verify User by email
