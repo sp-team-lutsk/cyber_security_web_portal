@@ -240,7 +240,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 # allauth user relation
 SOCIALACCOUNT_QUERY_EMAIL = True
-
+SOCIALACCOUNT_ADAPTER = 'authentication.adapter.UserSocialAccountAdapter'
 # Static files (CSS, JavaScript, Images)
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 STATIC_URL = '/static/'
