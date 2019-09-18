@@ -1,6 +1,9 @@
 import datetime
 import jwt
 
+from PIL import Image
+from io import StringIO
+
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.db import models
@@ -9,6 +12,7 @@ from django.core.signing import TimestampSigner, b64_encode,b64_decode, BadSigna
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import UserManager
 from django.contrib.auth.models import AbstractBaseUser, AbstractUser, Group
+
 from settings import base
 
 
@@ -48,11 +52,6 @@ class StdUserManager(UserManager):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
-
         return self._create_user(email, password, **extra_fields)
 
     def create_student(self, email, profession, faculty, password=None):
@@ -79,7 +78,7 @@ class StdUserManager(UserManager):
         student = Student.objects.create(user=user, profession=profession, faculty=faculty)
         student.save()
 
-        return user
+        return student
 
     def create_teacher(self, email, faculty, password=None):
         if not email:
@@ -103,19 +102,7 @@ class StdUserManager(UserManager):
 
         teacher = Teacher.objects.create(user=user, faculty=faculty)
 
-        return user
-
-
-class SocialUserManager(UserManager):
-    def _create_user(self, email, **extra_fields):     
-        email = email                      
-        
-        user = self.model(email=email, **extra_fields)           
-        user.save(using=self._db)                                
-        return user                                              
-                                                             
-    def create_user(self, email, **extra_fields): 
-        return self._create_user(email, **extra_fields)
+        return teacher
 
 
 # Base user class
@@ -186,8 +173,6 @@ class StdUser(AbstractUser):
                 code = code.decode()
                 email = signer.unsign(code, max_age=max_age)
                 user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email,'is_active':False})
-                print('do delete ::::',user.code)
-                print(user.email)
                 if user.is_active == True:
                     return False
                 user.is_active = True
@@ -197,8 +182,8 @@ class StdUser(AbstractUser):
             except SignatureExpired:
                 return False, ('Your code to activate by link expired')
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
-                print(e)
                 pass
+            
             return False, ('Activation link is incorrect, please resend request')
     
     @classmethod
@@ -214,7 +199,6 @@ class StdUser(AbstractUser):
                 email = signer.unsign(code, max_age=max_age)
                  
                 user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email})
-                print('========================',password)
                 user.set_password(password)
                 user.code = 'None code'
                 user.save()
@@ -222,7 +206,6 @@ class StdUser(AbstractUser):
             except SignatureExpired:
                 return False, ('Your time to activate by link expired')
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
-                print('exception ::: ',e)
                 pass
             return False, ('Activation link is incorrect, please resend request')
             
@@ -256,7 +239,6 @@ class StdUser(AbstractUser):
 
     # Saving
     def save(self, *args, **kwargs):
-        print('save user ::: ',self,args,kwargs)
         super().save(*args, **kwargs)
 
 
