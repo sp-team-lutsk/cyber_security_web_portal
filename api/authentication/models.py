@@ -191,7 +191,6 @@ class StdUser(AbstractUser):
                 code = code.decode()
                 email = signer.unsign(code, max_age=max_age)
                 user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email,'is_active':False})
-                print('do delete ::::',user.code)
                 print(user.email)
                 if user.is_active == True:
                     return False
@@ -202,7 +201,6 @@ class StdUser(AbstractUser):
             except SignatureExpired:
                 return False, ('Your code to activate by link expired')
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
-                print(e)
                 pass
             return False, ('Activation link is incorrect, please resend request')
     
@@ -219,7 +217,6 @@ class StdUser(AbstractUser):
                 email = signer.unsign(code, max_age=max_age)
                  
                 user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email})
-                print('========================',password)
                 user.set_password(password)
                 user.code = 'None code'
                 user.save()
@@ -227,7 +224,6 @@ class StdUser(AbstractUser):
             except SignatureExpired:
                 return False, ('Your time to activate by link expired')
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
-                print('exception ::: ',e)
                 pass
             return False, ('Activation link is incorrect, please resend request')
             
@@ -261,7 +257,6 @@ class StdUser(AbstractUser):
 
     # Saving
     def save(self, *args, **kwargs):
-        print('save user ::: ',self,args,kwargs)
         super().save(*args, **kwargs)
 
 
