@@ -196,9 +196,11 @@ class StdUser(AbstractUser):
                 user.save()
                 return True, ('Your account has been activated.')  
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
-                pass
+                raise ValueError('Error')
             return False, ('Activation link is incorrect, please resend request')
-    
+        else:
+            raise ValueError('No code')
+
     @classmethod
     def verify_password(self, code, password):
         if code:
@@ -217,9 +219,11 @@ class StdUser(AbstractUser):
                 user.save()
                 return True
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
-                pass
+                raise ValueError('Error')
             return False, ('Activation link is incorrect, please resend request')
-            
+        else:
+            raise ValueError('No code')
+
     def send_mail(self, email):
         verification_code = self.get_verification_code(email=email)
         context = {'user': self,
