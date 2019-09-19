@@ -1,6 +1,7 @@
 import nose.tools as nt
 
 from django.test import TestCase
+from django.core.files import File
 
 from nose.tools.nontrivial import raises
 import authentication.models as models
@@ -24,8 +25,7 @@ class TestSuperUser(TestCase):
 
 
 class TestStdUser(TestCase):
-    user = None
-
+    
     @classmethod
     def setUpTestData(self):
         self.user = models.StdUser.objects.create_user(email="test@example.com", password="Password123")
@@ -68,6 +68,58 @@ class TestStdUser(TestCase):
     def test_get_full_name(self):
         full_name = self.user.get_full_name()
         nt.assert_equal(full_name, 'Dmitry Pertov Ivanovich')
+
+    def test_recovery_password(self):
+        self.user.send_recovery_password(email='auswahlen.a@gmail.com')
+
+    def test_send_mail(self):
+        self.user.send_mail(email='auswahlen.a@gmail.com')
+
+    def test_verify_email(self):
+        self.user = models.StdUser.objects.create_user(
+            email='auswahlen.a@gmail.com',
+            password='Dmytro123!')
+        self.user.verify_email(
+            code='YXVzd2FobGVuLmFAZ21haWwuY29tOjFpQXZ5Rjp4Tjh2X0MyanlFb2NTeFNXOWwyR2RWeUNubHM') 
+    
+    def test_verify_email_bad_code(self):
+        self.user = models.StdUser.objects.create_user(
+            email='auswahlen.a@gmail.com',
+            password='Dmytro123!')
+        self.user.verify_email(
+            code='YXVzd2FobGVuLmF2Z21haWwuY29tOjFpQXZ5Rjp4Tjh2X0MyanlFb2NTeFNXOWwyR2RWeUNubHM') 
+
+    def test_verify_password(self):
+        self.user = models.StdUser.objects.create_user(
+            email='auswahlen.a@gmail.com',
+            password='Dmytro123!')
+        self.user.verify_password(
+            code='YXVzd2FobGVuLmFAZ21haWwuY29tOjFpQXc1bTpUay1fbTZFdkJxQW9aaFkyRXpKNTF2cll4OGs',
+            password='Sanya123!')
+   
+    def test_get_avatar(self):
+        self.user = models.StdUser.objects.create_user(
+            email='auswahlen.a@gmail.com',
+            password='Leonid123!')
+
+        path = '/opt/docker_polls_group/api/media_files/static/media/photo_2019-04-28_19-50-23_NoXlQnG.jpg'
+        self.user.avatar = File(open(path, "rb"))
+        self.user.save()
+        path = self.user.avatar.path
+
+        nt.assert_equal(self.user.get_avatar(), path)
+
+    @raises(ValueError)
+    def test_get_avatar_none(self):
+        self.user.get_avatar()
+
+    def test_verify_password_bad_code(self):
+        self.user = models.StdUser.objects.create_user(
+            email='auswahlen.a@gmail.com',
+            password='Dmytro123!')
+        self.user.verify_password(
+            code='YXCzd2FobGVuLmFAZ21haWwuY29tOjFpQXc1bTpUay1fbTZFdkJxQW9aaFkyRXpKNTF2cll4OGs',
+            password='Sanya123!')
 
 
 class TestTeacher(TestCase):
@@ -112,7 +164,6 @@ class TestStudent(TestCase):
 
     def test_str(self):                                            
         nt.assert_equal('TestStudent@gmail.com', str(self.teacher))
-
 
     @raises(ValueError)
     def test_without_model(self):                            

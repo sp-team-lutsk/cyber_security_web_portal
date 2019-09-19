@@ -87,8 +87,8 @@ class VerifyUserAPIView(APIView):
     def get(self,request,**kwargs):
         code = kwargs.get('code')
         StdUser.verify_email(code)
-        serializer = self.serializer_class(code,data=request.data)                                
-                                 
+        serializer = self.serializer_class(code,data=request.data)
+
         if serializer.is_valid(raise_exception=True):
             return Response({'Status':'OK'},status=status.HTTP_200_OK)
         else:
@@ -96,7 +96,6 @@ class VerifyUserAPIView(APIView):
 
 class VerifyPassUserAPIView(APIView):
     lookup_field = 'code'
-    #queryset = User.objects.all()
     serializer_class = VerifyUserPassSerializer
     permission_classes = (AllowAny,)
     
@@ -106,7 +105,7 @@ class VerifyPassUserAPIView(APIView):
         if StdUser.verify_password(code=code,password=password) is False:
             return Response(serializer.errors,status=status.HTTP_200_OK)
 
-        serializer = self.serializer_class(code,data=request.data)                                
+        serializer = self.serializer_class(code,data=request.data)
 
         if serializer.is_valid(raise_exception=True):
             return Response({'Status':'OK'},status=status.HTTP_200_OK)
@@ -125,8 +124,8 @@ class RecoveryAPIView(APIView):
 
         if(serializer.is_valid(raise_exception=True)):
             new_data = serializer.data
-            return Response(new_data, status=status.HTTP_200_OK)                                
-                                 
+            return Response(new_data, status=status.HTTP_200_OK)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
         
 

@@ -15,6 +15,7 @@ mongoenv/
 
 # Tests coverage
 .coverage
+.coveragerc
 **/**/htmlcov
 
 

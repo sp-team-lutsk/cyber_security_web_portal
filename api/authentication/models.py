@@ -1,5 +1,6 @@
 import datetime
 import jwt
+import os
 
 from PIL import Image
 from io import StringIO
@@ -154,8 +155,17 @@ class StdUser(AbstractUser):
 
     def get_avatar(self):
         """ Returns avatar (use Pillow) """
-        pass
+        if self.avatar:
+            path = self.avatar.path
+            img = Image.open(path)
+            img.thumbnail((100, 100), Image.ANTIALIAS)
+            img.save(path)
+        
+            return path
+        else:
+            raise ValueError("No avatar")
 
+    
     def get_verification_code(self,email):
         # verification token 
         signer = TimestampSigner()
@@ -173,14 +183,11 @@ class StdUser(AbstractUser):
                 code = code.decode()
                 email = signer.unsign(code, max_age=max_age)
                 user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email,'is_active':False})
-                if user.is_active == True:
-                    return False
+
                 user.is_active = True
                 user.code = "None code"
                 user.save()
                 return True, ('Your account has been activated.')  
-            except SignatureExpired:
-                return False, ('Your code to activate by link expired')
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
                 pass
             
@@ -203,8 +210,6 @@ class StdUser(AbstractUser):
                 user.code = 'None code'
                 user.save()
                 return True
-            except SignatureExpired:
-                return False, ('Your time to activate by link expired')
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
                 pass
             return False, ('Activation link is incorrect, please resend request')
