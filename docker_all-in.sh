@@ -28,6 +28,7 @@ docker-compose up -d
 
 echo -e "\n[ Updating Docker Database ]\n"
 docker exec dpg_api python manage.py makemigrations authentication
+docker exec dpg_api python manage.py makemigrations ext_news
 docker exec dpg_api python manage.py migrate --noinput      
 
 echo -e "\n[ Collecting static files ]\n"
