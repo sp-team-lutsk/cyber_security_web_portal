@@ -195,8 +195,6 @@ class StdUser(AbstractUser):
                 user.code = "None code"
                 user.save()
                 return True, ('Your account has been activated.')  
-            except SignatureExpired:
-                return False, ('Your code to activate by link expired')
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
                 pass
             return False, ('Activation link is incorrect, please resend request')
@@ -218,8 +216,6 @@ class StdUser(AbstractUser):
                 user.code = 'None code'
                 user.save()
                 return True
-            except SignatureExpired:
-                return False, ('Your time to activate by link expired')
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
                 pass
             return False, ('Activation link is incorrect, please resend request')
@@ -296,8 +292,8 @@ class Faculty(Group):
 
 class Mail(models.Model):
     email = models.EmailField(max_length=64, blank=False, unique=False)
-    subject = models.CharField(max_length=256,blank=False,unique=False)
-    body = models.CharField(max_length=2048,blank=False,unique=False)
+    subject = models.CharField(max_length=256, blank=False, unique=False)
+    body = models.CharField(max_length=2048, blank=False, unique=False)
 
     @classmethod
     def send_mail(self, email, subject, body):
