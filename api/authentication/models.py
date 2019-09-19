@@ -150,7 +150,7 @@ class StdUser(AbstractUser):
     is_student = models.BooleanField('student status', default=False)
     is_teacher = models.BooleanField('teacher status', default=False)
     
-    code = models.CharField(max_length=256,blank=True,default="")
+    code = models.CharField(max_length=256, blank=True, default="")
     USERNAME_FIELD = 'email'  # Email as username
     REQUIRED_FIELDS = []
     
@@ -191,9 +191,6 @@ class StdUser(AbstractUser):
                 code = code.decode()
                 email = signer.unsign(code, max_age=max_age)
                 user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email,'is_active':False})
-                print(user.email)
-                if user.is_active == True:
-                    return False
                 user.is_active = True
                 user.code = "None code"
                 user.save()
