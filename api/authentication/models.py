@@ -174,13 +174,13 @@ class StdUser(AbstractUser):
         """ Returns avatar (use Pillow) """
         pass
 
-    def get_verification_code(self,email):
+    def get_verification_code(self, email):
         # verification token 
         signer = TimestampSigner()
         return b64_encode(bytes(signer.sign(email), encoding='utf-8'))
         
     @classmethod
-    def verify_email(self,code):
+    def verify_email(self, code):
         if code:
             signer = TimestampSigner()
             try:
@@ -190,7 +190,7 @@ class StdUser(AbstractUser):
                 code = b64_decode(code)
                 code = code.decode()
                 email = signer.unsign(code, max_age=max_age)
-                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email,'is_active':False})
+                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email, 'is_active':False})
                 user.is_active = True
                 user.code = "None code"
                 user.save()
@@ -202,7 +202,7 @@ class StdUser(AbstractUser):
             return False, ('Activation link is incorrect, please resend request')
     
     @classmethod
-    def verify_password(self,code,password):
+    def verify_password(self, code, password):
         if code:
             signer = TimestampSigner()
             try:
@@ -224,7 +224,7 @@ class StdUser(AbstractUser):
                 pass
             return False, ('Activation link is incorrect, please resend request')
             
-    def send_mail(self,email):
+    def send_mail(self, email):
         verification_code = self.get_verification_code(email=email)
         context = {'user': self,
                    'VERIFICATION_URL': VERIFICATION_URL,
@@ -247,7 +247,7 @@ class StdUser(AbstractUser):
                    'link': datetime.datetime.today() + datetime.timedelta(days=RECOVER_CODE_EXPIRED)
                     }
         msg = EmailMessage(subject='subject',
-                body=render_to_string('authentication/mail/reset_body.html',context),
+                body=render_to_string('authentication/mail/reset_body.html', context),
                 to = [email])
         msg.content_subtype = 'html'
         msg.send()
