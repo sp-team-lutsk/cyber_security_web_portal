@@ -9,7 +9,12 @@ from django.core.signing import TimestampSigner, b64_encode,b64_decode, BadSigna
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import UserManager
 from django.contrib.auth.models import AbstractBaseUser, AbstractUser, Group
-from settings import base
+from settings.base import (
+    VERIFICATION_CODE_EXPIRED,
+    VERIFICATION_URL,
+    RECOVER_CODE_EXPIRED,
+    RECOVER_URL,
+)
 
 
 ACAD_GROUPS_CHOICES = [
@@ -180,7 +185,7 @@ class StdUser(AbstractUser):
             signer = TimestampSigner()
             try:
                 code = code.encode('utf-8')
-                max_age = datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED).total_seconds()
+                max_age = datetime.timedelta(days=VERIFICATION_CODE_EXPIRED).total_seconds()
                 code = force_bytes(code)
                 code = b64_decode(code)
                 code = code.decode()
@@ -207,7 +212,7 @@ class StdUser(AbstractUser):
             signer = TimestampSigner()
             try:
                 code = code.encode('utf-8')
-                max_age = datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED).total_seconds()
+                max_age = datetime.timedelta(days=VERIFICATION_CODE_EXPIRED).total_seconds()
                 code = force_bytes(code)
                 code = b64_decode(code)
                 code = code.decode()
@@ -229,9 +234,9 @@ class StdUser(AbstractUser):
     def send_mail(self,email):
         verification_code = self.get_verification_code(email=email)
         context = {'user': self,
-                   'VERIFICATION_URL': base.VERIFICATION_URL,
+                   'VERIFICATION_URL': VERIFICATION_URL,
                    'code': verification_code.decode(),
-                   'link': datetime.datetime.today() + datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED)   
+                   'link': datetime.datetime.today() + datetime.timedelta(days=VERIFICATION_CODE_EXPIRED)   
                 }
         
         msg = EmailMessage(subject='subject',
@@ -244,9 +249,9 @@ class StdUser(AbstractUser):
         verification_code = self.get_verification_code(email=email)
         
         context = {'user': self,
-                   'RECOVER_URL': base.RECOVER_URL,
+                   'RECOVER_URL': RECOVER_URL,
                    'code': verification_code.decode(),
-                   'link': datetime.datetime.today() + datetime.timedelta(days=base.RECOVER_CODE_EXPIRED)
+                   'link': datetime.datetime.today() + datetime.timedelta(days=RECOVER_CODE_EXPIRED)
                     }
         msg = EmailMessage(subject='subject',
                 body=render_to_string('authentication/mail/reset_body.html',context),
