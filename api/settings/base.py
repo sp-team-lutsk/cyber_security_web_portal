@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'djangotoolbox',
     'authentication',
     'ext_news',
+    'django_crontab', 
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -253,5 +254,9 @@ STATICFILES_FINDERS = (
 # redirect urls
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL ='/accounts/login/'
+
+CRONJOBS = [ 
+    ('* *  *   *   *', 'ext_news.cron.CronMailing'),
+]
 
 SITE_ID = 2

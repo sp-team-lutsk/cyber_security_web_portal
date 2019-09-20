@@ -9,6 +9,9 @@ ADD . $WORKDIR
 RUN pip install --upgrade pip
 RUN pip install -r $WORKDIR/requirements/dev.txt
 
+RUN apt-get update
+RUN apt-get install -y cron
+
 CMD python manage.py runserver
 
 
