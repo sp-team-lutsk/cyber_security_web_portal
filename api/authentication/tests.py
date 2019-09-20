@@ -1,11 +1,19 @@
 import nose.tools as nt
 
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.core.files import File
+from django.urls import reverse
+from rest_framework.serializers import ValidationError
+from django.core.exceptions import ValidationError as django_ValidationError
+from django.core.exceptions import ObjectDoesNotExist as DoesNotExist
 
 from nose.tools.nontrivial import raises
-import authentication.models as models
 
+import authentication.models as models
+import authentication.serializers as a_serializers
+import authentication.views as a_views
+
+client = Client()
 
 # Create your tests here.
 class TestSuperUser(TestCase):
@@ -80,8 +88,9 @@ class TestStdUser(TestCase):
             email='auswahlen.a@gmail.com',
             password='Dmytro123!')
         self.user.verify_email(
-            code='YXVzd2FobGVuLmFAZ21haWwuY29tOjFpQXZ5Rjp4Tjh2X0MyanlFb2NTeFNXOWwyR2RWeUNubHM') 
-    
+            code='YXVzd2FobGVuLmFAZ21haWwuY29tOjFpQktWaTpMVjRRQXpNdWwtYlk2Wi1Ock5FU0lENVNRbGM') 
+   
+    @raises(ValueError)
     def test_verify_email_bad_code(self):
         self.user = models.StdUser.objects.create_user(
             email='auswahlen.a@gmail.com',
@@ -94,7 +103,7 @@ class TestStdUser(TestCase):
             email='auswahlen.a@gmail.com',
             password='Dmytro123!')
         self.user.verify_password(
-            code='YXVzd2FobGVuLmFAZ21haWwuY29tOjFpQXc1bTpUay1fbTZFdkJxQW9aaFkyRXpKNTF2cll4OGs',
+            code='YXVzd2FobGVuLmFAZ21haWwuY29tOjFpQktWaTpMVjRRQXpNdWwtYlk2Wi1Ock5FU0lENVNRbGM',
             password='Sanya123!')
    
     def test_get_avatar(self):
@@ -113,6 +122,7 @@ class TestStdUser(TestCase):
     def test_get_avatar_none(self):
         self.user.get_avatar()
 
+    @raises(ValueError)
     def test_verify_password_bad_code(self):
         self.user = models.StdUser.objects.create_user(
             email='auswahlen.a@gmail.com',
@@ -193,3 +203,107 @@ class TestMail(TestCase):
 
     def test_mail(self):
         self.mail.send_mail(self.mail.email, self.mail.subject, self.mail.body)
+
+class TestAPI(TestCase):
+
+    def test_path_user_api(self):
+        user = models.StdUser.objects.create_user(email="auswahlen.a@gmail.com", password="teTTTst123!")
+        user.is_active = True
+        user.save()
+        
+        client.login(email='auswahlen.a@gmail.com', password='teTTTst123!')
+
+        response = client.patch(reverse('update', kwargs={"pk": user.pk}), {'first_name': 'Leonid'}, content_type='application/json')
+        user = models.StdUser.objects.get(email='auswahlen.a@gmail.com')
+        nt.assert_equal(response.data, {'Status': 'Update success'})
+        nt.assert_equal(user.first_name, "Leonid")
+
+
+    def test_update_user_api(self):
+        user = models.StdUser.objects.create_user(email="auswahlen.a@gmail.com", password="teTTTst123!")
+        user.is_active = True
+        user.save()
+
+        client.login(email='auswahlen.a@gmail.com', password='teTTTst123!')
+        response = client.put(reverse('update', kwargs={"pk": user.pk}), {'first_name': 'Alexandr', 'last_name': 'Shypulin', 'patronymic': '', 'bio': '', 'gender': 'man'}, content_type='application/json')
+        nt.assert_equal(response.data, {"Status": "Update success"})
+        user = models.StdUser.objects.get(email='auswahlen.a@gmail.com')
+        nt.assert_equal(user.first_name, "Alexandr")
+        
+    def test_send_mail_api(self):
+        admin = models.StdUser.objects.create_superuser(email="auswahlen.a@gmail.com", password="teTTTst123!") 
+        client.login(email='auswahlen.a@gmail.com', password='teTTTst123!')
+        response = client.post(reverse('sendmail'), {'email': 'auswahlen.a@gmail.com', 'subject': 'TestSubj', 'body': 'TestBody'})
+
+        nt.assert_equal(response.data, {'Status': 'Mail Send'})
+
+    def test_delete_user(self):
+        user = models.StdUser.objects.create_user(email="auswahlen.a@gmail.com", password="teTTTst123!")
+        user.is_active = True
+        user.save()
+
+        client.login(email='auswahlen.a@gmail.com', password='teTTTst123!')
+        response = client.post(reverse('delete'), {'email': 'auswahlen.a@gmail.com', 'password': 'teTTTst123!'})
+        user = models.StdUser.objects.get(email='auswahlen.a@gmail.com')
+        nt.assert_equal(user.is_active, False)
+        nt.assert_equal(response.data, {'Status': 'OK'})
+
+    @raises(DoesNotExist)
+    def test_verify_user_serializer(self):
+        a_serializers.VerifyUserPassSerializer.post(self, data='fdsfs', code='dsfsdf')
+
+    def test_recovery_error(self):
+        user = models.StdUser.objects.create_user(email="auswahlen.a@gmail.com", password="teTTTst123!")
+        response = client.post(reverse('recover'), {'email': 'fdsf'})
+        nt.assert_equal(response.data, ['This email is not valid'])
+    
+    def test_active_recovery(self):
+        user = models.StdUser.objects.create_user(email="auswahlen.a@gmail.com", password="teTTTst123!")
+        user.is_active = True
+        user.save()
+
+        response = client.post(reverse('recover'), {'email': 'auswahlen.a@gmail.com'})
+        nt.assert_equal(response.data, {'email': 'auswahlen.a@gmail.com'})
+
+    @raises(AssertionError)
+    def test_inactive_recovery(self):
+        user = models.StdUser.objects.create_user(email="auswahlen.a@gmail.com", password="teTTTst123!")
+        response = client.post(reverse('recover'), {'email': 'auswahlen.a@gmail.com'})
+        nt.assert_equal(response.data, {'string':'User not active', 'code': 'invalid'})
+
+    def test_verify_password(self):
+        user = models.StdUser.objects.create_user(email="auswahlen.a@gmail.com", password="teTTTst123!")
+        response = client.post(reverse('completerecover', 
+                kwargs={'code': 'YXVzd2FobGVuLmFAZ21haWwuY29tOjFpQktWaTpMVjRRQXpNdWwtYlk2Wi1Ock5FU0lENVNRbGM'}), 
+            {'password': 'NewPass!213'},
+            kwargs={'code': 'YXVzd2FobGVuLmFAZ21haWwuY29tOjFpQktWaTpMVjRRQXpNdWwtYlk2Wi1Ock5FU0lENVNRbGM'})
+        nt.assert_equal(response.data, {"Status": "OK"})
+    
+    @raises(ValueError)
+    def test_activate_user_bad(self):
+        user = models.StdUser.objects.create_user(email="auswahlen.a@gmail.com", password="teTTTst123!")
+        response = client.get(reverse('verify', kwargs={'code':'YXVzd2FobGVuLmFAZ21haWwuY29tOjFpQXlLUTo1bGtSTGQwY0NqcXZrbTZYVHBScXltZnRpMDA'}))
+        nt.assert_equal(response.data, {"Status": "OK"})
+
+    def test_activate_user(self):
+        user = models.StdUser.objects.create_user(email="auswahlen.a@gmail.com", password="teTTTst123!")
+        response = client.get(reverse('verify', kwargs={'code':'YXVzd2FobGVuLmFAZ21haWwuY29tOjFpQktWaTpMVjRRQXpNdWwtYlk2Wi1Ock5FU0lENVNRbGM'}))
+        nt.assert_equal(response.data, {"Status": "OK"})
+
+    @raises(django_ValidationError)
+    def test_create_user_bad_pass(self):
+        response = client.post(reverse('register'), {"email": "test@example.com", "password": "123324234234"})
+        nt.assert_equal(response.data, ["Password must have at least:8 characters, one uppercase/lowercase letter, one symbol, one digit"])
+
+
+    def test_create_user(self):
+        response = client.post(reverse('register'), {"email": "test@example.com", "password": "Test!2334r3d"})
+        nt.assert_equal(response.data, {"success": "User 'test@example.com' created successfully"})
+
+    def test_get_inactive(self):
+        admin = models.StdUser.objects.create_superuser(email="admin@example.com",
+                password="Admin123!")
+        
+        client.login(email="admin@example.com", password="Admin123!")
+        response = client.post(reverse('account_inactive')) 
+        nt.assert_equal(response.data, {"Account inactive!"}) 
