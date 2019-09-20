@@ -256,7 +256,7 @@ LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL ='/accounts/login/'
 
 CRONJOBS = [ 
-    ('* *  *   *   *', 'ext_news.cron.CronMailing'),
+    ('00 16  *   *   6', 'ext_news.cron.CronMailing'),
 ]
 
 SITE_ID = 2
