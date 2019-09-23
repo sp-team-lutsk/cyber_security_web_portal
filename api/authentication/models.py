@@ -9,13 +9,7 @@ from django.core.signing import TimestampSigner, b64_encode,b64_decode, BadSigna
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import UserManager
 from django.contrib.auth.models import AbstractBaseUser, AbstractUser, Group
-from settings.base import (
-    VERIFICATION_CODE_EXPIRED,
-    VERIFICATION_URL,
-    RECOVER_CODE_EXPIRED,
-    RECOVER_URL,
-)
-
+from django.conf import settings 
 
 ACAD_GROUPS_CHOICES = [
     ("КБ-11", "Кiбербезпека 1 курс"),
@@ -185,7 +179,7 @@ class StdUser(AbstractUser):
             signer = TimestampSigner()
             try:
                 code = code.encode('utf-8')
-                max_age = datetime.timedelta(days=VERIFICATION_CODE_EXPIRED).total_seconds()
+                max_age = datetime.timedelta(days=settings.VERIFICATION_CODE_EXPIRED).total_seconds()
                 code = force_bytes(code)
                 code = b64_decode(code)
                 code = code.decode()
@@ -207,7 +201,7 @@ class StdUser(AbstractUser):
             signer = TimestampSigner()
             try:
                 code = code.encode('utf-8')
-                max_age = datetime.timedelta(days=VERIFICATION_CODE_EXPIRED).total_seconds()
+                max_age = datetime.timedelta(days=settings.VERIFICATION_CODE_EXPIRED).total_seconds()
                 code = force_bytes(code)
                 code = b64_decode(code)
                 code = code.decode()
@@ -242,9 +236,9 @@ class StdUser(AbstractUser):
         verification_code = self.get_verification_code(email=email)
         
         context = {'user': self,
-                   'RECOVER_URL': RECOVER_URL,
+                   'RECOVER_URL': settings.RECOVER_URL,
                    'code': verification_code.decode(),
-                   'link': datetime.datetime.today() + datetime.timedelta(days=RECOVER_CODE_EXPIRED)
+                   'link': datetime.datetime.today() + datetime.timedelta(days=settings.RECOVER_CODE_EXPIRED)
                     }
         msg = EmailMessage(subject='subject',
                 body=render_to_string('authentication/mail/reset_body.html', context),
