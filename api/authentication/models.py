@@ -221,9 +221,9 @@ class StdUser(AbstractUser):
     def send_mail(self, email):
         verification_code = self.get_verification_code(email=email)
         context = {'user': self,
-                   'VERIFICATION_URL': VERIFICATION_URL,
+                   'VERIFICATION_URL': settings.VERIFICATION_URL,
                    'code': verification_code.decode(),
-                   'link': datetime.datetime.today() + datetime.timedelta(days=VERIFICATION_CODE_EXPIRED)   
+                   'link': datetime.datetime.today() + datetime.timedelta(days=settings.VERIFICATION_CODE_EXPIRED)   
                 }
         
         msg = EmailMessage(subject='subject',
