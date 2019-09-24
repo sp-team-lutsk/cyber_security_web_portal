@@ -16,3 +16,10 @@ mongoenv/
 # Tests coverage
 .coverage
 **/**/htmlcov
+
+
+**/**/collected_static
+
+# Media
+media_files/
+
