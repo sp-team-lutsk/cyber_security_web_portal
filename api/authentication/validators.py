@@ -1,7 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
-
 class SymbolPasswordValidator:
     def validate(self, password, user=None):
         massive =("!@#$%<>^~=-&*()_+")

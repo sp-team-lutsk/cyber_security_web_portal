@@ -301,3 +301,4 @@ class Mail(models.Model):
                 to=[email])
         msg.content_subtype = 'html'
         msg.send()
+

@@ -24,10 +24,10 @@ urlpatterns = [
     path('register/', CreateUserAPIView.as_view(), name='register'),    # register page
     path('register/', CreateUserAPIView.as_view(), name='socialaccount_signup'),
     path('login/', token_obtain_pair, name='login'),           # login page with obtain token
-    path('delete/', DeleteUserAPIView.as_view(),name='delete'),         # delete user
-    path('verify/<str:code>/', VerifyUserAPIView.as_view(),name='verify'),
-    path('recovery/<str:code>/', VerifyPassUserAPIView.as_view(),name='completerecover'),
-    path('recover_pass/', RecoveryAPIView.as_view(),name='recover'),
+    path('delete/', DeleteUserAPIView.as_view(), name='delete'),         # delete user
+    path('verify/<str:code>/', VerifyUserAPIView.as_view(), name='verify'),
+    path('recovery/<str:code>/', VerifyPassUserAPIView.as_view(), name='completerecover'),
+    path('recover_pass/', RecoveryAPIView.as_view(), name='recover'),
     #admin api
     path('users/', UserListAPIView.as_view(), name='users'),            # all activated user list page
     path('users/inactive/', UserInactiveAPIView.as_view(), name='account_inactive'),
@@ -37,7 +37,7 @@ urlpatterns = [
     path('teacher_list/', TeacherListAPIView.as_view(), name='tlist'),  # teachers list page
     path('send_mail/', SendMailAPIView.as_view(), name='sendmail'),
     
-    path('login/refresh/',token_refresh, name='refresh'),               # refresh token
+    path('login/refresh/', token_refresh, name='refresh'),               # refresh token
 ]
 
 # This is for social auth 
