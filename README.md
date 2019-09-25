@@ -40,7 +40,7 @@ Make this simple steps to run this project. :smile: 😄
 > Using Python 3
 
 ```shell
-$ pip install -r requirements/dev.txt
+$ pip install -r api/requirements/dev.txt
 ```
 > Using Docker scripts
 ```
