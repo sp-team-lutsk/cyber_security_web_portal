@@ -1,9 +1,5 @@
 import datetime
 import jwt
-import os
-
-from PIL import Image
-from io import StringIO
 
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
@@ -13,9 +9,7 @@ from django.core.signing import TimestampSigner, b64_encode,b64_decode, BadSigna
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import UserManager
 from django.contrib.auth.models import AbstractBaseUser, AbstractUser, Group
-
-from settings import base
-
+from django.conf import settings 
 
 ACAD_GROUPS_CHOICES = [
     ("КБ-11", "Кiбербезпека 1 курс"),
@@ -53,6 +47,11 @@ class StdUserManager(UserManager):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
 
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
         return self._create_user(email, password, **extra_fields)
 
     def create_student(self, email, profession, faculty, password=None):
@@ -79,7 +78,7 @@ class StdUserManager(UserManager):
         student = Student.objects.create(user=user, profession=profession, faculty=faculty)
         student.save()
 
-        return student
+        return user
 
     def create_teacher(self, email, faculty, password=None):
         if not email:
@@ -103,7 +102,19 @@ class StdUserManager(UserManager):
 
         teacher = Teacher.objects.create(user=user, faculty=faculty)
 
-        return teacher
+        return user
+
+
+class SocialUserManager(UserManager):
+    def _create_user(self, email, **extra_fields):     
+        email = email                      
+        
+        user = self.model(email=email, **extra_fields)           
+        user.save(using=self._db)                                
+        return user                                              
+                                                             
+    def create_user(self, email, **extra_fields): 
+        return self._create_user(email, **extra_fields)
 
 
 # Base user class
@@ -133,7 +144,7 @@ class StdUser(AbstractUser):
     is_student = models.BooleanField('student status', default=False)
     is_teacher = models.BooleanField('teacher status', default=False)
     
-    code = models.CharField(max_length=256,blank=True,default="")
+    code = models.CharField(max_length=256, blank=True, default="")
     USERNAME_FIELD = 'email'  # Email as username
     REQUIRED_FIELDS = []
     
@@ -155,51 +166,42 @@ class StdUser(AbstractUser):
 
     def get_avatar(self):
         """ Returns avatar (use Pillow) """
-        if self.avatar:
-            path = self.avatar.path
-            img = Image.open(path)
-            img.thumbnail((100, 100), Image.ANTIALIAS)
-            img.save(path)
-        
-            return path
-        else:
-            raise ValueError("No avatar")
+        pass
 
-    
-    def get_verification_code(self,email):
+    def get_verification_code(self, email):
         # verification token 
         signer = TimestampSigner()
         return b64_encode(bytes(signer.sign(email), encoding='utf-8'))
         
     @classmethod
-    def verify_email(self,code):
+    def verify_email(self, code):
         if code:
             signer = TimestampSigner()
             try:
                 code = code.encode('utf-8')
-                max_age = datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED).total_seconds()
+                max_age = datetime.timedelta(days=settings.VERIFICATION_CODE_EXPIRED).total_seconds()
                 code = force_bytes(code)
                 code = b64_decode(code)
                 code = code.decode()
                 email = signer.unsign(code, max_age=max_age)
-                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email,'is_active':False})
-
+                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email, 'is_active':False})
                 user.is_active = True
                 user.code = "None code"
                 user.save()
                 return True, ('Your account has been activated.')  
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
-                raise ValueError("Bad code")
-            
-            return False, ValueError('Activation link is incorrect, please resend request')
-    
+                raise ValueError('Error')
+            return False, ('Activation link is incorrect, please resend request')
+        else:
+            raise ValueError('No code')
+
     @classmethod
     def verify_password(self, code, password):
         if code:
             signer = TimestampSigner()
             try:
                 code = code.encode('utf-8')
-                max_age = datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED).total_seconds()
+                max_age = datetime.timedelta(days=settings.VERIFICATION_CODE_EXPIRED).total_seconds()
                 code = force_bytes(code)
                 code = b64_decode(code)
                 code = code.decode()
@@ -211,15 +213,17 @@ class StdUser(AbstractUser):
                 user.save()
                 return True
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
-                raise ValueError("Bad password")
-            return False, ValueError('Activation link is incorrect, please resend request')
-            
-    def send_mail(self,email):
+                raise ValueError('Error')
+            return False, ('Activation link is incorrect, please resend request')
+        else:
+            raise ValueError('No code')
+
+    def send_mail(self, email):
         verification_code = self.get_verification_code(email=email)
         context = {'user': self,
-                   'VERIFICATION_URL': base.VERIFICATION_URL,
+                   'VERIFICATION_URL': settings.VERIFICATION_URL,
                    'code': verification_code.decode(),
-                   'link': datetime.datetime.today() + datetime.timedelta(days=base.VERIFICATION_CODE_EXPIRED)   
+                   'link': datetime.datetime.today() + datetime.timedelta(days=settings.VERIFICATION_CODE_EXPIRED)   
                 }
         
         msg = EmailMessage(subject='subject',
@@ -232,12 +236,12 @@ class StdUser(AbstractUser):
         verification_code = self.get_verification_code(email=email)
         
         context = {'user': self,
-                   'RECOVER_URL': base.RECOVER_URL,
+                   'RECOVER_URL': settings.RECOVER_URL,
                    'code': verification_code.decode(),
-                   'link': datetime.datetime.today() + datetime.timedelta(days=base.RECOVER_CODE_EXPIRED)
+                   'link': datetime.datetime.today() + datetime.timedelta(days=settings.RECOVER_CODE_EXPIRED)
                     }
         msg = EmailMessage(subject='subject',
-                body=render_to_string('authentication/mail/reset_body.html',context),
+                body=render_to_string('authentication/mail/reset_body.html', context),
                 to = [email])
         msg.content_subtype = 'html'
         msg.send()
@@ -286,8 +290,8 @@ class Faculty(Group):
 
 class Mail(models.Model):
     email = models.EmailField(max_length=64, blank=False, unique=False)
-    subject = models.CharField(max_length=256,blank=False,unique=False)
-    body = models.CharField(max_length=2048,blank=False,unique=False)
+    subject = models.CharField(max_length=256, blank=False, unique=False)
+    body = models.CharField(max_length=2048, blank=False, unique=False)
 
     @classmethod
     def send_mail(self, email, subject, body):
@@ -297,3 +301,4 @@ class Mail(models.Model):
                 to=[email])
         msg.content_subtype = 'html'
         msg.send()
+
