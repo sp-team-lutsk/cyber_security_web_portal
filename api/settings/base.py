@@ -171,9 +171,9 @@ REST_FRAMEWORK = {
     ),
 #Permissions
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.IsAdminUser'
-        
+        'authentication.permissions.IsAdminUser',
+        'authentication.permissions.IsModeratorUser',
+        'authentication.permissions.IsAuthenticated',
     ),
 }
 
