@@ -36,7 +36,6 @@ from .serializers import (
     UpdateUserSerializer,)
 
 from .models import StdUser,Student, Teacher
-from django.conf import settings
 
 User = get_user_model()
 
