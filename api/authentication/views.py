@@ -2,8 +2,10 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from permissions import (IsAdminUser, 
+                        IsAuthenticated, 
+                        IsModeratorUser, 
+                        AllowAny)
 from rest_framework.generics import (ListAPIView,
                                      DestroyAPIView,
                                      RetrieveAPIView,
@@ -43,13 +45,13 @@ class FindUserAPIView(RetrieveAPIView):
     lookup_field = 'email'
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser,IsModeratorUser,]
 
 
 class UserListAPIView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser,IsModeratorUser,]
 
 class CreateUserAPIView(CreateAPIView):
     """
@@ -106,7 +108,7 @@ class VerifyPassUserAPIView(APIView):
                 return Response({'Status':'OK'}, status=status.HTTP_200_OK)
         
 class RecoveryAPIView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny,]
     serializer_class = RecoverySerializer
     redirect_to = settings.LOGIN_REDIRECT_URL
 
