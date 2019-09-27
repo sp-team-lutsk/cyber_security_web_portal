@@ -1,7 +1,6 @@
 from django.contrib.auth.password_validation import validate_password 
 
 from rest_framework import serializers
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from django.contrib.auth import (
         get_user_model, 
         authenticate,)
@@ -36,9 +35,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
 
-        if validate_password(password=validated_data.get('password',), user=validated_data.get('email'), password_validators=None) is not None:
-            raise serializers.ValidationError(
-            "Password must have at least:8 characters, one uppercase/lowercase letter, one symbol, one digit")
+        validate_password(password=validated_data.get('password',), user=validated_data.get('email'), password_validators=None)
         
         email = validated_data.get('email')
         user = User.objects.create_user(**validated_data) 
@@ -47,29 +44,22 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
 class RecoverySerializer(serializers.ModelSerializer):
     email = serializers.CharField(max_length=64)
-    #password = serializers.CharField(max_length=64)
     
     class Meta(object):
         model = User
-        fields = (
-                'email',
-                )
+        fields = ('email',)
         
     def post(self,data):
         email = data.get('email', None)
                 
-        if email is None:
-            raise serializers.ValidationError("Email is required")
-                                 
         user = User.objects.filter(Q(email=email)).distinct()
                                  
         if user.exists() and user.count() == 1:
             user_obj = user.first()                                
-            print(email)
             user_obj.send_recovery_password(email=email)
         else:
-            raise serializers.ValidationError("This email is not valid")                                
-                                 
+            raise serializers.ValidationError("This email is not valid")
+        
         if user_obj:
             if not user_obj.is_active:
                 raise serializers.ValidationError("User not active")
@@ -78,38 +68,32 @@ class RecoverySerializer(serializers.ModelSerializer):
 class VerifyUserSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
-        fields = (
-                'code',
-                )
-    def get(self, data, code):
-       return True
+        fields = ('code',)
 
 class VerifyUserPassSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=64)
 
     class Meta(object):
         model = User
-        fields = (
-                'code',
-                'password',
-                )
+        fields = ('code',
+                'password',)
+    
     def post(self, data, code):
         user = User.objects.get(code=code)
-        
 
 class DeleteUserSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
 
-        fields = (
-                'email',
-                'password',
-                )
+        fields = ('email',
+                'password',)
+
         extra_kwargs = {'password': {'write_only' : True}}
 
     def delete(self, request, pk=None, **kwargs):
         request.user.is_active = False
         request.user.save()
+        
         return Response(status = 204)
 
 class TeacherSerializer(serializers.ModelSerializer):

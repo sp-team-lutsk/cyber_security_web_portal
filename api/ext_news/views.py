@@ -18,7 +18,6 @@ class PostUpd(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAP
     queryset = News.objects.all()
     serializer_class = NewsSerializer
 
-
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
@@ -26,7 +25,7 @@ class PostUpd(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAP
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+
 
 class MailingAPIView(APIView):
     queryset = StdUser.objects.filter(**{'news_subscription':True})

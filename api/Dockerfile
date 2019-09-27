@@ -13,5 +13,3 @@ RUN apt-get update
 RUN apt-get install -y cron
 
 CMD python manage.py runserver
-
-
