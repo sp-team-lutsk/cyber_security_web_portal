@@ -108,7 +108,7 @@ class VerifyPassUserAPIView(APIView):
 class RecoveryAPIView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = RecoverySerializer
-    redirect_to = settings.base.LOGIN_REDIRECT_URL
+    redirect_to = settings.LOGIN_REDIRECT_URL
 
     def post(self, request, *args, **kwargs):
         data = request.data
