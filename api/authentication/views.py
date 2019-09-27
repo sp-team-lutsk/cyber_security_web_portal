@@ -58,7 +58,7 @@ class CreateUserAPIView(CreateAPIView):
     Create user
     """
     # Allow any user (authenticated or not) to access this url
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny,]
     serializer_class = CreateUserSerializer
     queryset = ''
 
@@ -83,7 +83,7 @@ class VerifyUserAPIView(APIView):
     lookup_field = 'code'
     queryset = User.objects.all()
     serializer_class = VerifyUserSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny,]
     
     def get(self, request, **kwargs):
         code = kwargs.get('code')
@@ -96,7 +96,7 @@ class VerifyUserAPIView(APIView):
 class VerifyPassUserAPIView(APIView):
     lookup_field = 'code'
     serializer_class = VerifyUserPassSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny,]
     
     def post(self, request, **kwargs):
         code = kwargs.get('code')
@@ -127,7 +127,7 @@ class StudentListAPIView(ListAPIView):
     """
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser,IsModeratorUser,]
 
 
 class TeacherListAPIView(ListAPIView):
@@ -136,14 +136,14 @@ class TeacherListAPIView(ListAPIView):
     """
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser,IsModeratorUser,]
 
 class SendMailAPIView(APIView):
     """
     Send mail from admin to user
     """
     serializer_class = SendMailSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsModeratorUser,]
     queryset = User.objects.all()
     
     def post(self, request):
@@ -158,7 +158,7 @@ class UpdateUserAPIView(GenericAPIView, UpdateModelMixin):
     """
     Update User
     """
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated,]
     serializer_class = UpdateUserSerializer
     queryset = User.objects.all()
 
@@ -178,7 +178,7 @@ class DeleteUserAPIView(DestroyAPIView):
     """
     Delete User
     """
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated,]
     serializer_class = DeleteUserSerializer
 
     def post(self, request):
