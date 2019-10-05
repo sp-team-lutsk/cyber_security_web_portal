@@ -13,17 +13,21 @@ body {
     url("assets/images/img9.png") center no-repeat;
   -webkit-background-size: cover;
   background-size: cover;
-  position: absolute;
-  height: 315px;
+  position: relative;
+  height: auto;
   width: 100%;
 
   padding-top: 10px;
-  padding-left: 20px;
-  top: 800px;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  z-index: 100;
 }
 
-.footer > .row > .col {
+.footer > .row > .col-12 {
   text-align: center;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
 }
 
 .my{
@@ -66,13 +70,15 @@ body {
       url("assets/images/img9.png") center no-repeat;
     -webkit-background-size: cover;
     background-size: cover;
-    position: absolute;
-    height: 305px;
+    position: relative;
+    height: auto;
     width: 100%;
 
     padding-top: 50px;
-    padding-left: 30px;
-    top: 695px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    z-index: 100;
   }
   .footer-info {
     height: 39px;
@@ -83,6 +89,7 @@ body {
   }.text2 {
      font-size: 10px;
      text-align-last: center;
+     padding-bottom: 30px;
    }
   .uu {
     height: 41px;
@@ -98,13 +105,15 @@ body {
       url("assets/images/img9.png") center no-repeat;
     -webkit-background-size: cover;
     background-size: cover;
-    position: absolute;
-    height: 275px;
+    position: relative;
+    height: auto;
     width: 100%;
 
     padding-top: 50px;
-    padding-left: 30px;
-    top: 695px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    z-index: 100;
   }
   .footer-info {
     height: 45px;
@@ -129,14 +138,15 @@ body {
       url("assets/images/img9.png") center no-repeat;
     -webkit-background-size: cover;
     background-size: cover;
-    position: absolute;
-    height: 275px;
+    position: relative;
+    height: auto;
 
     padding-top: 50px;
     padding-left: 15px;
     padding-right: 15px;
     width: 100%;
-    top: 695px;
+
+    z-index: 100;
   }
   .footer-info {
     height: 51px;

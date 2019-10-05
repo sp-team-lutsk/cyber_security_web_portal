@@ -4,15 +4,16 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AlertModule, ButtonsModule } from 'ngx-bootstrap';
+
 import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
 import { BodyComponent } from './body/body.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    FooterComponent,
     BodyComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
@@ -23,8 +24,8 @@ import { BodyComponent } from './body/body.component';
   providers: [],
   bootstrap: [
     HeaderComponent,
-    FooterComponent,
-    BodyComponent
+    BodyComponent,
+    FooterComponent
   ],
 })
 
