@@ -1,9 +1,8 @@
 from django.urls import path
-from .views import Post, News_Details
-
-
+from .views import PostUpd, Post, MailingAPIView
 
 urlpatterns = [
-    path('', Post.as_view()),
-    path('<int:pk>/', News_Details.as_view()),
+    path('upd/<int:pk>/', PostUpd.as_view(), name='upd'),
+    path('post/', Post.as_view(), name=None),
+    path('mailing/',MailingAPIView.as_view(), name='mailing'),
 ]
