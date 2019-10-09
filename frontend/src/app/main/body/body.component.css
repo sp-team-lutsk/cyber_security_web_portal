@@ -1,15 +1,6 @@
-body {
-  margin: 0;
-
-  font-family: 'Myriad Pro' , sans-serif;
-  font-size: 18px;
-  color: #f1efe6;
-  text-decoration: none;
-  text-align: center;
-}
-
 li {
   list-style-type: none;
+  color: black;
 }
 
 .body {

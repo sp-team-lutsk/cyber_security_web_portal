@@ -1,14 +1,4 @@
-body {
-  margin: 0;
-
-  font-family: 'Myriad Pro' , sans-serif;
-  font-size: 18px;
-  color: #f1efe6;
-  text-decoration: none;
-  text-align: center;
-}
-
-.header {
+.header-main {
   background:
     url("assets/images/intro.png") center no-repeat;
   -webkit-background-size: cover;
@@ -24,104 +14,8 @@ body {
   z-index: 100;
 }
 
-.LOGO {
-  margin: 0 25% 0 7%;
-  width: 100%;
-}
-
-.QQQ {
-  background-color: white;
-}
-
 .toggle-right {
   margin: 0 0 0 45%;
-}
-
-.Otstup {
-  margin-bottom: 10px;
-}
-
-/*Nav*/
-
-.nav-padding {
-  padding-right: 120px;
-}
-
-.text-2 {
-  font-size: 12px;
-}
-
-.nav__link {
-  display: inline-block;
-  vertical-align: top;
-  margin: 0 18px;
-  color: #f1efe6;
-  text-decoration: none;
-
-  transition: color .2s linear;
-}
-
-.nav__link:hover {
-  color: #273959;
-  text-decoration: none;
-
-}
-
-
-.dvs {
-  top: 100%;
-  text-align: center;
-  padding-top: 5vh;
-}
-
-.dvs-1{
-  font-size: 13px;
-}
-
-.butt {
-
-  position: relative;
-  border: none;
-  color: #f1efe6;
-  text-decoration: none;
-  text-transform: uppercase;
-  width: 95px;
-  height: 20px;
-  display: inline-block;
-  text-align: center;
-  transition: .5s;
-  overflow: hidden;
-  margin: 0 50px;
-
-}
-
-.butt::before,
-.butt::after {
-  position: absolute;
-  content: '';
-  width: 100%;
-  height: 100%;
-  background: #273959;
-  top: 0;
-  left: -100%;
-  opacity: .5;
-  transition: .3s;
-  z-index: -1;
-}
-
-.butt::after {
-  opacity: 1;
-  transition-delay: .1s;
-}
-.butt:hover {
-  color: #f1efe6;
-  text-decoration: none;
-}
-
-.butt:hover::before,
-.butt:hover::after {
-  left: 0;
-
 }
 
 .position {
@@ -193,12 +87,7 @@ body {
   .toggle-right {
     margin: 0 0 0 45%;
   }
-  .dvs-1{
-    font-size: 14px;
-  }
-  .text-2 {
-    font-size: 15px;
-  }
+
   .header {
     background:
       url("assets/images/intro.png") center no-repeat;
@@ -247,14 +136,6 @@ body {
     margin: 0 0 0 40%;
   }
 
-  .dvs-1 {
-    font-size: 15px;
-  }
-
-  .text-2 {
-    font-size: 16px;
-  }
-
   .header {
     background: url("assets/images/intro.png") center no-repeat;
     -webkit-background-size: cover;
@@ -298,14 +179,6 @@ body {
 
   .toggle-right {
     margin: 0 0 0 0;
-  }
-
-  .dvs-1 {
-    font-size: 16px;
-  }
-
-  .text-2 {
-    font-size: 16px;
   }
 
   .header {
