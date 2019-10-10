@@ -1,12 +1,9 @@
-FROM node as builder
+FROM node
 
 WORKDIR /app
-COPY package.json package-lock.json /app/
-RUN npm install @angular/cli@8 -g
-RUN cd /app && npm install
-COPY . /app
+COPY package*.json /app/
 
-RUN cd /app && npm run build
+RUN npm install
+COPY ./ /app
 
-EXPOSE 4200
-CMD ["npm", "start"]
+RUN npm run build

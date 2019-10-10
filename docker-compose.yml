@@ -5,8 +5,6 @@ services:
         image: nginx
         container_name: "nginx"
         build: ./nginx
-        volumes:
-            - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf
         ports:
             - "80:80"
         depends_on:
