@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny,IsAdminUser
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.generics import (ListAPIView,
                                      DestroyAPIView,
@@ -39,6 +39,11 @@ from .models import StdUser,Student, Teacher
 
 User = get_user_model()
 
+class ListUserAPIView(ListAPIView):
+    permission_classes = [AllowAny,]
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
 class FindUserAPIView(RetrieveAPIView):
     lookup_field = 'email'
     queryset = User.objects.all()
@@ -46,12 +51,7 @@ class FindUserAPIView(RetrieveAPIView):
     permission_classes = [IsAdminUser]
 
 
-class UserListAPIView(ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [IsAdminUser]
-
-class CreateUserAPIView(CreateAPIView):
+class CreateAPIView(CreateAPIView):
     """
     Create user
     """
