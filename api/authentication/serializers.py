@@ -202,4 +202,36 @@ class UpdateUserSerializer(serializers.ModelSerializer):
                 'last_login',
                 'groups',
                 'code',
-                'user_permissions') 
+                'user_permissions')
+
+class BulkUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta(object):
+        model = User
+        exclude = (
+                'email',
+                'password',
+                'is_staff',
+                'is_active',
+                'is_superuser',
+                'is_student',
+                'is_teacher',
+                'username',
+                'last_login',
+                'groups',
+                'code',
+                'user_permissions')
+ 
+class DeleteAllSerializer(serializers.ModelSerializer):
+    
+    class Meta(object):
+        model = User
+        fields = ('email',
+                  'password')
+    
+    def delete(self, request, **kwargs):
+        request.user.is_active = False
+        request.user.save()
+        
+        return Response(status = 200)
+    

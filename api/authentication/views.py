@@ -33,7 +33,9 @@ from .serializers import (
     VerifyUserSerializer,
     VerifyUserPassSerializer,
     RecoverySerializer,
-    UpdateUserSerializer,)
+    UpdateUserSerializer,
+    DeleteAllSerializer,
+    BulkUpdateSerializer)
 
 from .models import StdUser,Student, Teacher
 
@@ -51,7 +53,7 @@ class FindUserAPIView(RetrieveAPIView):
     permission_classes = [IsAdminUser]
 
 
-class CreateAPIView(CreateAPIView):
+class CreateUserAPIView(CreateAPIView):
     """
     Create user
     """
@@ -185,3 +187,34 @@ class DeleteUserAPIView(DestroyAPIView):
         serializer.delete(request)
 
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
+
+class BulkUpdateAPIView(GenericAPIView, UpdateModelMixin):
+    """
+    Bulk Update
+    """
+    def path(self,request,*args,**kwargs):
+        kwargs['partial'] = True
+        serializer.serializer_class(request.user,data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            self.partial_update(request,*args,**kwargs)
+            return Response({'Status':'Update success'}, status=status.HTTP_200_OK)
+
+    def put(self,request):
+        self.update(request,*args,**kwargs)
+        return Response({'Status':'OK'},status=status.HTTP_200_OK)
+
+class DeleteAllAPIView(DestroyAPIView):
+    """
+    Delete all users
+    """
+    #permission_classes = [AllowAny,]
+    serializer_class = DeleteAllSerializer
+    queryset = User.objects.all()
+    queryset = list(queryset)
+    
+    def delete(self,request):
+        for u in self.queryset:
+            serializer = self.serializer_class(request.user, data=request.data)
+            serializer.delete(request)
+        return Response({'Status':'OK'},status=status.HTTP_200_OK)
+
