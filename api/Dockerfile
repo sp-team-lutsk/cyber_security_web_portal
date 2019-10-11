@@ -10,5 +10,3 @@ RUN pip install --upgrade pip
 RUN pip install -r $WORKDIR/requirements/dev.txt
 
 CMD python manage.py runserver
-
-

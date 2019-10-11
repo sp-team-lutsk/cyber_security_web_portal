@@ -7,6 +7,7 @@ ENV/
 mongoenv/
 .idea/
 
+# Django
 *.sqlite3
 *.pyc
 
@@ -15,4 +16,12 @@ mongoenv/
 
 # Tests coverage
 .coverage
+.coveragerc
 **/**/htmlcov
+
+
+**/**/collected_static
+
+# Media
+media_files/
+

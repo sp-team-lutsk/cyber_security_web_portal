@@ -24,6 +24,7 @@
 - 05.07.19 Added models 
 - 14.08.19 Added tests for models
 - 19.08.19 Added serializers
+- 25.09.19 Added frontend part with nginx
 
 ## Installation
 
@@ -37,10 +38,20 @@ Make this simple steps to run this project. :smile: 😄
 
 - Install all dependencies from file `dev.txt` via command :point_down::
 
-> use Python 3
+> Using Python 3
 
 ```shell
-$ pip install -r requirements/dev.txt
+$ pip install -r api/requirements/dev.txt
+```
+> Using Docker scripts
+```
+- docker_all-in.sh - you can run this script when you start project first time. It will clean your docker, init new container, make migrations and create admin user
+- docker_clean_all.sh - deletes old containers
+- docker_init.sg - inits new docker-container
+- docker_update_db.sh - updates migrations
+- docker_api_create_su.sh - creates superuser
+- docker_start.sh - starts docker-container
+- docker-nosetests.sh - runs tests 
 ```
 ---
 
@@ -87,7 +98,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 | ---------------------------------------------------------- | -------: |
 | <a href="https://github.com/Martinfree">Martinfree</a>     | Back-end |
 | <a href="https://github.com/romaoksenyuk">romaoksenyuk</a> | Back-end |
-| <a href="https://github.com/IgnisAvis">IgnisAvis           | PM       |
+| <a href="https://github.com/Azrael-git">Azrael</a>         | PM       |
 | <a href="https://github.com/m-pasha">m-pasha</a>           | CEO      |
 | <a href="https://github.com/klekhaav">klekhaav</a>         | Boss     |
 
