@@ -1,15 +1,17 @@
-from django.conf import settings 
+﻿from django.conf import settings 
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny,IsAdminUser
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from rest_framework.generics import (ListAPIView,
+from rest_framework.generics import (RetrieveUpdateAPIView,
+                                     RetrieveAPIView,
+                                     ListAPIView,
                                      DestroyAPIView,
                                      RetrieveAPIView,
                                      CreateAPIView,
                                      GenericAPIView)
-from rest_framework.mixins import UpdateModelMixin
+from rest_framework.mixins import UpdateModelMixin, ListModelMixin
 from rest_framework.response import Response
 
 from allauth.socialaccount import app_settings, providers
@@ -41,36 +43,68 @@ from .models import StdUser,Student, Teacher
 
 User = get_user_model()
 
-class ListUserAPIView(ListAPIView):
+
+class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
+    lookup_field = 'id'
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    
+    def get(self,request,*args,**kwargs):
+        number = kwargs.get('id')
+        queryset = User.objects.filter(id=number)
+        if queryset:
+            serializer = self.get_serializer(queryset, many =True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'Status':'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    def post(self,request,*args,**kwargs):
+        return Response({'Status':'Method not allowed'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+    def delete(self,request,*args,**kwargs):
+        self.serializer_class = DeleteUserSerializer
+        number = kwargs.get('id')
+        queryset = User.objects.filter(id=number)
+        serializer = self.serializer_class(request.user, data=request.data)
+        serializer.is_valid(raise_exception=True)        
+        serializer.delete(request)
+        
+        return Response({'Status':'OK'},status=status.HTTP_200_OK)
+
+class UsersAPIView(ListAPIView,CreateAPIView):
     permission_classes = [AllowAny,]
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
-class FindUserAPIView(RetrieveAPIView):
-    lookup_field = 'email'
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [IsAdminUser]
-
-
-class CreateUserAPIView(CreateAPIView):
-    """
-    Create user
-    """
-    # Allow any user (authenticated or not) to access this url
-    permission_classes = (AllowAny,)
-    serializer_class = CreateUserSerializer
-    queryset = ''
-
     def post(self, request):
+        self.serializer_class = CreateUserSerializer    
         serializer = self.serializer_class(data=request.data)
        
         serializer.is_valid(raise_exception=True)
-        user_saved = serializer.save()
+        user_saved = seriserializer_class = CreateUserSerializeralizer.save()
         
         return Response(
                 data={"success": "User '{}' created successfully".format(str(user_saved))},
                 status=status.HTTP_201_CREATED)
+
+    def put(self,request,*args,**kwargs):
+        self.serializer_class = BulkUpdateSerializer
+        self.kwargs['partial'] = True
+        for u in self.q:
+            request.user = u
+            serializer=self.serializer_class(request.user,data=request.data)
+            #if serializer.is_valid(raise_exception=True):
+            self.partial_update(request,*args,**kwargs)
+        
+        return Response({'Status':'Update success'}, status=status.HTTP_200_OK)
+    
+    def delete(self,request):
+        self.serializer_class=DeleteAllSerializer
+        q = list(queryset)
+        for u in q:
+            serializer = self.serializer_class(request.user, data=request.data)
+            serializer.delete(request)
+        return Response({'Status':'OK'},status=status.HTTP_200_OK)
 
 class UserInactiveAPIView(APIView):
     def post(self, request, **kwargs):
@@ -158,7 +192,7 @@ class UpdateUserAPIView(GenericAPIView, UpdateModelMixin):
     """
     Update User
     """
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated,]
     serializer_class = UpdateUserSerializer
     queryset = User.objects.all()
 
@@ -172,49 +206,4 @@ class UpdateUserAPIView(GenericAPIView, UpdateModelMixin):
     def put(self, request, *args, **kwargs):
         self.update(request, *args, **kwargs)
         return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
-
-
-class DeleteUserAPIView(DestroyAPIView):
-    """
-    Delete User
-    """
-    permission_classes = (IsAuthenticated,)
-    serializer_class = DeleteUserSerializer
-
-    def post(self, request):
-        serializer = self.serializer_class(request.user, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.delete(request)
-
-        return Response({'Status':'OK'},status=status.HTTP_200_OK)
-
-class BulkUpdateAPIView(GenericAPIView, UpdateModelMixin):
-    """
-    Bulk Update
-    """
-    def path(self,request,*args,**kwargs):
-        kwargs['partial'] = True
-        serializer.serializer_class(request.user,data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            self.partial_update(request,*args,**kwargs)
-            return Response({'Status':'Update success'}, status=status.HTTP_200_OK)
-
-    def put(self,request):
-        self.update(request,*args,**kwargs)
-        return Response({'Status':'OK'},status=status.HTTP_200_OK)
-
-class DeleteAllAPIView(DestroyAPIView):
-    """
-    Delete all users
-    """
-    #permission_classes = [AllowAny,]
-    serializer_class = DeleteAllSerializer
-    queryset = User.objects.all()
-    queryset = list(queryset)
-    
-    def delete(self,request):
-        for u in self.queryset:
-            serializer = self.serializer_class(request.user, data=request.data)
-            serializer.delete(request)
-        return Response({'Status':'OK'},status=status.HTTP_200_OK)
 

@@ -89,7 +89,7 @@ class DeleteUserSerializer(serializers.ModelSerializer):
         fields = ('email',
                 'password',)
 
-        extra_kwargs = {'password': {'write_only' : True}}
+        #extra_kwargs = {'password': {'write_only' : True}}
 
     def delete(self, request, pk=None, **kwargs):
         request.user.is_active = False
@@ -135,20 +135,39 @@ class SendMailSerializer(serializers.ModelSerializer):
         return Mail.send_mail(email=email,subject=subject,body=body)
 
 class FindUserSerializer(serializers.ModelSerializer):
-    email = serializers.CharField(max_length=20)
+    date_joined = serializers.ReadOnlyField() 
+    email = serializers.ReadOnlyField()
+    student = StudentSerializer(many=False, read_only=True)
+    teacher = TeacherSerializer(many=False, read_only=True)
 
     class Meta(object):
-        model = User
-        
-        fields = (
+            model = User
+            fields = (
+                'id',
                 'email',
-                )
+                'first_name',
+                'last_name',
+                'patronymic',
+                'bio',
+                'avatar',
+                'date_of_birth',
+            
+                'date_joined',
+                'last_update',
+            
+                'news_subscription',
+                'is_staff',
+                'is_active',
+                'is_superuser',
 
-    def post(self, data):
-         email = data.get('email')                                                          
-         user = User.objects.get(email=email).first()
-         return UserSerializer(user)    
+                'is_student',
+                'is_teacher',
+                'student',
+                'teacher',
 
+            )
+            #extra_kwargs = {'password': {'write_only': True}}
+    
 class UserSerializer(serializers.ModelSerializer):
     date_joined = serializers.ReadOnlyField() 
     student = StudentSerializer(many=False, read_only=True)
@@ -207,21 +226,17 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 class BulkUpdateSerializer(serializers.ModelSerializer):
 
     class Meta(object):
-        model = User
+        model = User.objects.all()
         exclude = (
                 'email',
                 'password',
                 'is_staff',
-                'is_active',
                 'is_superuser',
-                'is_student',
-                'is_teacher',
-                'username',
                 'last_login',
                 'groups',
                 'code',
                 'user_permissions')
- 
+    
 class DeleteAllSerializer(serializers.ModelSerializer):
     
     class Meta(object):
