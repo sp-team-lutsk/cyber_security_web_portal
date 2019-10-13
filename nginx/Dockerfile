@@ -12,5 +12,4 @@ COPY --from=node /app/dist/frontend/ /usr/share/nginx/html
 # COPY ./certificates/nginx.key /etc/nginx/ssl/nginx.key
 
 EXPOSE 80
-
 CMD ["nginx", "-g", "daemon off;"]

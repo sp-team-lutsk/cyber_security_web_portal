@@ -15,7 +15,7 @@ services:
         container_name: "frontend"
         build: ./frontend
         ports:
-            - "4200:4200"
+            - "4200"
         depends_on:
             - api
 
@@ -23,10 +23,8 @@ services:
         container_name: "postgresql"
         image: postgres:12
         restart: always
-        expose:
-            - "5432"
         ports:
-            - "5432:5432"
+            - "5432"
         environment:
             POSTGRES_PASSWORD: Admin123!
             POSTGRES_USER: admin
@@ -38,7 +36,7 @@ services:
         volumes:
             - ./api:/opt/docker_polls_group/api
         ports:
-            - "8000:8000"
+            - "8000"
         links:
             - postgres
         depends_on:
