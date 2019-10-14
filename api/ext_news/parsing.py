@@ -14,13 +14,21 @@ headers = {"Host": "glavcom.ua",
 
 burl = "https://glavcom.ua/tags/ministerstvo-osviti-i-nauki.html"
 glavcom = "https://glavcom.ua/tags/ministerstvo-osviti-i-nauki/"
+<<<<<<< HEAD
 pingvin = "https://pingvin.pro/category/gadgets/news-gadgets?"
+=======
+pingvin = "https://pingvin.o/category/gadgets/news-gadgets?"
+>>>>>>> upstream/ext_news
 intnews = "https://www.itnews.com"
 ########################################################################################################
 def get_html(url):
     req = urllib.request.Request(url, headers=headers)
     response = urllib.request.urlopen(req)
+<<<<<<< HEAD
     content = brotli.decompress(response.read())
+=======
+    content = brotli.decomess(response.read())
+>>>>>>> upstream/ext_news
 
     return content.decode('utf-8')
 
@@ -32,7 +40,11 @@ def get_page_count(html):
 
 
 def parse(html):
+<<<<<<< HEAD
     projects = []
+=======
+    ojects = []
+>>>>>>> upstream/ext_news
     soup = BeautifulSoup(html, 'html.parser')
     div = soup.find('ul', class_='list')
 
@@ -50,9 +62,12 @@ def parse(html):
             'read_more': link
         })
 
+<<<<<<< HEAD
     for project in projects:
         print(project)
 
+=======
+>>>>>>> upstream/ext_news
     return projects
 
 def get_pages(html):
@@ -60,7 +75,10 @@ def get_pages(html):
 
     pages = soup.find_all('ul', class_='pagination').find_all('a')[-1].get('href')
 
+<<<<<<< HEAD
     print('pages')
+=======
+>>>>>>> upstream/ext_news
 #######################################################################################################
 
 def get_html2(url):
@@ -94,9 +112,12 @@ def parse2(html):
             'read_more': link
         })
 
+<<<<<<< HEAD
     for project in projects:
         print(project)
 
+=======
+>>>>>>> upstream/ext_news
     return projects
 
 
@@ -105,8 +126,11 @@ def get_pages2(html):
 
     pages = soup.find_all('ul', class_='pagination').find_all('a',class_='page_numbers')[-1].get('href')
 
+<<<<<<< HEAD
     print('pages')
 
+=======
+>>>>>>> upstream/ext_news
 ########################################################################################################
 
 def get_html3(url):
@@ -161,8 +185,11 @@ def parse3(html):
             'read_more': unic_read2
         })
 #################################################################
+<<<<<<< HEAD
     for project in projects:
         print(project)
+=======
+>>>>>>> upstream/ext_news
 
     return projects
 
@@ -178,6 +205,7 @@ def save(projects):
 def main():
     projects = []
 
+<<<<<<< HEAD
     print('Glavcom:')
 
     total_pages = get_page_count(get_html(burl))
@@ -199,6 +227,19 @@ def main():
         projects.extend(parse2(get_html2(pingvin + "page=%d" % page2)))
 
     print('\nIntnews:')
+=======
+    total_pages = get_page_count(get_html(burl))
+
+    for page in range(1, total_pages):
+        projects.extend(parse(get_html(glavcom + 'p%d.html' % page)))
+
+    total_pages2 = get_page_count2(get_html2(pingvin))
+
+
+    for page2 in range(1, 11):
+
+        projects.extend(parse2(get_html2(pingvin + "page=%d" % page2)))
+>>>>>>> upstream/ext_news
 
     projects.extend(parse3(get_html3(intnews)))
 
@@ -208,6 +249,9 @@ def main():
 if __name__ == '__main__':
     main()
 
+<<<<<<< HEAD
 CRONJOBS = [
     ('00 16  *   *   6', 'ext_news.cron.CronParse'),
 ]
+=======
+>>>>>>> upstream/ext_news
