@@ -14,13 +14,13 @@ headers = {"Host": "glavcom.ua",
 
 burl = "https://glavcom.ua/tags/ministerstvo-osviti-i-nauki.html"
 glavcom = "https://glavcom.ua/tags/ministerstvo-osviti-i-nauki/"
-pingvin = "https://pingvin.pro/category/gadgets/news-gadgets?"
+pingvin = "https://pingvin.o/category/gadgets/news-gadgets?"
 intnews = "https://www.itnews.com"
 ########################################################################################################
 def get_html(url):
     req = urllib.request.Request(url, headers=headers)
     response = urllib.request.urlopen(req)
-    content = brotli.decompress(response.read())
+    content = brotli.decomess(response.read())
 
     return content.decode('utf-8')
 
@@ -32,7 +32,7 @@ def get_page_count(html):
 
 
 def parse(html):
-    projects = []
+    ojects = []
     soup = BeautifulSoup(html, 'html.parser')
     div = soup.find('ul', class_='list')
 
@@ -50,9 +50,6 @@ def parse(html):
             'read_more': link
         })
 
-    for project in projects:
-        print(project)
-
     return projects
 
 def get_pages(html):
@@ -60,7 +57,6 @@ def get_pages(html):
 
     pages = soup.find_all('ul', class_='pagination').find_all('a')[-1].get('href')
 
-    print('pages')
 #######################################################################################################
 
 def get_html2(url):
@@ -94,9 +90,6 @@ def parse2(html):
             'read_more': link
         })
 
-    for project in projects:
-        print(project)
-
     return projects
 
 
@@ -104,8 +97,6 @@ def get_pages2(html):
     soup = BeautifulSoup(html, 'html.parser')
 
     pages = soup.find_all('ul', class_='pagination').find_all('a',class_='page_numbers')[-1].get('href')
-
-    print('pages')
 
 ########################################################################################################
 
@@ -161,8 +152,6 @@ def parse3(html):
             'read_more': unic_read2
         })
 #################################################################
-    for project in projects:
-        print(project)
 
     return projects
 
@@ -178,27 +167,17 @@ def save(projects):
 def main():
     projects = []
 
-    print('Glavcom:')
-
     total_pages = get_page_count(get_html(burl))
 
-    print('%d all_pages...' % total_pages)
-
     for page in range(1, total_pages):
-        print('\nPars %d%% (%d/%d)' % (page / total_pages * 100, page, total_pages))
         projects.extend(parse(get_html(glavcom + 'p%d.html' % page)))
-
-    print('\nPingvin.pro:')
 
     total_pages2 = get_page_count2(get_html2(pingvin))
 
-    print('%d all_pages...' % total_pages2)
 
     for page2 in range(1, 11):
-        print('\nPars %d%% (%d/%d)' % (page2 / total_pages2 * 100, page2, total_pages2))
-        projects.extend(parse2(get_html2(pingvin + "page=%d" % page2)))
 
-    print('\nIntnews:')
+        projects.extend(parse2(get_html2(pingvin + "page=%d" % page2)))
 
     projects.extend(parse3(get_html3(intnews)))
 

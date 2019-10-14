@@ -254,4 +254,8 @@ STATICFILES_FINDERS = (
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL ='/accounts/login/'
 
+CRONJOBS = [
+    ('00 16  *   *   6', 'ext_news.cron.CronParse'),
+]
+
 SITE_ID = 2
