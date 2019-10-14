@@ -187,6 +187,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-CRONJOBS = [
-    ('00 16  *   *   6', 'ext_news.cron.CronParse'),
-]
