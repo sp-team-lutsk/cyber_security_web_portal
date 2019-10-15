@@ -26,30 +26,53 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles', 
     'django.contrib.sites',
-
+    
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
     'allauth',
-    'rest_framework.authtoken', 
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
-
     'django_nose',
 
     'djangotoolbox',
     'authentication',
+    'ext_news',
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 AUTH_USER_MODEL = 'authentication.StdUser'
+# email confirm configuration
 
+ACCOUNT_EMAIL_REQUIRED = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'lntu.website.it@gmail.com'
+EMAIL_HOST_PASSWORD = 'GRPKiT8izUCGUB2'
+DEFAULT_FROM_EMAIL = 'lntu.webstie.it@gmail.com'
+VERIFICATION_URL = 'verify'
+RECOVER_URL = 'completerecover'
+VERIFICATION_CODE_EXPIRED = 1
+RECOVER_CODE_EXPIRED = 1
+
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.SHA1PasswordHasher',
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+    'django.contrib.auth.hashers.CryptPasswordHasher',
+        )
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
-
-LOGIN_REDIRECT_URL = 'home'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -94,8 +117,8 @@ DATABASES = {
         'NAME': 'postgresql',
         'USER': 'admin',
         'PASSWORD': 'Admin123!',
-        'HOST': 'postgresql',
-        'PORT': '5432',# if you use docker you should specify  'HOST': 'mongodb', but if it is locally 'HOST': '127.0.0.1'
+        'HOST': 'postgresql',    # if you use docker you should specify  'HOST': 'postgresql', but if it is locally 'HOST': '127.0.0.1'
+        'PORT': '5432',
     }
 }
 
@@ -103,16 +126,38 @@ DATABASES = {
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS':{
+            'min_length':8,
+            }
+    
     },
+    
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
+    
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+    
+    {
+        'NAME': 'authentication.validators.SymbolPasswordValidator',
+    
+    },
+    
+    {
+        'NAME': 'authentication.validators.CharPasswordValidator',
+
+    },
+    
+    {
+        'NAME': 'authentication.validators.UpPasswordValidator',
+
+    },
+    {
+        'NAME': 'authentication.validators.LowPasswordValidator',
+
     },
 ]
 
@@ -151,15 +196,52 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 # Media files
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files')
 MEDIA_URL = '/media/'
+REST_USE_JWT = True
 
+# providers settings
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile', 'user_friends'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time',
+        ],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': 'path.to.callable',
+        'VERIFIED_EMAIL': True,
+        'VERSION': 'v2.12',
+    },
+     'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
 
+# allauth user relation
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_ADAPTER = 'authentication.adapter.UserSocialAccountAdapter'
 # Static files (CSS, JavaScript, Images)
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
@@ -167,4 +249,9 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
+
+# redirect urls
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL ='/accounts/login/'
+
 SITE_ID = 2
