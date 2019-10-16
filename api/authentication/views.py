@@ -81,7 +81,7 @@ class UsersAPIView(ListAPIView,CreateAPIView):
         serializer = self.serializer_class(data=request.data)
        
         serializer.is_valid(raise_exception=True)
-        user_saved = seriserializer_class = CreateUserSerializeralizer.save()
+        user_saved = seriserializer_class = CreateUserSerializer.save()
         
         return Response(
                 data={"success": "User '{}' created successfully".format(str(user_saved))},
