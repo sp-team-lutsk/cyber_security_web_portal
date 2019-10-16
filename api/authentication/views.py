@@ -88,16 +88,16 @@ class UsersAPIView(ListAPIView,CreateAPIView):
                 status=status.HTTP_201_CREATED)
 
     def put(self,request,*args,**kwargs):
-        self.serializer_class = BulkUpdateSerializer
-        self.kwargs['partial'] = True
-        for u in self.q:
-            request.user = u
-            serializer=self.serializer_class(request.user,data=request.data)
-            #if serializer.is_valid(raise_exception=True):
-            self.partial_update(request,*args,**kwargs)
+        queryset = User.objects.all()
         
-        return Response({'Status':'Update success'}, status=status.HTTP_200_OK)
-    
+        for user in list(queryset):
+            serializer = UpdateUserSerializer(user,  data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+        
+            return Response(serializer.errors)
+
     def delete(self,request):
         self.serializer_class=DeleteAllSerializer
         q = list(queryset)

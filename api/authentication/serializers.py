@@ -226,17 +226,16 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 class BulkUpdateSerializer(serializers.ModelSerializer):
 
     class Meta(object):
-        model = User.objects.all()
-        exclude = (
-                'email',
-                'password',
-                'is_staff',
-                'is_superuser',
-                'last_login',
-                'groups',
-                'code',
-                'user_permissions')
-    
+        model = User
+        fields = ('first_name',
+                  'last_name',
+                  'patronymic',
+                  'bio',
+                  'avatar',
+                  'date_of_birth',
+                  'news_subscription',
+                  'user_permissions')
+
 class DeleteAllSerializer(serializers.ModelSerializer):
     
     class Meta(object):
