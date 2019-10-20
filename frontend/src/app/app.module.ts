@@ -10,6 +10,9 @@ import {RouterModule} from "@angular/router";
 import { ScienceComponent } from './science/science.component';
 import { StructureComponent } from './structure/structure.component';
 import { AboutComponent } from './about/about.component';
+import { MailingComponent } from './mailing/mailing.component';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const routes = [
   {path: '', component: BodyComponent},
@@ -17,7 +20,8 @@ const routes = [
   {path: 'science', component: ScienceComponent},
   {path: 'structure', component: StructureComponent},
   {path: 'about', component: AboutComponent},
-]
+  {path: 'mailing', component: MailingComponent},
+];
 
 @NgModule({
   declarations: [
@@ -29,10 +33,12 @@ const routes = [
     ScienceComponent,
     StructureComponent,
     AboutComponent,
+    MailingComponent,
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [
@@ -43,6 +49,7 @@ const routes = [
     ScienceComponent,
     StructureComponent,
     AboutComponent,
+    MailingComponent,
     FooterComponent,
   ],
 })
