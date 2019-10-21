@@ -1,0 +1,639 @@
+---
+swagger: "2.0"
+info:
+  description: API for demartment of computer engineering and cybersecurity
+  version: 1.0.0
+  title: CE and CS API
+  termsOfService: terms
+  contact:
+    name: LNTU
+    url: http://localhost.com
+    email: admin@example.com
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+host: virtserver.swaggerhub.com
+basePath: /lntu_team/lntu_api/1.0.0
+schemes:
+- https
+- http
+paths:
+  /auth/users/:
+    get:
+      summary: Returns a list of users.
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Creates a new user
+      parameters:
+      - in: body
+        name: user
+        description: User creating
+        required: false
+        schema:
+          $ref: '#/definitions/user'
+      responses:
+        201:
+          description: Created
+    put:
+      summary: Bulk user update
+      parameters:
+      - in: body
+        name: user
+        description: User updating
+        required: false
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Deletes all users
+      parameters: []
+      responses:
+        200:
+          description: OK
+  /auth/users/{id}/:
+    get:
+      summary: Returns info about user by ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      responses:
+        200:
+          description: A user object
+          schema:
+            $ref: '#/definitions/User'
+        404:
+          description: Not found
+    post:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      responses:
+        405:
+          description: Method not allowed
+    put:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      - in: body
+        name: user
+        description: User updating
+        required: false
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        200:
+          description: OK
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      responses:
+        200:
+          description: OK
+  /auth/users/login/:
+    post:
+      summary: Provides user login with token obtain
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: user
+        description: User to login and obtain token
+        required: false
+        schema:
+          $ref: '#/definitions/user_1'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              refresh:
+                type: string
+                format: byte
+                example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU3MDEyNTg2MCwianRpIjoiMGQ2ZWRjYzgwZjkwNGIwMmE3M2ExNzAzYTcwYzFjNzEiLCJ1c2VyX2lkIjoxfQ.sjwb0uFBtQXtLzrHt_GJ60y7M5M0NONVHS7RAXCV2Ls
+                description: The user ID.
+                pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+              access:
+                type: string
+                format: byte
+                example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU3MDEyNTg2MCwianRpIjoiMGQ2ZWRjYzgwZjkwNGIwMmE3M2ExNzAzYTcwYzFjNzEiLCJ1c2VyX2lkIjoxfQ.sjwb0uFBtQXtLzrHt_GJ60y7M5M0NONVHS7RAXCV2Ls
+                description: The user name.
+                pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+  /auth/users/verify/{code}/:
+    get:
+      summary: Verificates user by email code.
+      parameters:
+      - name: code
+        in: path
+        required: true
+        type: string
+        minimum: 1
+      responses:
+        200:
+          description: OK
+  /auth/users/recovery/{code}/:
+    get:
+      summary: Changes user password by email code.
+      parameters:
+      - name: code
+        in: path
+        required: true
+        type: string
+        minimum: 1
+      responses:
+        200:
+          description: OK
+  /auth/teachers/:
+    get:
+      summary: Returns a list of teachers.
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: OK
+  /auth/teachers/{id}/:
+    get:
+      summary: Returns info teacher user by ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      responses:
+        200:
+          description: A user object
+          schema:
+            $ref: '#/definitions/Teacher'
+        404:
+          description: Not found
+    post:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      responses:
+        405:
+          description: Method not allowed
+    put:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      - in: body
+        name: teacher
+        description: Teacher updating
+        required: false
+        schema:
+          $ref: '#/definitions/Teacher'
+      responses:
+        200:
+          description: OK
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      responses:
+        200:
+          description: OK
+  /auth/students/:
+    get:
+      summary: Returns a list of students.
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: OK
+  /auth/students/{id}/:
+    get:
+      summary: Returns info student by ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      responses:
+        200:
+          description: A student object
+          schema:
+            $ref: '#/definitions/Student'
+        404:
+          description: Not found
+    post:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      responses:
+        405:
+          description: Method not allowed
+    put:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      - in: body
+        name: student
+        description: Student updating
+        required: false
+        schema:
+          $ref: '#/definitions/Student'
+      responses:
+        200:
+          description: OK
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      responses:
+        200:
+          description: OK
+  /extnews/:
+    get:
+      summary: Returns a list of news.
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Creates a news
+      parameters:
+      - in: body
+        name: news
+        description: News creating
+        required: false
+        schema:
+          $ref: '#/definitions/News'
+      responses:
+        201:
+          description: Created
+    put:
+      summary: Bulk news update
+      parameters:
+      - in: body
+        name: news
+        description: News updating
+        required: false
+        schema:
+          $ref: '#/definitions/News'
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Deletes all news
+      parameters: []
+      responses:
+        200:
+          description: OK
+  /extnews/{id}/:
+    get:
+      summary: Returns info about news by ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      responses:
+        200:
+          description: A news object
+          schema:
+            $ref: '#/definitions/News'
+        404:
+          description: Not found
+    post:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      responses:
+        405:
+          description: Method not allowed
+    put:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      - in: body
+        name: news
+        description: News updating
+        required: false
+        schema:
+          $ref: '#/definitions/News'
+      responses:
+        200:
+          description: OK
+    delete:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        minimum: 1
+      responses:
+        200:
+          description: OK
+  /auth/users/send_mail/:
+    post:
+      parameters:
+      - in: body
+        name: mail
+        description: Provides mailinig
+        required: false
+        schema:
+          $ref: '#/definitions/Mail'
+      responses:
+        200:
+          description: OK
+  /auth/users/token_refresh/:
+    post:
+      parameters:
+      - in: body
+        name: token
+        description: Provides mailinig
+        required: false
+        schema:
+          $ref: '#/definitions/token'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              access:
+                type: string
+                example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTcwMjE1NzAzLCJqdGkiOiJlNWRmMTQ5ZDQxYzA0NjhlOWMwMmYwZDUzY2EyMjFiOCIsInVzZXJfaWQiOjF9.XuYK_gdmphF45ACJny2mpizCxTc-n_Y_kL8ciNYqy6s
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: A user's id
+      email:
+        type: string
+        format: email
+        example: azrael@gmail.com
+        description: A user's email (is used like username for login)
+      first_name:
+        type: string
+        example: Olexandr
+        description: A user's name
+      last_name:
+        type: string
+        example: Shypulin
+        description: A user's lastname
+      patronimyc:
+        type: string
+        example: Olexandrovych
+        description: A user's patronimyc
+      bio:
+        type: string
+        example: Info about user
+        description: A user's bio
+      avatar:
+        type: string
+        format: binary
+        description: A user's avatar
+      date_of_birth:
+        type: string
+        format: date
+        example: 2019-10-02
+        description: A user's date of birth
+      date_joined:
+        type: string
+        format: date-time
+        example: Z019-10-02T16:19:44.771606Z
+        description: A user's date of join
+      last_updated:
+        type: string
+        format: date-time
+        example: Z019-10-02T16:19:44.771606Z
+        description: A user's date of last info updating
+      news_subscription:
+        type: boolean
+        example: true
+        description: User subscribition to news mailing
+      is_staff:
+        type: boolean
+        example: false
+        description: User staff status
+      is_active:
+        type: boolean
+        example: false
+        description: User active status
+      is_superuser:
+        type: boolean
+        example: false
+        description: User superuser status
+      user_permissions:
+        type: array
+        items:
+          type: string
+          example: permission
+      is_student:
+        type: boolean
+        example: false
+        description: User student status
+      is_teacher:
+        type: boolean
+        example: false
+        description: User teacher status
+      student:
+        type: object
+        description: User student data
+        properties: {}
+      teacher:
+        type: object
+        description: User teacher data
+        properties: {}
+  Student:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: A student's id
+      faculty:
+        $ref: '#/definitions/Faculty'
+      user:
+        $ref: '#/definitions/User'
+      profession:
+        $ref: '#/definitions/Profession'
+      acad_group:
+        type: string
+        example: КБ-41
+        description: Academic group of student
+  Teacher:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: A teacher's id
+      faculty:
+        $ref: '#/definitions/Faculty'
+      user:
+        $ref: '#/definitions/User'
+  Profession:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: Faculty's id
+      name:
+        type: string
+        example: Кiбербезпека
+        description: Faculty's name
+  Faculty:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: Faculty's id
+      name:
+        type: string
+        example: ФКНIТ
+        description: Faculty's name
+  News:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: A news id
+      title:
+        type: string
+        example: News from NASA
+        description: A news title
+      description:
+        type: string
+        example: Lorem ipsum dolor sit amet habat yorum aves
+        description: A news main data
+      news_link:
+        type: string
+        format: URL
+        example: http://news.com/id=1
+        description: URL to news source
+      images_link:
+        type: string
+        format: binary
+      is_checked:
+        type: boolean
+        example: true
+        description: Is checked by moderator
+  Mail:
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+        example: user@example.com
+        description: Email to send message
+      object:
+        type: string
+        example: About university sport day
+        description: Message theme
+      body:
+        type: string
+        example: Tomorrow we plain to ...
+        description: Message main part
+  user:
+    type: object
+    required:
+    - email
+    - password
+    properties:
+      email:
+        type: string
+        format: email
+        example: admin@example.com
+      password:
+        type: string
+        format: password
+        example: Secure124!
+  user_1:
+    type: object
+    required:
+    - email
+    - password
+    properties:
+      email:
+        type: string
+        format: email
+        example: admin@example.com
+      password:
+        type: string
+        format: password
+        example: Secure124!
+  inline_response_200:
+    properties:
+      refresh:
+        type: string
+        format: byte
+        example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU3MDEyNTg2MCwianRpIjoiMGQ2ZWRjYzgwZjkwNGIwMmE3M2ExNzAzYTcwYzFjNzEiLCJ1c2VyX2lkIjoxfQ.sjwb0uFBtQXtLzrHt_GJ60y7M5M0NONVHS7RAXCV2Ls
+        description: The user ID.
+        pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+      access:
+        type: string
+        format: byte
+        example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU3MDEyNTg2MCwianRpIjoiMGQ2ZWRjYzgwZjkwNGIwMmE3M2ExNzAzYTcwYzFjNzEiLCJ1c2VyX2lkIjoxfQ.sjwb0uFBtQXtLzrHt_GJ60y7M5M0NONVHS7RAXCV2Ls
+        description: The user name.
+        pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+  token:
+    type: object
+    properties:
+      refresh:
+        type: string
+        example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU3MDMwMTYyMSwianRpIjoiZDYyYjBjOWZkNzAwNDYzNGEzYjE0NTgwOWRlNzdkZWUiLCJ1c2VyX2lkIjoxfQ.u6SnFdNl3s0DsKp1zNR7TFIggSq6PoIO41CXK2uRwc4
+  inline_response_200_1:
+    properties:
+      access:
+        type: string
+        example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTcwMjE1NzAzLCJqdGkiOiJlNWRmMTQ5ZDQxYzA0NjhlOWMwMmYwZDUzY2EyMjFiOCIsInVzZXJfaWQiOjF9.XuYK_gdmphF45ACJny2mpizCxTc-n_Y_kL8ciNYqy6s
