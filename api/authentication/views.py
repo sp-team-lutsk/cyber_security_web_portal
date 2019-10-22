@@ -46,7 +46,7 @@ User = get_user_model()
 
 class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     lookup_field = 'id'
-    permission_classes = [IsAuthenticated, ]
+    #permission_classes = [IsAuthenticated, ]
     serializer_class = UserSerializer
     queryset = User.objects.all()
     
@@ -60,6 +60,16 @@ class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     
     def post(self,request,*args,**kwargs):
         return Response({'Status':'Method not allowed'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def put(self, request, *args, **kwargs):
+        self.serializer_class = UpdateUserSerializer
+        number = kwargs.get('id')
+        user = User.objects.filter(id=number)
+        serializer = UpdateUserSerializer(request.user,  data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
+        
     
     def delete(self,request,*args,**kwargs):
         self.serializer_class = DeleteUserSerializer
@@ -81,13 +91,14 @@ class UsersAPIView(ListAPIView,CreateAPIView):
         serializer = self.serializer_class(data=request.data)
        
         serializer.is_valid(raise_exception=True)
-        user_saved = seriserializer_class = CreateUserSerializer.save()
+        user_saved = serializer.save()
         
         return Response(
                 data={"success": "User '{}' created successfully".format(str(user_saved))},
                 status=status.HTTP_201_CREATED)
 
     def put(self,request,*args,**kwargs):
+        self.serializer_class = UpdateUserSerializer
         queryset = User.objects.all()
         
         for user in list(queryset):
@@ -187,23 +198,4 @@ class SendMailAPIView(APIView):
             if serializer.is_valid(raise_exception=True):
                 serializer.send(data=request.data)
                 return Response({'Status': 'Mail Send'}, status=status.HTTP_200_OK)
-
-class UpdateUserAPIView(GenericAPIView, UpdateModelMixin):
-    """
-    Update User
-    """
-    permission_classes = [IsAuthenticated,]
-    serializer_class = UpdateUserSerializer
-    queryset = User.objects.all()
-
-    def patch(self, request, *args, **kwargs):
-        kwargs['partial'] = True
-        serializer = self.serializer_class(request.user, data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            self.partial_update(request, *args, **kwargs) 
-            return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
-
-    def put(self, request, *args, **kwargs):
-        self.update(request, *args, **kwargs)
-        return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
 
