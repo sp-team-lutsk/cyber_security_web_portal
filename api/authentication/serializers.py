@@ -211,6 +211,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         model = User
         exclude = (
                 'email',
+                'id',
                 'password',
                 'is_staff', 
                 'is_active', 
@@ -242,10 +243,3 @@ class DeleteAllSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email',
                   'password')
-    
-    def delete(self, request, **kwargs):
-        request.user.is_active = False
-        request.user.save()
-        
-        return Response(status = 200)
-    

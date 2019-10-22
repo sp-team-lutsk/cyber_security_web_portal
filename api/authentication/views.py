@@ -64,21 +64,20 @@ class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     def put(self, request, *args, **kwargs):
         self.serializer_class = UpdateUserSerializer
         number = kwargs.get('id')
-        user = User.objects.filter(id=number)
-        serializer = UpdateUserSerializer(request.user,  data=request.data)
+        queryset = User.objects.filter(id=number)
+        serializer = UpdateUserSerializer(queryset[0],  data=request.data)
         if serializer.is_valid():
             serializer.save()
         return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
         
     
     def delete(self,request,*args,**kwargs):
-        self.serializer_class = DeleteUserSerializer
+        #self.serializer_class = DeleteUserSerializer
         number = kwargs.get('id')
         queryset = User.objects.filter(id=number)
-        serializer = self.serializer_class(request.user, data=request.data)
-        serializer.is_valid(raise_exception=True)        
-        serializer.delete(request)
-        
+        user = queryset[0]
+        user.is_active = False
+        user.save()
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
 
 class UsersAPIView(ListAPIView,CreateAPIView):
