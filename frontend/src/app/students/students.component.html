@@ -111,104 +111,28 @@
   <div class="style_table">
     <table>
       <tr class="line-first">
-        <td class="column">Понеділок</td>
         <td class="column">Вівторок</td>
         <td class="column">Середа</td>
         <td class="column">Четвер</td>
         <td class="column">П'ятниця</td>
         <td class="column">Субота</td>
-        <td class="column">Неділя</td>
       </tr>
       <tr class="line">
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-      </tr>
-      <tr class="line">
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-      </tr>
-      <tr class="line">
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-      </tr>
-      <tr class="line">
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-      </tr>
-      <tr class="line">
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-      </tr>
-      <tr class="line">
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-      </tr>
-      <tr class="line">
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-      </tr>
-      <tr class="line">
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-      </tr>
-      <tr class="line">
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
-        <td class="column"></td>
+        <td class="column">Вища</td>
+        <td class="column">{{lesson}}</td>
+        <td class="column">{{lesson}}</td>
+        <td class="column">{{lesson}}</td>
+        <td class="column">{{lesson}}</td>
       </tr>
     </table>
-    <p>
+    <div>
+    <a href="#">
       <fa-icon [icon]="faAngleUp" class="faAngle_1"></fa-icon>
-      <fa-icon [icon]="faAngleUp" class="faAngle_2"></fa-icon>
-    </p>
-    <p>
+    </a>
+    <a href="#">
       <fa-icon [icon]="faAngleDown" class="faAngle_1"></fa-icon>
-      <fa-icon [icon]="faAngleDown" class="faAngle_2"></fa-icon>
-    </p>
+    </a>
+    </div>
   </div>
   <div class="col-12 settings-announcement padding_45px">
     <img src="assets/icon_png/i%20class=far%20fa-editi.png" alt="">
@@ -225,8 +149,69 @@
     </div>
   </div>
   <div class="col-12 settings-announcement padding_45px">
-    <img src="assets/icon_png/i%20class=far%20fa-editi.png" alt="">
-    <p>НАВЧАЛЬНІ МАТЕРІАЛИ</p>
+    <img src="assets/icon_png/i%20class=fas%20fa-chalkboard-teacheri.png" alt="">
+    <p>ЗДАЧА ОНЛАЙН</p>
   </div>
+  <div class="test__online">
+    <div class="full__line">
+      <div class="blou__blok">
+        <nav class="menu">
+          <ul>
+            <li><div class="menu__button"><a href="#">Вибрати предмет <fa-icon [icon]="faAngleDown" class="faAngledown__menu"></fa-icon></a></div>
+              <ul>
+                <li><div class="menu__vertical__button"><a href="#">Програмування</a></div></li>
+                <li><div class="menu__vertical__button"><a href="#">Вища математика</a></div></li>
+                <li><div class="menu__vertical__button"><a href="#">Фізика</a></div></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="back__img">
+        <img src="assets/img1/img3.png" alt="">
+        <button class="button__img">Здати онлайн</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 settings-announcement padding_45px">
+    <img src="assets/icon_png/i%20class=fas%20fa-blogi%20copy.png" alt="">
+    <p>БЛОГ</p>
+  </div>
+  <div class="blog__block">
+    <div class="blog__field">
+      <div class="blog__field__border">
+        <div class="author">Анатолійович</div>
+        <div class="date">2019-07-25</div>
+        <div class="contents">Lorem asfsfasaf safaf sfasaf fasfsa saf afsfsafsasafs s s s s s s s ss s s s sfasfasaffas asfasfs</div>
+      </div>
+    </div>
+  </div>
+  <div class="row blok-5">
+    <div class="white-line">
+      <div class="blou-blok1">
+        <div class="col uku"><button type="button" class="btn borders">
+          <img src="assets/icon_png/fb.png" alt="" class="img-blou-blok">
+        </button>
+          <button type="button" class="btn borders ">
+            <img src="assets/icon_png/ins.png" alt="" class="img-blou-blok">
+          </button>
+          <button type="button" class="btn borders ">
+            <img src="assets/icon_png/tw.png" alt="" class="img-blou-blok">
+          </button>
+          <button type="button" class="btn borders ">
+            <img src="assets/icon_png/wa.png" alt="" class="img-blou-blok">
+          </button>
+          <button type="button" class="btn borders ">
+            <img src="assets/icon_png/t.png" alt="" class="img-blou-blok">
+          </button></div>
+      </div>
+      <div class="backe-image">
+        <img src="assets/images/img10.png" alt="" class="image">
+      </div>
+      <div class="buttons">
+        <button class="btn btn-light button-1" type="submit">Долучитися</button>
+        <button class="btn btn-primary button-2" type="submit">Прийднатися</button>
+      </div>
+    </div>
 </div>
 
