@@ -89,7 +89,7 @@ class StdUserManager(UserManager):
         )
 
         try:
-            faculty = Faculty.objects.get(name=faculty)
+            faculty = Faculty.objects.get(name=faculty.name)
         except:
             raise ValueError('Not found such object')
 

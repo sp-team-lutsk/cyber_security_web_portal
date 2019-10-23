@@ -103,6 +103,7 @@ class TeacherSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Teacher
         fields = (
+            'user',
             'faculty',
         )
 
@@ -243,3 +244,33 @@ class DeleteAllSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email',
                   'password')
+
+class CreateTeacherSerializer(serializers.ModelSerializer):
+    faculty = serializers.ChoiceField(Faculty.objects.all())
+    read_only_fields = ('date_joined',)
+
+    class Meta(object):
+        model = User
+        fields = (
+            'email',
+            'password',
+            'faculty',
+        )
+
+    def create(self, validated_data):
+
+        validate_password(password=validated_data.get('password',), user=validated_data.get('email'), password_validators=None)
+        
+        email = validated_data.get('email')
+        user = User.objects.create_teacher(**validated_data) 
+        user.send_mail(email=email)
+        return user
+
+class UpdateTeacherSerializer(serializers.ModelSerializer):
+   
+    class Meta(object):
+        model = Teacher
+        fields = (
+                'faculty',)
+
+

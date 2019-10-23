@@ -29,7 +29,9 @@ from .serializers import (
     DeleteUserSerializer,
     FindUserSerializer,
     StudentSerializer, 
-    TeacherSerializer, 
+    TeacherSerializer,
+    CreateTeacherSerializer,
+    UpdateTeacherSerializer,
     SendMailSerializer,
     CreateUserSerializer,
     VerifyUserSerializer,
@@ -173,14 +175,62 @@ class StudentListAPIView(ListAPIView):
     serializer_class = StudentSerializer
     permission_classes = [IsAdminUser]
 
+class TeacherAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
+    lookup_field = 'id'
+    #permission_classes = [IsAuthenticated, ]
+    serializer_class = UserSerializer
+    queryset = Teacher.objects.all()
+    
+    def get(self,request,*args,**kwargs):
+        number = kwargs.get('id')
+        queryset = User.objects.filter(id=number,is_teacher=True)
+        if queryset:
+            serializer = self.get_serializer(queryset, many =True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'Status':'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    def post(self,request,*args,**kwargs):
+        return Response({'Status':'Method not allowed'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-class TeacherListAPIView(ListAPIView):
+    def put(self, request, *args, **kwargs):
+        self.serializer_class = UpdateTeacherSerializer
+        number = kwargs.get('id')
+        queryset = Teacher.objects.filter(user=number)
+        serializer = UpdateTeacherSerializer(queryset[0],  data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
+        
+    
+    def delete(self,request,*args,**kwargs):
+        #self.serializer_class = DeleteUserSerializer
+        number = kwargs.get('id')
+        queryset = User.objects.filter(id=number,is_teacher=True)
+        user = queryset[0]
+        user.teacher = None
+        user.is_teacher = False
+        user.save()
+        return Response({'Status':'OK'},status=status.HTTP_200_OK)
+
+
+class TeachersAPIView(ListAPIView):
     """
     All teachers in db (for test)
     """
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
     permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        self.serializer_class = CreateTeacherSerializer    
+        serializer = self.serializer_class(data=request.data)
+       
+        serializer.is_valid(raise_exception=True)
+        user_saved = serializer.save()
+        
+        return Response(
+                data={"success": "User '{}' created successfully".format(str(user_saved))},
+                status=status.HTTP_201_CREATED)
 
 class SendMailAPIView(APIView):
     """

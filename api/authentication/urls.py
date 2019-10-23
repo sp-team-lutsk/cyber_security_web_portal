@@ -8,8 +8,9 @@ from .views import (
     UserAPIView,
     UsersAPIView,
     StudentListAPIView, 
-    TeacherListAPIView,
-    SendMailAPIView,
+    TeachersAPIView,
+    TeacherAPIView,
+     SendMailAPIView,
     VerifyUserAPIView,
     RecoveryAPIView,
     VerifyPassUserAPIView,
@@ -19,18 +20,19 @@ from .views import (
 urlpatterns = [
     
     #user api
-    path('users/', UsersAPIView.as_view(), name='register'),    # register page
-    path('users/<int:id>/',UserAPIView.as_view(), name='user'),   # info about user by id search
-    path('users/login/', token_obtain_pair, name='login'),           # login page with obtain token
+    path('users/', UsersAPIView.as_view(), name='register'),   
+    path('users/<int:id>/',UserAPIView.as_view(), name='user'),
+    path('users/login/', token_obtain_pair, name='login'),    
     path('users/inactive/', UserInactiveAPIView.as_view(), name='account_inactive'),
     path('users/send_mail/', SendMailAPIView.as_view(), name='sendmail'),
     path('users/recover_pass/', RecoveryAPIView.as_view(), name='recover'),
-    path('users/token/refresh/', token_refresh, name='refresh'),               # refresh token
+    path('users/token/refresh/', token_refresh, name='refresh'),
     path('users/verify/<str:code>/', VerifyUserAPIView.as_view(), name='verify'),
     path('users/recovery/<str:code>/', VerifyPassUserAPIView.as_view(), name='completerecover'),
     
-    path('students/', StudentListAPIView.as_view(), name='slist'),  # students list page
-    path('teachers/', TeacherListAPIView.as_view(), name='tlist'),  # teachers list page
+    path('students/', StudentListAPIView.as_view(), name='slist'),
+    path('teachers/', TeachersAPIView.as_view(), name='teahers'),
+    path('teachers/<int:id>/', TeacherAPIView.as_view(), name='teacher'),
     
 ]
 
