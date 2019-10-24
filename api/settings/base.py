@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'djangotoolbox',
     'authentication',
     'ext_news',
+    'int_news',
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
