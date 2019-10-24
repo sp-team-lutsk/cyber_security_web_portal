@@ -7,12 +7,12 @@ from .serializers import News_int_Serializer
 from .models import News_int
 
 
-class Post(ListCreateAPIView):
+class Post_int(ListCreateAPIView):
     queryset = News_int.objects.all()
     serializer_class = News_int_Serializer
     permission_class = [IsAdminUser]
 
-class PostUpd(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAPIView):
+class PostUpd_int(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAPIView):
     queryset = News_int.objects.all()
     serializer_class = News_int_Serializer
     permission_class = [IsAdminUser]
