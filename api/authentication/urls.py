@@ -27,7 +27,7 @@ urlpatterns = [
     path('users/inactive/', UserInactiveAPIView.as_view(), name='account_inactive'),
     path('users/send_mail/', SendMailAPIView.as_view(), name='sendmail'),
     path('users/recover_pass/', RecoveryAPIView.as_view(), name='recover'),
-    path('users/token/refresh/', token_refresh, name='refresh'),
+    path('users/token_refresh/', token_refresh, name='refresh'),
     path('users/verify/<str:code>/', VerifyUserAPIView.as_view(), name='verify'),
     path('users/recovery/<str:code>/', VerifyPassUserAPIView.as_view(), name='completerecover'),
     

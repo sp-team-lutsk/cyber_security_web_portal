@@ -110,6 +110,7 @@ class TeacherSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     faculty = FacultySerializer(many=False)
     profession = ProfessionSerializer(many=False)
+    acad_group = ACAD_GROUPS_CHOICES
 
     class Meta(object):
         model = Student
@@ -117,6 +118,7 @@ class StudentSerializer(serializers.ModelSerializer):
             'user', 
             'faculty',
             'profession',
+            'acad_group',
         )
 
 class SendMailSerializer(serializers.ModelSerializer):
@@ -277,7 +279,7 @@ class UpdateTeacherSerializer(serializers.ModelSerializer):
 class BulkUpdateTeacherSerializer(serializers.ModelSerializer):
 
     class Meta(object):
-        model = User
+        model = Teacher
         fields = (
                 'faculty',)
 
@@ -319,10 +321,14 @@ class UpdateStudentSerializer(serializers.ModelSerializer):
                 'acad_group',)
 
 class BulkUpdateStudentSerializer(serializers.ModelSerializer):
-
+    faculty = serializers.ChoiceField(choices = Faculty.objects.all())
+    profession = serializers.ChoiceField(choices = Profession.objects.all())
+    acad_group = serializers.ChoiceField(choices = ACAD_GROUPS_CHOICES)
+    
     class Meta(object):
-        model = User
+        model = Student
         fields = (
-                'profession',
                 'faculty',
+                'profession',
                 'acad_group',)
+

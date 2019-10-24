@@ -107,7 +107,7 @@ class UsersAPIView(ListAPIView,CreateAPIView):
         queryset = User.objects.all()
         
         for user in list(queryset):
-            serializer = UpdateUserSerializer(user,  data=request.data)
+            serializer = BulkUpdateUserSerializer(user,  data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
@@ -126,7 +126,7 @@ class TeacherAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     lookup_field = 'id'
     #permission_classes = [IsAuthenticated, ]
     serializer_class = UserSerializer
-    queryset = Teacher.objects.all()
+    queryset = User.objects.all()
     
     def get(self,request,*args,**kwargs):
         number = kwargs.get('id')
@@ -179,7 +179,7 @@ class TeachersAPIView(ListAPIView):
                 status=status.HTTP_201_CREATED)
 
     def put(self,request,*args,**kwargs):
-        self.serializer_class = UpdateTeacherSerializer
+        self.serializer_class = BulkUpdateTeacherSerializer
         queryset = Teacher.objects.all()
         
         for user in list(queryset):
@@ -189,7 +189,6 @@ class TeachersAPIView(ListAPIView):
         return Response(data={ "200" : "OK"},status=status.HTTP_200_OK)
 
     def delete(self,request):
-        self.serializer_class=DeleteAllSerializer
         q = User.objects.filter(is_teacher=True)
         for u in q:
             u.is_teacher = False
@@ -254,17 +253,16 @@ class StudentsAPIView(ListAPIView):
                 status=status.HTTP_201_CREATED)
 
     def put(self,request,*args,**kwargs):
-        self.serializer_class = UpdateStudentSerializer
+        self.serializer_class = BulkUpdateStudentSerializer
         queryset = Student.objects.all()
         
         for user in list(queryset):
-            serializer = UpdateStudentSerializer(user,  data=request.data)
+            serializer = BulkUpdateStudentSerializer(user,  data=request.data)
             if serializer.is_valid():
                 serializer.save()
         return Response(data={ "200" : "OK"},status=status.HTTP_200_OK)
 
     def delete(self,request):
-        self.serializer_class=DeleteAllSerializer
         q = User.objects.filter(is_student=True)
         for u in q:
             u.is_student = False
