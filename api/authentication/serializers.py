@@ -9,7 +9,7 @@ from django.db.models import Q
 
 from rest_framework.response import Response
 
-from .models import StdUser,Student, Teacher, Faculty, Profession, Mail
+from .models import StdUser,Student, Teacher, Faculty, Profession, ACAD_GROUPS_CHOICES, Mail
 
 User = get_user_model()
 
@@ -113,7 +113,8 @@ class StudentSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = Student
-        fields = ( 
+        fields = (
+            'user', 
             'faculty',
             'profession',
         )
@@ -225,7 +226,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
                 'code',
                 'user_permissions')
 
-class BulkUpdateSerializer(serializers.ModelSerializer):
+class BulkUpdateUserSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = User
@@ -246,7 +247,7 @@ class DeleteAllSerializer(serializers.ModelSerializer):
                   'password')
 
 class CreateTeacherSerializer(serializers.ModelSerializer):
-    faculty = serializers.ChoiceField(Faculty.objects.all())
+    faculty = serializers.ChoiceField(choices = Faculty.objects.all())
     read_only_fields = ('date_joined',)
 
     class Meta(object):
@@ -273,4 +274,55 @@ class UpdateTeacherSerializer(serializers.ModelSerializer):
         fields = (
                 'faculty',)
 
+class BulkUpdateTeacherSerializer(serializers.ModelSerializer):
 
+    class Meta(object):
+        model = User
+        fields = (
+                'faculty',)
+
+class CreateStudentSerializer(serializers.ModelSerializer):
+    faculty = serializers.ChoiceField(choices = Faculty.objects.all())
+    profession = serializers.ChoiceField(choices = Profession.objects.all())
+    acad_group = serializers.ChoiceField(choices = ACAD_GROUPS_CHOICES)
+    read_only_fields = ('date_joined',)
+
+    class Meta(object):
+        model = User
+        fields = (
+            'email',
+            'password',
+            'faculty',
+            'profession',
+            'acad_group',
+        )
+
+    def create(self, validated_data):
+
+        validate_password(password=validated_data.get('password',), user=validated_data.get('email'), password_validators=None)
+        
+        email = validated_data.get('email')
+        user = User.objects.create_student(**validated_data) 
+        user.send_mail(email=email)
+        return user
+
+class UpdateStudentSerializer(serializers.ModelSerializer):
+    faculty = serializers.ChoiceField(choices = Faculty.objects.all())
+    profession = serializers.ChoiceField(choices = Profession.objects.all())
+    acad_group = serializers.ChoiceField(choices = ACAD_GROUPS_CHOICES)
+    
+    class Meta(object):
+        model = Student
+        fields = (
+                'faculty',
+                'profession',
+                'acad_group',)
+
+class BulkUpdateStudentSerializer(serializers.ModelSerializer):
+
+    class Meta(object):
+        model = User
+        fields = (
+                'profession',
+                'faculty',
+                'acad_group',)

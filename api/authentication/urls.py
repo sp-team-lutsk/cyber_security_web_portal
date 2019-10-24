@@ -7,15 +7,16 @@ from django.contrib.auth import views as auth_views
 from .views import (
     UserAPIView,
     UsersAPIView,
-    StudentListAPIView, 
-    TeachersAPIView,
-    TeacherAPIView,
-     SendMailAPIView,
-    VerifyUserAPIView,
-    RecoveryAPIView,
     VerifyPassUserAPIView,
     UserInactiveAPIView,
-    )
+    VerifyUserAPIView,
+    RecoveryAPIView,
+    TeachersAPIView,
+    TeacherAPIView,
+    StudentAPIView,
+    StudentsAPIView,
+    SendMailAPIView,
+   )
 
 urlpatterns = [
     
@@ -30,9 +31,11 @@ urlpatterns = [
     path('users/verify/<str:code>/', VerifyUserAPIView.as_view(), name='verify'),
     path('users/recovery/<str:code>/', VerifyPassUserAPIView.as_view(), name='completerecover'),
     
-    path('students/', StudentListAPIView.as_view(), name='slist'),
     path('teachers/', TeachersAPIView.as_view(), name='teahers'),
     path('teachers/<int:id>/', TeacherAPIView.as_view(), name='teacher'),
+    
+    path('students/', StudentsAPIView.as_view(), name='students'),
+    path('students/<int:id>/', StudentAPIView.as_view(), name='student'),
     
 ]
 
