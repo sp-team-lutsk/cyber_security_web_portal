@@ -63,8 +63,8 @@ class StdUserManager(UserManager):
         )
         
         try:
-            profession = Profession.objects.get(name=profession)
-            faculty = Faculty.objects.get(name=faculty)
+            profession = Profession.objects.get(name=profession.name)
+            faculty = Faculty.objects.get(name=faculty.name)
         except:
             raise ValueError('Not found such object')
 
@@ -89,7 +89,7 @@ class StdUserManager(UserManager):
         )
 
         try:
-            faculty = Faculty.objects.get(name=faculty)
+            faculty = Faculty.objects.get(name=faculty.name)
         except:
             raise ValueError('Not found such object')
 
