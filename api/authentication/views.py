@@ -116,7 +116,7 @@ class UsersAPIView(ListAPIView,CreateAPIView):
 
     def delete(self,request):
         self.serializer_class=DeleteAllSerializer
-        q = list(queryset)
+        q = list(self.queryset)
         for u in q:
             serializer = self.serializer_class(request.user, data=request.data)
             serializer.delete(request)
@@ -124,7 +124,6 @@ class UsersAPIView(ListAPIView,CreateAPIView):
 
 class TeacherAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     lookup_field = 'id'
-    #permission_classes = [IsAuthenticated, ]
     serializer_class = UserSerializer
     queryset = User.objects.all()
     
@@ -154,7 +153,8 @@ class TeacherAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
         number = kwargs.get('id')
         queryset = User.objects.filter(id=number,is_teacher=True)
         user = queryset[0]
-        user.teacher = None
+        t = Teacher.objects.filter(id=user.teacher.id)
+        t.delete()
         user.is_teacher = False
         user.save()
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
@@ -192,14 +192,14 @@ class TeachersAPIView(ListAPIView):
         q = User.objects.filter(is_teacher=True)
         for u in q:
             u.is_teacher = False
-            u.teacher = None
+            t = Teacher.objects.filter(id=u.teacher.id)
+            t.delete()
             u.save()
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
 
 
 class StudentAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     lookup_field = 'id'
-    #permission_classes = [IsAuthenticated, ]
     serializer_class = UserSerializer
     queryset = Student.objects.all()
     
@@ -228,7 +228,10 @@ class StudentAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
         number = kwargs.get('id')
         queryset = User.objects.filter(id=number,is_student=True)
         user = queryset[0]
-        user.student = None
+        
+        s = Student.objects.filter(id=user.student.id)
+        s.delete()
+
         user.is_student = False
         user.save()
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
@@ -266,7 +269,10 @@ class StudentsAPIView(ListAPIView):
         q = User.objects.filter(is_student=True)
         for u in q:
             u.is_student = False
-            u.student = None
+            
+            s = Student.objects.filter(id=u.student.id)
+            s.delete()
+            
             u.save()
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
 

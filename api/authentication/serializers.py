@@ -249,7 +249,7 @@ class DeleteAllSerializer(serializers.ModelSerializer):
                   'password')
 
 class CreateTeacherSerializer(serializers.ModelSerializer):
-    faculty = serializers.ChoiceField(choices = Faculty.objects.all())
+    faculty = serializers.CharField(max_length=128)
     read_only_fields = ('date_joined',)
 
     class Meta(object):
@@ -284,9 +284,9 @@ class BulkUpdateTeacherSerializer(serializers.ModelSerializer):
                 'faculty',)
 
 class CreateStudentSerializer(serializers.ModelSerializer):
-    faculty = serializers.ChoiceField(choices = Faculty.objects.all())
-    profession = serializers.ChoiceField(choices = Profession.objects.all())
-    acad_group = serializers.ChoiceField(choices = ACAD_GROUPS_CHOICES)
+    faculty = serializers.CharField(max_length=128)
+    profession = serializers.CharField(max_length=128)
+    acad_group = serializers.CharField(max_length=128)
     read_only_fields = ('date_joined',)
 
     class Meta(object):
@@ -309,9 +309,9 @@ class CreateStudentSerializer(serializers.ModelSerializer):
         return user
 
 class UpdateStudentSerializer(serializers.ModelSerializer):
-    faculty = serializers.ChoiceField(choices = Faculty.objects.all())
-    profession = serializers.ChoiceField(choices = Profession.objects.all())
-    acad_group = serializers.ChoiceField(choices = ACAD_GROUPS_CHOICES)
+    faculty = serializers.CharField(max_length=128)
+    profession = serializers.CharField(max_length=128)
+    acad_group = serializers.CharField(max_length=128)
     
     class Meta(object):
         model = Student
@@ -321,9 +321,9 @@ class UpdateStudentSerializer(serializers.ModelSerializer):
                 'acad_group',)
 
 class BulkUpdateStudentSerializer(serializers.ModelSerializer):
-    faculty = serializers.ChoiceField(choices = Faculty.objects.all())
-    profession = serializers.ChoiceField(choices = Profession.objects.all())
-    acad_group = serializers.ChoiceField(choices = ACAD_GROUPS_CHOICES)
+    faculty = serializers.CharField(max_length=128)
+    profession = serializers.CharField(max_length=128)
+    acad_group = serializers.CharField(max_length=128)
     
     class Meta(object):
         model = Student
