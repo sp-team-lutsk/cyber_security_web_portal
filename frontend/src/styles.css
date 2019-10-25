@@ -1,1 +1,144 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0;
+
+  font-family: 'Myriad Pro' , sans-serif;
+  font-size: 18px;
+  color: #f1efe6;
+  text-decoration: none;
+  text-align: center;
+}
+
+.header {
+  background-color: #273959;
+  background-size: cover;
+  position: relative;
+  height: auto;
+
+  padding-top: 20px;
+  padding-right: 0;
+  padding-left: 0;
+  margin: 0 0 0 0;
+  width: 100%;
+  z-index: 100;
+}
+.QQQ {
+  background-color: white;
+}
+.position {
+  text-align: center;
+}
+.text-2 {
+  font-size: 16px;
+}
+.nav-padding {
+  padding-right: 120px;
+}
+.text-2 {
+  font-size: 16px;
+}
+.nav__link {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 18px;
+  color: #f1efe6;
+  text-decoration: none;
+
+  transition: color .2s linear;
+}
+.nav__link:hover {
+  color: #6bcad4;
+  text-decoration: none;
+}
+.text-2 {
+  font-size: 12px;
+}
+.dvs {
+  top: 100%;
+  text-align: center;
+  padding-top: 5vh;
+}
+.dvs-1{
+  font-size: 13px;
+}
+.butt {
+  position: relative;
+  border: none;
+  color: #f1efe6;
+  text-decoration: none;
+  text-transform: uppercase;
+  width: 100px;
+  height: 27px;
+  display: inline-block;
+  text-align: center;
+  transition: .5s;
+  overflow: hidden;
+  margin: 0 50px;
+}
+.butt::before,
+.butt::after {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  background: #273959;
+  top: 0;
+  left: -100%;
+  opacity: .5;
+  transition: .3s;
+  z-index: -1;
+}
+.butt::after {
+  opacity: 1;
+  transition-delay: .1s;
+}
+.butt:hover {
+  color: #f1efe6;
+  text-decoration: none;
+}
+.butt:hover::before,
+.butt:hover::after {
+  left: 0;
+}
+.butt:active {
+  color: #273959;
+}
+.butt:focus {
+  background-color: #273959;
+}
+.butt:active {
+  transform: translateY(1px);
+  filter: saturate(150%);
+  border: none;
+}
+.butt-borde {
+  border: solid 1px;
+  border-color: #6bcad4;
+}
+
+@media (min-width: 768px) {
+  .text-2 {
+    font-size: 15px;
+  }
+  .dvs-1{
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 992px) {
+  .text-2 {
+    font-size: 16px;
+  }
+  .dvs-1 {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .text-2 {
+    font-size: 16px;
+  }
+  .dvs-1 {
+    font-size: 16px;
+  }
+}

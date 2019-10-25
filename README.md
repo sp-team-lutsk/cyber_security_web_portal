@@ -25,6 +25,8 @@
 - 14.08.19 Added tests for models
 - 19.08.19 Added serializers
 - 25.09.19 Added frontend part with nginx
+- 20.10.19 Added backend part with news parsing
+- 20.10.19 Added some fixes to server part
 
 ## Installation
 
