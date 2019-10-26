@@ -25,7 +25,7 @@ class PostUpd(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAP
         return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
-
+        return self.delete(request, *args, **kwargs)
 
 class MailingAPIView(APIView):
     queryset = StdUser.objects.filter(**{'news_subscription':True})

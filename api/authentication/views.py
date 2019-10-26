@@ -56,7 +56,7 @@ User = get_user_model()
 
 class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     lookup_field = 'id'
-    #permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAdminUser,IsAuthenticated, ]
     serializer_class = UserSerializer
 
     queryset = User.objects.all()
@@ -83,7 +83,6 @@ class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
         
     
     def delete(self,request,*args,**kwargs):
-        #self.serializer_class = DeleteUserSerializer
         number = kwargs.get('id')
         queryset = User.objects.filter(id=number)
         user = queryset[0]
@@ -92,7 +91,7 @@ class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
 
 class UsersAPIView(ListAPIView,CreateAPIView):
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAdminUser,IsAuthenticated]
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
