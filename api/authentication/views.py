@@ -2,8 +2,12 @@
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny,IsAdminUser
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+
+from .permissions import (IsAdminUser, 
+                        IsAuthenticated, 
+                        IsModeratorUser, 
+                        AllowAny)
+
 from rest_framework.generics import (RetrieveUpdateAPIView,
                                      RetrieveAPIView,
                                      ListAPIView,
@@ -54,6 +58,7 @@ class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     lookup_field = 'id'
     #permission_classes = [IsAuthenticated, ]
     serializer_class = UserSerializer
+
     queryset = User.objects.all()
     
     def get(self,request,*args,**kwargs):
@@ -165,7 +170,6 @@ class TeachersAPIView(ListAPIView):
     """
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
-    permission_classes = [IsAdminUser]
 
     def post(self, request):
         self.serializer_class = CreateTeacherSerializer    
@@ -242,7 +246,6 @@ class StudentsAPIView(ListAPIView):
     """
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    permission_classes = [IsAuthenticated,IsAdminUser]
 
     def post(self, request):
         self.serializer_class = CreateStudentSerializer    
@@ -300,7 +303,7 @@ class VerifyUserAPIView(APIView):
     lookup_field = 'code'
     queryset = User.objects.all()
     serializer_class = VerifyUserSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny,]
     
     def get(self, request, **kwargs):
         code = kwargs.get('code')
@@ -313,7 +316,7 @@ class VerifyUserAPIView(APIView):
 class VerifyPassUserAPIView(APIView):
     lookup_field = 'code'
     serializer_class = VerifyUserPassSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny,]
     
     def post(self, request, **kwargs):
         code = kwargs.get('code')
@@ -325,7 +328,7 @@ class VerifyPassUserAPIView(APIView):
                 return Response({'Status':'OK'}, status=status.HTTP_200_OK)
         
 class RecoveryAPIView(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny,]
     serializer_class = RecoverySerializer
     redirect_to = settings.LOGIN_REDIRECT_URL
 

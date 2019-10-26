@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'djangotoolbox',
     'authentication',
     'ext_news',
+    'django_crontab', 
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -77,9 +78,9 @@ AUTHENTICATION_BACKENDS = (
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -96,8 +97,8 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
@@ -168,14 +169,12 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
     ),
 #Permissions
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.IsAdminUser'
-        
+        'authentication.permissions.IsAdminUser',
+        'authentication.permissions.IsModeratorUser',
+        'authentication.permissions.IsAuthenticated',
     ),
 }
 
@@ -254,8 +253,8 @@ STATICFILES_FINDERS = (
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL ='/accounts/login/'
 
-CRONJOBS = [
-    ('00 16  *   *   6', 'ext_news.cron.CronParse'),
+CRONJOBS = [ 
+  ('00 16  *   *   6', 'ext_news.cron.CronMailing'),
+  ('00 16  *   *   6', 'ext_news.cron.CronParse')
 ]
-
 SITE_ID = 2
