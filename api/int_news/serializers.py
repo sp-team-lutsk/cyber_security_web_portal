@@ -5,5 +5,5 @@ class News_int_Serializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = News_int
-        fields = ('title', 'description', 'news_link', 'images_link', 'is_checked',)
+        fields = ('title', 'content', 'date_created', 'date_publication', 'images_link', 'is_checked',)
 

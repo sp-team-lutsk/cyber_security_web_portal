@@ -10,12 +10,10 @@ from .models import News_int
 class Post_int(ListCreateAPIView):
     queryset = News_int.objects.all()
     serializer_class = News_int_Serializer
-    permission_class = [IsAdminUser]
 
 class PostUpd_int(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAPIView):
     queryset = News_int.objects.all()
     serializer_class = News_int_Serializer
-    permission_class = [IsAdminUser]
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
