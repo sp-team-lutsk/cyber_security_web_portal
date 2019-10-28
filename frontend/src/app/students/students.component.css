@@ -19,7 +19,7 @@
 p {
   margin: 0;
 }
-.image {
+.image1 {
   padding-right: 0;
 }
 .panel {
@@ -685,7 +685,7 @@ ul {
   .bot-text{
     font-size: 12px;
   }
-  .image{
+  .image1{
     display: none;
   }
   .text1 {
