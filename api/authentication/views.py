@@ -50,17 +50,17 @@ from .serializers import (
    )
 
 from .models import StdUser,Student, Teacher
-
+from utils.decorators import permission
 User = get_user_model()
 
 
 class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     lookup_field = 'id'
-    permission_classes = [IsAdminUser,IsAuthenticated, ]
     serializer_class = UserSerializer
-
+    permission_classes = [AllowAny,]
     queryset = User.objects.all()
     
+    @permission(["IsAdminUser","IsModeratorUser"])
     def get(self,request,*args,**kwargs):
         number = kwargs.get('id')
         queryset = User.objects.filter(id=number)
@@ -91,10 +91,10 @@ class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
 
 class UsersAPIView(ListAPIView,CreateAPIView):
-    permission_classes = [IsAdminUser,IsAuthenticated]
+    permission_classes = [AllowAny,]
     serializer_class = UserSerializer
     queryset = User.objects.all()
-
+    
     def post(self, request):
         self.serializer_class = CreateUserSerializer    
         serializer = self.serializer_class(data=request.data)
