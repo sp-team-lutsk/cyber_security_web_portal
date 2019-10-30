@@ -184,7 +184,6 @@ SIMPLE_JWT = {
     'PAYLOAD_ID_FIELD': 'user_id',
     'TOKEN_LIFETIME': datetime.timedelta(days=1),
     'TOKEN_REFRESH_LIFETIME': datetime.timedelta(days=7),
-    'SECRET_KEY': SECRET_KEY,
     'TOKEN_BACKEND': 'rest_framework_simplejwt.backends.TokenBackend',
 }
 
