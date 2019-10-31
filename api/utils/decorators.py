@@ -9,12 +9,11 @@ def permission(permissions):
     def perm(func):
         def p(request,args,**kwargs):
             for permission in permissions:
-                print(args)
-                if StdUser.objects.get(id=2).has_perm(permission) is True:
-                    print("Check") 
+                permission = P.pop(permission)
+                if permission.has_permission(StdUser.objects.get(email=args.user)) is True:
+                    return func(request,args,kwargs) 
                 else:
                     return Response(
                             data={"Error": "User has no permissions"})
-            return func(request,*args,**kwargs)
         return p
     return perm

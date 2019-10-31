@@ -62,8 +62,8 @@ class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     
     @permission(["IsAdminUser","IsModeratorUser"])
     def get(self,request,*args,**kwargs):
-        number = kwargs.get('id')
-        queryset = User.objects.filter(id=number)
+        number = args[0]
+        queryset = User.objects.filter(id=number.get('id'))
         if queryset:
             serializer = self.get_serializer(queryset, many =True)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -71,17 +71,18 @@ class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     
     def post(self,request,*args,**kwargs):
         return Response({'Status':'Method not allowed'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
+    
+    @permission(["IsModeratorUser","IsAuthenticated"])
     def put(self, request, *args, **kwargs):
         self.serializer_class = UpdateUserSerializer
-        number = kwargs.get('id')
-        queryset = User.objects.filter(id=number)
+        number = args[0]
+        queryset = User.objects.filter(id=number.get('id'))
         serializer = UpdateUserSerializer(queryset[0],  data=request.data)
         if serializer.is_valid():
             serializer.save()
         return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
         
-    
+    @permission(["IsModeratorUser","IsAuthenticated"]) 
     def delete(self,request,*args,**kwargs):
         number = kwargs.get('id')
         queryset = User.objects.filter(id=number)
@@ -105,7 +106,8 @@ class UsersAPIView(ListAPIView,CreateAPIView):
         return Response(
                 data={"success": "User '{}' created successfully".format(str(user_saved))},
                 status=status.HTTP_201_CREATED)
-
+    
+    @permission(["IsModeratorUser","IsAdminUser"])
     def put(self,request,*args,**kwargs):
         self.serializer_class = UpdateUserSerializer
         queryset = User.objects.all()
@@ -117,7 +119,8 @@ class UsersAPIView(ListAPIView,CreateAPIView):
                 return Response(serializer.data)
         
             return Response(serializer.errors)
-
+    
+    @permission(["IsModeratorUser","IsAdminUser"])
     def delete(self,request):
         self.serializer_class=DeleteAllSerializer
         q = list(self.queryset)
