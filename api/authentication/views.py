@@ -51,7 +51,7 @@ from .serializers import (
    )
 
 from .models import StdUser,Student, Teacher
-from utils.decorators import permission
+from utils.decorators import permission,permissions,object_permission
 User = get_user_model()
 
 
@@ -70,7 +70,7 @@ class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({'Status':'User not found'}, status=status.HTTP_404_NOT_FOUND)
     
-    @permission(["IsStaffUser"])
+    @permission("IsStaffUser")
     def post(self,request,*args,**kwargs):
         return Response({'Status':'Method not allowed'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
     
@@ -216,7 +216,7 @@ class StudentAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     serializer_class = UserSerializer
     queryset = Student.objects.all()
     
-    @permissions(["IsModeratorUser","IsUser"])
+    @permissions(["IsStaffUser","IsUser"])
     def get(self,request,*args,**kwargs):
         number = kwargs.get('id')
         queryset = User.objects.filter(id=number,is_student=True)
