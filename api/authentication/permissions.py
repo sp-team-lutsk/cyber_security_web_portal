@@ -27,6 +27,14 @@ class IsAdminUser:
         else:
             return bool(user and user.is_admin)
 
+class IsStaffUser:
+    
+    def has_permission(user):
+        if (user.is_admin == True) or (user.is_moderator == True):
+            return True
+        else:
+            return False
+
 class IsModeratorUser:
     """
     Allows access only to moderator users.
