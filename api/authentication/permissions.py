@@ -22,7 +22,10 @@ class IsAuthenticated:
 class IsAdminUser:
 
     def has_permission(user):
-        return bool(user and user.is_superuser)
+        if (user.is_admin == True) and (user.is_moderator == True):
+            return False
+        else
+            return bool(user and user.is_admin)
 
 class IsModeratorUser:
     """
