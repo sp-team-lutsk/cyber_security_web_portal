@@ -91,7 +91,8 @@ li {
 
 /******** blok-2 (xs) *********/
 
-.blok-2 {                   /* розмір та вид задннього плану */
+.blok-2 {
+  /* розмір та вид задннього плану */
   background-color: white;
   background-size: cover;
   position: relative;
@@ -120,13 +121,15 @@ ul > li {
   list-style-type: none; /* Убираем маркеры */
 }
 
-.oute {                 /*  Налаштування картинки */
+.oute {
+  /*  Налаштування картинки */
   height: 130px;
   position: relative;
   margin-top: 10px;
 }
 
-.oute img {             /* розмішення картинки по центру блока */
+.oute img {
+  /* розмішення картинки по центру блока */
   position: absolute;
   margin: auto;
   left: 0;
@@ -135,32 +138,34 @@ ul > li {
   right: 0;
 }
 
-.image-2 {              /* задання розмірів картинці */
+.image-2 {
+  /* задання розмірів картинці */
   width: 180px;
   height: auto;
   padding-right: 0;
 }
 
-.text-2 {               /* задання велечини тексту */
+.text-2 {
+  /* задання велечини тексту */
   font-size: 10px;
   text-align: justify;
 }
 
-.blok-2 > .text-2 > ul {          /*  видалення відступів вправо та ліво для тексту */
+.blok-2 > .text-2 > ul {
+  /*  видалення відступів вправо та ліво для тексту */
   padding-top: 0;
   padding-left: 0;
   padding-right: 0;
 }
 
 .blok-2 > .text-2 > ul > li {
-  margin: 0.5em;;
+  margin: 0.5em;
 }
 
 /******** blok-3 (xs) *********/
 
 .blok-3 {
-  background:
-    url("assets/images/img12.png") center no-repeat;
+  background: url("assets/images/img12.png") center no-repeat;
   -webkit-background-size: cover;
   background-size: cover;
   position: relative;
@@ -212,7 +217,7 @@ ul > li {
   font-size: 10px;
 }
 
-.padding-60px{
+.padding-60px {
   margin-top: 0;
   max-width: 144px;
   margin-bottom: 40px;
@@ -222,12 +227,12 @@ ul > li {
   background-color: none;
 }
 
-.page-1{
+.page-1 {
   width: 288px;
   height: auto;
 }
 
-.page-2{
+.page-2 {
   width: 144px;
   height: auto;
 }
@@ -255,7 +260,7 @@ ul > li {
   font-weight: 300;
 }
 
-.info-2{
+.info-2 {
   padding-top: 20px;
   color: #000000;
   font-size: 13pt;
@@ -315,7 +320,7 @@ ul > li {
   bottom: 190px;
 }
 
-.image{
+.image {
   display: none;
   height: 220px;
   max-width: 430px;
@@ -456,7 +461,8 @@ ul > li {
 
   /******** blok-2 (sm) *********/
 
-  .blok-2 {                   /* розмір та вид задннього плану */
+  .blok-2 {
+    /* розмір та вид задннього плану */
     background-color: white;
     background-size: cover;
     position: relative;
@@ -485,12 +491,14 @@ ul > li {
     list-style-type: none; /* Убираем маркеры */
   }
 
-  .oute {                 /*  Налаштування картинки */
+  .oute {
+    /*  Налаштування картинки */
     height: auto;
     position: relative;
   }
 
-  .oute img {             /* розмішення картинки по центру блока */
+  .oute img {
+    /* розмішення картинки по центру блока */
     position: absolute;
     margin: auto;
     left: 0;
@@ -499,31 +507,33 @@ ul > li {
     right: 0;
   }
 
-  .image-2 {              /* задання розмірів картинці */
+  .image-2 {
+    /* задання розмірів картинці */
     width: 200px;
     height: auto;
     padding-right: 0;
   }
 
-  .text-2 {               /* задання велечини тексту */
+  .text-2 {
+    /* задання велечини тексту */
     font-size: 12px;
   }
 
-  .blok-2 > .text-2 > ul {          /*  видалення відступів вправо та ліво для тексту */
+  .blok-2 > .text-2 > ul {
+    /*  видалення відступів вправо та ліво для тексту */
     padding-top: 5vh;
     padding-left: 0;
     padding-right: 0;
   }
 
   .blok-2 > .text-2 > ul > li {
-    margin: 0.5em;;
+    margin: 0.5em;
   }
 
   /******** blok-3 (sm) *********/
 
   .blok-3 {
-    background:
-      url("assets/images/img12.png") center no-repeat;
+    background: url("assets/images/img12.png") center no-repeat;
     -webkit-background-size: cover;
     background-size: cover;
     position: relative;
@@ -575,7 +585,7 @@ ul > li {
     font-size: 8px;
   }
 
-  .padding-60px{
+  .padding-60px {
     margin-top: 44px;
     max-width: 203px;
   }
@@ -584,12 +594,12 @@ ul > li {
     background-color: #273959;
   }
 
-  .page-1{
+  .page-1 {
     width: 300px;
     height: auto;
   }
 
-  .page-2{
+  .page-2 {
     width: 203px;
     height: auto;
   }
@@ -616,7 +626,7 @@ ul > li {
     font-weight: 300;
   }
 
-  .info-2{
+  .info-2 {
     padding-top: 20px;
     color: #000000;
     font-size: 14pt;
@@ -677,7 +687,7 @@ ul > li {
     bottom: 190px;
   }
 
-  .image{
+  .image {
     display: inline;
     height: 250px;
     max-width: 470px;
@@ -723,7 +733,6 @@ ul > li {
     color: #77786f;
     border: none;
   }
-
 }
 
 @media (min-width: 992px) {
@@ -812,7 +821,8 @@ ul > li {
 
   /******** blok-2 (md) *********/
 
-  .blok-2 {                   /* розмір та вид задннього плану */
+  .blok-2 {
+    /* розмір та вид задннього плану */
     background-color: white;
     background-size: cover;
     position: relative;
@@ -841,12 +851,14 @@ ul > li {
     list-style-type: none; /* Убираем маркеры */
   }
 
-  .oute {                 /*  Налаштування картинки */
+  .oute {
+    /*  Налаштування картинки */
     height: auto;
     position: relative;
   }
 
-  .oute img {             /* розмішення картинки по центру блока */
+  .oute img {
+    /* розмішення картинки по центру блока */
     position: absolute;
     margin: auto;
     left: 0;
@@ -855,31 +867,33 @@ ul > li {
     right: 0;
   }
 
-  .image-2 {              /* задання розмірів картинці */
+  .image-2 {
+    /* задання розмірів картинці */
     width: 250px;
     height: auto;
     padding-right: 0;
   }
 
-  .text-2 {               /* задання велечини тексту */
+  .text-2 {
+    /* задання велечини тексту */
     font-size: 14px;
   }
 
-  .blok-2 > .text-2 > ul {          /*  видалення відступів вправо та ліво для тексту */
+  .blok-2 > .text-2 > ul {
+    /*  видалення відступів вправо та ліво для тексту */
     padding-top: 5vh;
     padding-left: 0;
     padding-right: 0;
   }
 
   .blok-2 > .text-2 > ul > li {
-    margin: 0.5em;;
+    margin: 0.5em;
   }
 
   /******** blok-3 (md) *********/
 
   .blok-3 {
-    background:
-      url("assets/images/img12.png") center no-repeat;
+    background: url("assets/images/img12.png") center no-repeat;
     -webkit-background-size: cover;
     background-size: cover;
     position: relative;
@@ -931,7 +945,7 @@ ul > li {
     font-size: 9px;
   }
 
-  .padding-60px{
+  .padding-60px {
     margin-top: 52px;
     max-width: 239px;
   }
@@ -940,12 +954,12 @@ ul > li {
     background-color: #273959;
   }
 
-  .page-1{
+  .page-1 {
     width: 366px;
     height: auto;
   }
 
-  .page-2{
+  .page-2 {
     width: 239px;
     height: auto;
   }
@@ -972,7 +986,7 @@ ul > li {
     font-weight: 300;
   }
 
-  .info-2{
+  .info-2 {
     padding-top: 20px;
     color: #000000;
     font-size: 15pt;
@@ -1033,7 +1047,7 @@ ul > li {
     bottom: 210px;
   }
 
-  .image{
+  .image {
     display: inline;
     height: 270px;
     max-width: 530px;
@@ -1080,7 +1094,6 @@ ul > li {
     color: #77786f;
     border: none;
   }
-
 }
 
 @media (min-width: 1200px) {
@@ -1199,12 +1212,14 @@ ul > li {
     list-style-type: none; /* Убираем маркеры */
   }
 
-  .oute {                 /*  Налаштування картинки */
+  .oute {
+    /*  Налаштування картинки */
     height: auto;
     position: relative;
   }
 
-  .oute img {             /* розмішення картинки по центру блока */
+  .oute img {
+    /* розмішення картинки по центру блока */
     position: absolute;
     margin: auto;
     left: 0;
@@ -1213,31 +1228,33 @@ ul > li {
     right: 0;
   }
 
-  .image-2 {              /* задання розмірів картинці */
+  .image-2 {
+    /* задання розмірів картинці */
     width: 300px;
     height: auto;
     padding-right: 0;
   }
 
-  .text-2 {               /* задання велечини тексту */
+  .text-2 {
+    /* задання велечини тексту */
     font-size: 16px;
   }
 
-  .blok-2 > .text-2 > ul {          /*  видалення відступів вправо та ліво для тексту */
+  .blok-2 > .text-2 > ul {
+    /*  видалення відступів вправо та ліво для тексту */
     padding-top: 5vh;
     padding-left: 0;
     padding-right: 0;
   }
 
   .blok-2 > .text-2 > ul > li {
-    margin: 0.5em;;
+    margin: 0.5em;
   }
 
   /******** blok-3 (lg) *********/
 
   .blok-3 {
-    background:
-      url("assets/images/img12.png") center no-repeat;
+    background: url("assets/images/img12.png") center no-repeat;
     -webkit-background-size: cover;
     background-size: cover;
     position: relative;
@@ -1289,7 +1306,7 @@ ul > li {
     font-size: 10px;
   }
 
-  .padding-60px{
+  .padding-60px {
     margin-top: 60px;
     max-width: 269px;
     margin-bottom: 40px;
@@ -1299,12 +1316,12 @@ ul > li {
     background-color: #273959;
   }
 
-  .page-1{
+  .page-1 {
     width: 404px;
     height: auto;
   }
 
-  .page-2{
+  .page-2 {
     width: 269px;
     height: auto;
   }
@@ -1331,7 +1348,7 @@ ul > li {
     font-weight: 300;
   }
 
-  .info-2{
+  .info-2 {
     padding-top: 20px;
     color: #000000;
     font-size: 16pt;
@@ -1382,7 +1399,7 @@ ul > li {
     top: 30px;
   }
 
-  .image{
+  .image {
     display: inline;
     height: 290px;
     max-width: 570px;
@@ -1439,5 +1456,4 @@ ul > li {
     color: #77786f;
     border: none;
   }
-
 }

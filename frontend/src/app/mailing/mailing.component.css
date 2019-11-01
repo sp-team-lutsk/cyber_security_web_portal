@@ -1,1 +1,203 @@
+.mailing {
+  padding: 50px 0;
+}
 
+li {
+  list-style-type: none;
+  color: black;
+}
+p,
+ul {
+  margin: 0;
+  padding: 0;
+}
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+.mailing {
+  margin: auto;
+  width: 950px;
+}
+.mailing-body {
+  box-shadow: 5px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
+  background: #f1efe6;
+}
+.mailing-header-button > .btn {
+  background-color: #6bcad4;
+  color: #77786f;
+}
+.mailing-header > .title {
+  position: relative;
+  top: 8px;
+}
+.mailing-header {
+  margin-bottom: 30px;
+}
+.mailing-main > .top,
+.mailing-header > .title,
+.mailing-header-button {
+  display: inline-block;
+  color: #77786f;
+  text-align: center;
+}
+.mailing-main > .bottom {
+  text-align: left;
+}
+.mailing-main > .middle {
+  text-align: center;
+}
+.mailing-header-button {
+  float: right;
+  margin-left: -300px;
+}
+.mailing-main {
+  display: inline-block;
+  width: 70%;
+  background: #f1efe6;
+}
+.mailing-main > .top {
+  padding: 10px 0;
+  vertical-align: middle;
+}
+.mailing-side {
+  padding: 50px 0;
+  float: left;
+  display: inline-block;
+  width: 30%;
+  background-color: #273959;
+  min-height: 500px;
+}
+.middle > table {
+  width: 90%;
+  margin: auto;
+}
+.middle,
+.bottom {
+  font-size: 14px;
+}
+.line {
+  height: 30px;
+  background: #fff;
+  border-bottom: #f1efe6 solid 1px;
+  color: #1c1c1c;
+}
+.line-first {
+  height: 30px;
+  background: #77786f;
+  color: #f9f9f9;
+}
+.column {
+  border-right: #fff solid 1px;
+}
+.line:last-child,
+.column:last-child {
+  border: 0;
+}
+.bottom {
+  color: #1c1c1c;
+  width: 90%;
+  margin: auto;
+  padding-top: 20px;
+}
+.mailing-side > ul > li > a {
+  width: 100%;
+  color: #f1efe6;
+  padding: 20px 0;
+  display: inline-block;
+}
+.mailing-side > ul > li > a.selected {
+  color: #273959;
+  background: #f1efe6;
+}
+.mailing-side > ul > li > a:not(.selected):hover {
+  background: #686979;
+}
+.mailing-side > ul > li > a:not(.selected) {
+  transition-duration: 0.2s;
+}
+
+/* sm */
+@media (max-width: 970px) {
+  .mailing {
+    width: 100%;
+  }
+}
+/* xs */
+@media (max-width: 768px) {
+  .mailing {
+    width: 100%;
+  }
+  .middle > table {
+    width: 100%;
+  }
+  .mailing-side > ul > li > a {
+    width: 100%;
+    color: #f1efe6;
+    padding: 10px 0;
+  }
+  .mailing-side > ul > li > a,
+  .mailing-main > .top {
+    font-size: 14px;
+  }
+  .mailing-main {
+    width: 80%;
+  }
+  .mailing-side {
+    width: 20%;
+  }
+}
+@media (max-width: 600px) {
+  .mailing-header > .title {
+    display: block;
+  }
+  .mailing-header {
+    margin-bottom: 20px;
+  }
+  .mailing-header-button {
+    display: block;
+    margin: auto;
+    margin-top: 20px;
+    float: none;
+  }
+}
+@media (max-width: 500px) {
+  .mailing-main > .top,
+  .mailing-side > ul > li > a {
+    font-size: 12px;
+  }
+  .mailing-side {
+    display: block;
+    float: none;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    width: 100%;
+  }
+  .mailing-side > ul > li > a,
+  .mailing-side > ul > li {
+    display: inline-block;
+  }
+  .mailing-side > ul > li > a {
+    padding: 10px 5px;
+  }
+  .mailing-main > .bottom {
+    padding: 10px 0;
+  }
+  .mailing-main {
+    width: 100%;
+  }
+}
+@media (max-width: 400px) {
+  .mailing-main > .top,
+  .mailing-side > ul > li > a,
+  .mailing-main > .middle,
+  .mailing-header-button {
+    font-size: 10px;
+  }
+  .mailing-header > .title {
+    font-size: 16px;
+  }
+}
