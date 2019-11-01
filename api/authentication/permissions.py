@@ -33,6 +33,6 @@ class IsModeratorUser:
     """
 
     def has_permission(user):
-        return bool(user and user.is_staff)
+        return bool(user and user.is_moderator)
 
 
