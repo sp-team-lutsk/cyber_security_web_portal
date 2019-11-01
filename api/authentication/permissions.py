@@ -1,4 +1,10 @@
 from rest_framework.permissions import BasePermission
+P={ 'IsAuthenticated':IsAuthenticated,
+    'IsAdminUser':IsAdminUser,
+    'IsModeratorUser':IsModeratorUser,
+    'IsUser':IsUser,
+    'ModeratorOrOwner':ModeratorOrOwner}
+
 
 class AllowAny(BasePermission):
     """
@@ -43,4 +49,18 @@ class IsModeratorUser:
     def has_permission(user):
         return bool(user and user.is_moderator)
 
+class IsUser:
 
+    def has_object_permission(user,obj):
+        if (user.is_authenticated == True) and (user.get('id') = obj.get('id')):
+            return True
+        else:
+            return False
+
+class IsModeratorOrOwner:
+
+    def has_permission(user):
+        if (user.is_moderator == True) or (user.is_owner == True):
+            return True
+        else:
+            return False
