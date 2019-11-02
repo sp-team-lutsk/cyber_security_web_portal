@@ -79,7 +79,7 @@ Now you can find API docs in the same name dir in project's root
 ### Step 1
 
 - **Option 1**
-    - 👯 Clone this repo to your local machine using `https://github.com/sp-team-lutsk/cyber_security_web_portal.git
+    - 👯 Clone this repo to your local machine using `git clone https://github.com/sp-team-lutsk/cyber_security_web_portal.git`
 
 - **Option 2**
     - Create your own branch using `git checkout -b name_of_your_branch`
