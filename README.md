@@ -1,10 +1,8 @@
-# Title "Docker Polls"
+# Title "Cyber security web portal"
 
-> Subtitle or Short Description Goes Here
+> Web portal for students and teachers of Cybersecurity department of Lutsk National Technical University
 
 ## Table of Contents
-
-> If you're `README` has a lot of info, section headers might be nice.
 
 - [Last Updates](#last-updates)
 - [Installation](#installation)
@@ -27,6 +25,11 @@
 - 25.09.19 Added frontend part with nginx
 - 20.10.19 Added backend part with news parsing
 - 20.10.19 Added some fixes to server part
+- 23.10.19 Swagger API Docs added to project
+- 23.10.19 Updated Pillow to 6.2.0 (Security alert)
+- 25.10.19 Restructured authentication API, urls changed
+- 26.10.19 'Student' page added to front-end
+- 27.10.18 Permissions models created
 
 ## Installation
 
