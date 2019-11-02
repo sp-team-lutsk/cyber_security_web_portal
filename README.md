@@ -37,7 +37,7 @@ Make this simple steps to run this project. :smile: 😄
 
 ### Clone
 
-- Clone this repo to your local machine using `https://github.com/sp-team-lutsk/docker_polls_group.git`
+- Clone this repo to your local machine using `https://github.com/sp-team-lutsk/cyber_security_web_portal.git`
 
 ### Setup
 
