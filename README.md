@@ -63,13 +63,12 @@ $ pip install -r api/requirements/dev.txt
 ## Features
 It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
 
-## Documentation (Optional)
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+## Documentation
+Now you can find API docs in the same name dir in project's root
 
-## Tests (Optional)
+## Tests
 
-- Going into more detail on code and technologies used
-- I utilized this nifty <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheatsheet</a> for this sample `README`.
+- You can run tests with docker script `docker-nosetests.sh`
 
 ---
 
@@ -80,10 +79,10 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 ### Step 1
 
 - **Option 1**
-    - 🍴 Fork this repo!
+    - 👯 Clone this repo to your local machine using `https://github.com/sp-team-lutsk/cyber_security_web_portal.git
 
 - **Option 2**
-    - 👯 Clone this repo to your local machine using `https://github.com/sp-team-lutsk/docker_polls_group.git`
+    - Create your own branch using `git checkout -b name_of_your_branch`
 
 ### Step 2
 
@@ -91,7 +90,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 ### Step 3
 
-- 🔃 Create a new pull request using <a href="https://github.com/sp-team-lutsk/docker_polls_group/compare" target="_blank">`https://github.com/sp-team-lutsk/docker_polls_group/compare`</a>.
+- 🔃 Create a new pull request using <a href="https://github.com/sp-team-lutsk/cyber_security_web_portal/compare" target="_blank">`https://github.com/sp-team-lutsk/cyber_security_web_portal/compare`</a>.
 
 ---
 
@@ -99,13 +98,17 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 > Or Contributors/People
 
-| Name                                                       | Role     |
-| ---------------------------------------------------------- | -------: |
-| <a href="https://github.com/Martinfree">Martinfree</a>     | Back-end |
-| <a href="https://github.com/romaoksenyuk">romaoksenyuk</a> | Back-end |
-| <a href="https://github.com/Azrael-git">Azrael</a>         | PM       |
-| <a href="https://github.com/m-pasha">m-pasha</a>           | CEO      |
-| <a href="https://github.com/klekhaav">klekhaav</a>         | Boss     |
+| Name                                                       | Role      |
+| ---------------------------------------------------------- | ---------:|
+| <a href="https://github.com/Martinfree">Martinfree</a>     | Back-end  |
+| <a href="https://github.com/romaoksenyuk">romaoksenyuk</a> | Back-end  |
+| <a href="https://github.com/Green5tar">Green5tar</a>       | Parsing   |
+| <a href="https://github.com/joni2881">joni2881</a>         | Front-end |
+| <a href="https://github.com/vitalities">vitalities</a>     | Front-end |
+| <a href="https://github.com/Pavel1179">Pavel1179</a>       | Front-end |
+| <a href="https://github.com/Azrael-git">Azrael</a>         | PM        |
+| <a href="https://github.com/m-pasha">m-pasha</a>           | CEO       |
+| <a href="https://github.com/klekhaav">klekhaav</a>         | Boss      | 
 
 ---
 
