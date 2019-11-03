@@ -13,6 +13,7 @@ import { AboutComponent } from './about/about.component';
 import { MailingComponent } from './mailing/mailing.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes = [
   {path: '', component: BodyComponent},
@@ -39,6 +40,7 @@ const routes = [
     BrowserModule,
     RouterModule.forRoot(routes),
     FontAwesomeModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [
