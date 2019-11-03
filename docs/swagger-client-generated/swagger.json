@@ -164,23 +164,7 @@
           "200" : {
             "description" : "OK",
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "refresh" : {
-                  "type" : "string",
-                  "format" : "byte",
-                  "example" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU3MDEyNTg2MCwianRpIjoiMGQ2ZWRjYzgwZjkwNGIwMmE3M2ExNzAzYTcwYzFjNzEiLCJ1c2VyX2lkIjoxfQ.sjwb0uFBtQXtLzrHt_GJ60y7M5M0NONVHS7RAXCV2Ls",
-                  "description" : "The user ID.",
-                  "pattern" : "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
-                },
-                "access" : {
-                  "type" : "string",
-                  "format" : "byte",
-                  "example" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU3MDEyNTg2MCwianRpIjoiMGQ2ZWRjYzgwZjkwNGIwMmE3M2ExNzAzYTcwYzFjNzEiLCJ1c2VyX2lkIjoxfQ.sjwb0uFBtQXtLzrHt_GJ60y7M5M0NONVHS7RAXCV2Ls",
-                  "description" : "The user name.",
-                  "pattern" : "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
-                }
-              }
+              "$ref" : "#/definitions/inline_response_200"
             }
           }
         }
@@ -476,6 +460,44 @@
         }
       }
     },
+    "/admin/set_moder/" : {
+      "post" : {
+        "summary" : "Inverts moder status for user",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "User",
+          "description" : "User id",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/User_1"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/admin/user/" : {
+      "post" : {
+        "summary" : "Creates a new user without verification",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "user",
+          "description" : "User creating",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/user_2"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
     "/extnews/" : {
       "get" : {
         "summary" : "Returns a list of news.",
@@ -637,13 +659,7 @@
           "200" : {
             "description" : "OK",
             "schema" : {
-              "type" : "object",
-              "properties" : {
-                "access" : {
-                  "type" : "string",
-                  "example" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTcwMjE1NzAzLCJqdGkiOiJlNWRmMTQ5ZDQxYzA0NjhlOWMwMmYwZDUzY2EyMjFiOCIsInVzZXJfaWQiOjF9.XuYK_gdmphF45ACJny2mpizCxTc-n_Y_kL8ciNYqy6s"
-                }
-              }
+              "$ref" : "#/definitions/inline_response_200_1"
             }
           }
         }
@@ -916,6 +932,7 @@
       }
     },
     "inline_response_200" : {
+      "type" : "object",
       "properties" : {
         "refresh" : {
           "type" : "string",
@@ -974,6 +991,32 @@
         }
       }
     },
+    "User_1" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "example" : 1
+        }
+      }
+    },
+    "user_2" : {
+      "type" : "object",
+      "required" : [ "email", "password" ],
+      "properties" : {
+        "email" : {
+          "type" : "string",
+          "format" : "email",
+          "example" : "admin@example.com"
+        },
+        "password" : {
+          "type" : "string",
+          "format" : "password",
+          "example" : "Secure124!"
+        }
+      }
+    },
     "token" : {
       "type" : "object",
       "properties" : {
@@ -984,6 +1027,7 @@
       }
     },
     "inline_response_200_1" : {
+      "type" : "object",
       "properties" : {
         "access" : {
           "type" : "string",
