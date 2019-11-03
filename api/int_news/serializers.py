@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import News_int
+from .models import NewsInt
 
-class News_int_Serializer(serializers.ModelSerializer):
+class NewsIntSerializer(serializers.ModelSerializer):
 
     class Meta(object):
-        model = News_int
+        model = NewsInt
         fields = ('title', 'content', 'author', 'date_created', 'date_publication', 'images', 'is_checked',)
 

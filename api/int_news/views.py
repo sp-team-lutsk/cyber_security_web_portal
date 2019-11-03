@@ -3,17 +3,17 @@ from rest_framework import status
 from rest_framework.generics import  GenericAPIView, ListCreateAPIView
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.permissions import IsAdminUser
-from .serializers import News_int_Serializer
-from .models import News_int
+from .serializers import NewsIntSerializer
+from .models import NewsInt
 
 
-class Post_int(ListCreateAPIView):
-    queryset = News_int.objects.all()
-    serializer_class = News_int_Serializer
+class PostInt(ListCreateAPIView):
+    queryset = NewsInt.objects.all()
+    serializer_class = NewsIntSerializer
 
-class PostUpd_int(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAPIView):
-    queryset = News_int.objects.all()
-    serializer_class = News_int_Serializer
+class PostUpdInt(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAPIView):
+    queryset = NewsInt.objects.all()
+    serializer_class = NewsIntSerializer
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)

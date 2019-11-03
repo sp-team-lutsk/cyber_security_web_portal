@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from authentication.models import StdUser
 
-class News_int(models.Model):
+class NewsInt(models.Model):
     STATUS = (
         (0, "Draft"),
         (1, "Publish")
