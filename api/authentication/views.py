@@ -50,8 +50,8 @@ from .serializers import (
     SendMailSerializer,
    )
 
-from .models import StdUser,Student, Teacher
-from utils.decorators import permission,permissions,object_permission
+from .models import StdUser, Student, Teacher
+from utils.decorators import permission, permissions, object_permission
 User = get_user_model()
 
 

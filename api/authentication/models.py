@@ -51,7 +51,7 @@ class StdUserManager(UserManager):
 
         return self._create_user(email, password, **extra_fields)
 
-    def create_moder(self, email, password, **extra_fields):
+    def create_moderator(self, email, password, **extra_fields):
         extra_fields.setdefault('is_moderator', True)
         extra_fields.setdefault('is_active', True)
 

@@ -9,7 +9,7 @@ class AllowAny(BasePermission):
     """
 
     def has_permission(self,request, view ):
-        return bool(True is True)
+        return True
 
 class IsAuthenticated:
     """
