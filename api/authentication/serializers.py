@@ -88,8 +88,6 @@ class DeleteUserSerializer(serializers.ModelSerializer):
         fields = ('email',
                 'password',)
 
-        #extra_kwargs = {'password': {'write_only' : True}}
-
     def delete(self, request, pk=None, **kwargs):
         request.user.is_active = False
         request.user.save()
@@ -132,7 +130,6 @@ class SendMailSerializer(serializers.ModelSerializer):
 
     def send(self, data):
         email = data.get('email')
-        #user = User.objects.get(email=email).first()
         subject = data.get('subject')
         body = data.get('body')
         return Mail.send_mail(email=email,subject=subject,body=body)
@@ -159,9 +156,9 @@ class FindUserSerializer(serializers.ModelSerializer):
                 'last_update',
             
                 'news_subscription',
-                'is_staff',
+                'is_moderator',
                 'is_active',
-                'is_superuser',
+                'is_admin',
 
                 'is_student',
                 'is_teacher',
@@ -169,7 +166,6 @@ class FindUserSerializer(serializers.ModelSerializer):
                 'teacher',
 
             )
-            #extra_kwargs = {'password': {'write_only': True}}
     
 class UserSerializer(serializers.ModelSerializer):
     date_joined = serializers.ReadOnlyField() 
@@ -192,9 +188,9 @@ class UserSerializer(serializers.ModelSerializer):
             'last_update',
             
             'news_subscription',
-            'is_staff',
             'is_active',
-            'is_superuser',
+            'is_admin',
+            'is_moderator',
             'user_permissions',
 
             'is_student',
@@ -216,9 +212,9 @@ class UpdateUserSerializer(serializers.ModelSerializer):
                 'email',
                 'id',
                 'password',
-                'is_staff', 
+                'is_moderator', 
                 'is_active', 
-                'is_superuser', 
+                'is_admin',
                 'is_student', 
                 'is_teacher',
                 'username',

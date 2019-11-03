@@ -178,25 +178,22 @@ REST_FRAMEWORK = {
     ),
 }
 
-# JWT auth parameters
-JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=14)
+SIMPLE_JWT = {
+    'AUTH_HEADHER_TYPE': 'Bearer',
+    'USER_ID_FIELD': 'id',
+    'PAYLOAD_ID_FIELD': 'user_id',
+    'TOKEN_LIFETIME': datetime.timedelta(days=1),
+    'TOKEN_REFRESH_LIFETIME': datetime.timedelta(days=7),
+    'TOKEN_BACKEND': 'rest_framework_simplejwt.backends.TokenBackend',
 }
 
-# Internationalization
-# https://docs.djangoproject.com/en/dev/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-# Media files
 
+# Media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files')
 MEDIA_URL = '/media/'
 REST_USE_JWT = True

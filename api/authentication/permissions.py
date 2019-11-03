@@ -8,28 +8,46 @@ class AllowAny(BasePermission):
     more explicit.
     """
 
-    def has_permission(self, request, view):
+    def has_permission(self,request, view ):
         return True
 
-class IsAuthenticated(BasePermission):
+class IsAuthenticated:
     """
     Allows access only to authenticated users.
     """
 
-    def has_permission(self, request, view):
-        return bool(request.user and request.user.is_authenticated)
+    def has_permission(user):
+        return bool(user and user.is_authenticated)
 
-class IsAdminUser(BasePermission):
+class IsAdminUser:
 
-    def has_permission(self, request, view):
-        return bool(request.user and request.user.is_superuser)
+    def has_permission(user):
+        if (user.is_admin == True) and (user.is_moderator == True):
+            return False
+        else:
+            return bool(user and user.is_admin)
 
-class IsModeratorUser(BasePermission):
+class IsStaffUser:
+    
+    def has_permission(user):
+        if (user.is_admin == True) or (user.is_moderator == True):
+            return True
+        else:
+            return False
+
+class IsModeratorUser:
     """
     Allows access only to moderator users.
     """
 
-    def has_permission(self, request, view):
-        return bool(request.user and request.user.is_staff)
+    def has_permission(user):
+        return bool(user and user.is_moderator)
 
+class IsUser:
+
+    def has_object_permission(user,obj):
+        if (user.is_authenticated == True) and (user.id == obj.id):
+            return True
+        else:
+            return False
 

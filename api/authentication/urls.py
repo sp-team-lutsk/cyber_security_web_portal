@@ -23,7 +23,7 @@ urlpatterns = [
     #user api
     path('users/', UsersAPIView.as_view(), name='register'),   
     path('users/<int:id>/',UserAPIView.as_view(), name='user'),
-    path('users/login/', token_obtain_pair, name='login'),    
+    path('users/token_obtain/', token_obtain_pair, name='login'),    
     path('users/inactive/', UserInactiveAPIView.as_view(), name='account_inactive'),
     path('users/send_mail/', SendMailAPIView.as_view(), name='sendmail'),
     path('users/recover_pass/', RecoveryAPIView.as_view(), name='recover'),
