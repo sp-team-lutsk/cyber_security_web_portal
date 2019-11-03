@@ -8,7 +8,13 @@ body {
   text-decoration: none;
   text-align: center;
 }
-
+li {
+  list-style-type: none;
+}
+ul {
+  margin-left: 0;
+  padding-left: 0;
+}
 .header {
   background-color: #273959;
   background-size: cover;
@@ -153,7 +159,11 @@ body {
 
   margin: 0 0 0 0;
 }
-
+.image-1-size {
+  width: 100%;
+  height: auto;
+  max-height: 390px;
+}
 .white-line {
   background-color: #273959;
   height: 120px;
@@ -561,3 +571,6 @@ body {
     border: none;
   }
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
