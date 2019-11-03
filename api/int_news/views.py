@@ -6,7 +6,6 @@ from rest_framework.permissions import IsAdminUser
 from .serializers import NewsIntSerializer
 from .models import NewsInt
 
-
 class PostInt(ListCreateAPIView):
     queryset = NewsInt.objects.all()
     serializer_class = NewsIntSerializer
