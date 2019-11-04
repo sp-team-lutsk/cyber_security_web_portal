@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.views import APIView
 
-from .permissions import (IsAdminUser, 
+from authentication.permissions import (IsAdminUser, 
                         IsAuthenticated, 
                         IsModeratorUser,
                         IsStaffUser,
@@ -28,7 +28,7 @@ from allauth.socialaccount.providers.oauth2.views import (
     )
 from allauth.socialaccount.models import SocialLogin, SocialToken
 from allauth.socialaccount.providers.facebook.forms import FacebookConnectForm
-from .serializers import (
+from authentication.serializers import (
     UserSerializer,
     DeleteUserSerializer,
     FindUserSerializer,
@@ -47,11 +47,11 @@ from .serializers import (
     CreateStudentSerializer,
     UpdateStudentSerializer,
     BulkUpdateStudentSerializer,
-    SendMailSerializer,
    )
 
-from .models import StdUser, Student, Teacher
+from authentication.models import StdUser, Student, Teacher
 from utils.decorators import permission, permissions, object_permission
+
 User = get_user_model()
 
 
@@ -294,23 +294,6 @@ class StudentsAPIView(ListAPIView):
             
             u.save()
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
-
-
-class SendMailAPIView(APIView):
-    """
-    Send mail from admin to user
-    """
-    serializer_class = SendMailSerializer
-    permission_classes = [IsAdminUser]
-    queryset = User.objects.all()
-    
-    def post(self, request):
-        serializer = SendMailSerializer(data=request.data)
-        user = self.queryset.get(email=request.data.get('email'))
-        if user is not None:
-            if serializer.is_valid(raise_exception=True):
-                serializer.send(data=request.data)
-                return Response({'Status': 'Mail Send'}, status=status.HTTP_200_OK)
 
 class VerifyUserAPIView(APIView):
     """

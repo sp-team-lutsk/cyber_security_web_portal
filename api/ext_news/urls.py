@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import PostUpd, Post, MailingAPIView
+from ext_news.views import PostUpd, Post 
+from utils.views import MailingAPIView
 
 urlpatterns = [
     path('upd/<int:pk>/', PostUpd.as_view(), name='upd'),

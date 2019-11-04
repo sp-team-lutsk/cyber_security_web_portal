@@ -5,9 +5,8 @@ from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, DestroyM
 from rest_framework.views import APIView
 
 from rest_framework.response import Response
-from authentication.models import StdUser
-from .serializers import NewsSerializer
-from .models import News
+from ext_news.serializers import NewsSerializer
+from ext_news.models import News
 
 
 class Post(ListCreateAPIView):
@@ -28,17 +27,4 @@ class PostUpd(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAP
         return self.delete(request, *args, **kwargs)
 
 
-class MailingAPIView(APIView):
-    queryset = StdUser.objects.filter(**{'news_subscription':True})
 
-    def get(self, request, **extra_kwargs):
-        queryset = self.queryset
-        for user in queryset.iterator():
-            News.mailing(data=user)  
-        return Response({'Status':'OK'},status=status.HTTP_200_OK)
-
-def Mailing():
-    queryset = StdUser.objects.filter(**{'news_subscription':True})
-    for user in queryset.iterator():
-        News.mailing(data=user)
-    return None

@@ -37,8 +37,11 @@ INSTALLED_APPS = [
     'django_nose',
 
     'djangotoolbox',
+    
     'authentication',
     'ext_news',
+    'utils',
+    
     'django_crontab', 
 ]
 
