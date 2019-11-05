@@ -702,6 +702,134 @@
         }
       }
     },
+    "/intnews/" : {
+      "get" : {
+        "summary" : "Returns a list of news.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Creates a news",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "news",
+          "description" : "News creating",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/News"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Bulk news update",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "news",
+          "description" : "News updating",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/News"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Deletes all news",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/intnews/{id}/" : {
+      "get" : {
+        "summary" : "Returns info about news by ID.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "minimum" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A news object",
+            "schema" : {
+              "$ref" : "#/definitions/News"
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
+      },
+      "post" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "minimum" : 1
+        } ],
+        "responses" : {
+          "405" : {
+            "description" : "Method not allowed"
+          }
+        }
+      },
+      "put" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "minimum" : 1
+        }, {
+          "in" : "body",
+          "name" : "news",
+          "description" : "News updating",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/News"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "delete" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "minimum" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
     "/auth/users/send_mail/" : {
       "post" : {
         "parameters" : [ {
