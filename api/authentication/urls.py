@@ -15,7 +15,10 @@ from authentication.views import (
     TeacherAPIView,
     StudentAPIView,
     StudentsAPIView,
+    SetModeratorAPIView,
+    AdminUserAPIView,
    )
+from ext_news.views import SetNews
 from utils.views import SendMailAPIView
 
 urlpatterns = [
@@ -39,10 +42,10 @@ urlpatterns = [
     #moderator api
     #path('moderator/ban_user/',view.as_view(),name='ban_user'),
     #path('moderator/mass_mail/',view.as_view(),name=''),
-    #path('moderator/set_news/',view.as_view(),name=''),
+    path('moderator/set_news/',SetNews.as_view(),name='set_news'),
     #admin api
-    #path('admin/set_moder/',view.as_view(),name=''),
-    #path('admin/user/',view.as_view(),name=''),
+    path('admin/set_moder/', SetModeratorAPIView.as_view(),name=''),
+    path('admin/user/', AdminUserAPIView.as_view(),name=''),
 ]
 
 # This is for social auth 

@@ -47,6 +47,7 @@ from authentication.serializers import (
     CreateStudentSerializer,
     UpdateStudentSerializer,
     BulkUpdateStudentSerializer,
+    SetModeratorSerializer,
    )
 
 from authentication.models import StdUser, Student, Teacher
@@ -61,7 +62,7 @@ class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     permission_classes = [AllowAny,]
     queryset = User.objects.all()
     
-    @permission(["IsStaffUser"])
+    @permission("IsStaffUser")
     def get(self,request,*args,**kwargs):
         number = args[0]
         queryset = User.objects.filter(id=number.get('id'))
@@ -109,7 +110,7 @@ class UsersAPIView(ListAPIView,CreateAPIView):
                 data={"success": "User '{}' created successfully".format(str(user_saved))},
                 status=status.HTTP_201_CREATED)
     
-    @permission(["IsModeratorUser"])
+    @permission("IsModeratorUser")
     def put(self,request,*args,**kwargs):
         self.serializer_class = UpdateUserSerializer
         queryset = User.objects.all()
@@ -122,7 +123,7 @@ class UsersAPIView(ListAPIView,CreateAPIView):
         
             return Response(serializer.errors)
     
-    @permission(["IsModeratorUser"])
+    @permission("IsModeratorUser")
     def delete(self,request):
         self.serializer_class=DeleteAllSerializer
         q = list(self.queryset)
@@ -189,7 +190,7 @@ class TeachersAPIView(ListAPIView):
                 data={"success": "User '{}' created successfully".format(str(user_saved))},
                 status=status.HTTP_201_CREATED)
     
-    @permission(["IsModeratorUser"])
+    @permission("IsModeratorUser")
     def put(self,request,*args,**kwargs):
         self.serializer_class = BulkUpdateTeacherSerializer
         queryset = Teacher.objects.all()
@@ -200,7 +201,7 @@ class TeachersAPIView(ListAPIView):
                 serializer.save()
         return Response(data={ "200" : "OK"},status=status.HTTP_200_OK)
 
-    @permission(["IsModeratorUser"])
+    @permission("IsModeratorUser")
     def delete(self,request):
         q = User.objects.filter(is_teacher=True)
         for u in q:
@@ -272,7 +273,7 @@ class StudentsAPIView(ListAPIView):
                 data={"success": "User '{}' created successfully".format(str(user_saved))},
                 status=status.HTTP_201_CREATED)
 
-    @permission(["IsModeratorUser"])
+    @permission("IsModeratorUser")
     def put(self,request,*args,**kwargs):
         self.serializer_class = BulkUpdateStudentSerializer
         queryset = Student.objects.all()
@@ -283,7 +284,7 @@ class StudentsAPIView(ListAPIView):
                 serializer.save()
         return Response(data={ "200" : "OK"},status=status.HTTP_200_OK)
 
-    @permission(["IsModeratorUser"])
+    @permission("IsModeratorUser")
     def delete(self,request):
         q = User.objects.filter(is_student=True)
         for u in q:
@@ -344,3 +345,49 @@ class UserInactiveAPIView(APIView):
     
     def post(self, request, **kwargs):
         return Response({"Account inactive!"}, status=status.HTTP_400_BAD_REQUEST)
+
+class SetModeratorAPIView(APIView):
+    permission_classes = [AllowAny, ]
+    queryset = User.objects.none()
+    
+    @permission("IsAdminUser") 
+    def post(self, request, *args, **kwargs):
+        self.serializer_class = SetModeratorSerializer
+        serializer = SetModeratorSerializer(data=request.data)
+        user = User.objects.get(id=request.data.get('id'))
+        user.is_moderator = True
+        user.save()
+        return Response(data={"success": "User with id {} moderator now".format(str(request.data.get('id')))},
+                    status=status.HTTP_200_OK)
+
+class AdminUserAPIView(APIView):
+    permission_classes = [AllowAny, ]
+    queryset = User.objects.none()
+
+    @permission("IsAdminUser")
+    def post(self, request,*args,**kwargs):
+        self.serializer_class = CreateUserSerializer    
+        serializer = self.serializer_class(data=request.data)
+        user = StdUser()
+        user.email = request.data.get('email')
+        user.is_active = True
+        password = request.data.get('password') 
+        user.set_password(password)
+        user.save()
+        serializer.is_valid(raise_exception=True)
+        
+        return Response(
+                data={"success": "User '{}' created successfully".format(str(request.data.get('email')))},
+                status=status.HTTP_201_CREATED)
+   
+    @permission("IsAdminUser")
+    def delete(self,request,*args,**kwargs):
+        self.serializer_class = SetModeratorSerializer
+        serializer = SetModeratorSerializer(data=request.data)
+        queryset = User.objects.get(id=request.data.get('id'))
+        user = queryset
+        user.is_active = False
+        user.save()
+        return Response({'Status':'OK'},status=status.HTTP_200_OK)
+
+ 

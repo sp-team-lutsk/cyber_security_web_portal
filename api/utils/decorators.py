@@ -36,7 +36,7 @@ def permissions(permissions):
     def perm(func):
         def p(request,args,**kwargs):
             for permission in permissions:
-                if (permission == "IsAdminUser") or (permission == "IsModeratorUser") or (p == "IsStaffUser"):
+                if (permission == "IsAdminUser") or (permission == "IsModeratorUser") or (permission == "IsStaffUser"):
                     permis = P.pop(permission)
                     if permis.has_permission(StdUser.objects.get(email=args.user)) is True:
                         return func(request,args,kwargs)

@@ -310,4 +310,12 @@ class BulkUpdateStudentSerializer(serializers.ModelSerializer):
                 'faculty',
                 'profession',
                 'acad_group',)
+ 
+class SetModeratorSerializer(serializers.ModelSerializer):
+
+    class Meta(object):
+        model = User
+        fields = (
+                'id',)
+
 
