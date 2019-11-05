@@ -668,6 +668,9 @@ p {
   }
 }
 @media (max-width: 576px) {
+  .panel {
+    height: 200px;
+  }
   .top-text{
     font-size: 14px;
   }

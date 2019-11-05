@@ -8,7 +8,6 @@ import { FooterComponent } from './footer/footer.component';
 import { StudentsComponent } from "./students/students.component";
 import { RouterModule } from "@angular/router";
 import { ScienceComponent } from './science/science.component';
-import { StructureComponent } from './structure/structure.component';
 import { AboutComponent } from './about/about.component';
 import { MailingComponent } from './mailing/mailing.component';
 
@@ -19,7 +18,6 @@ const routes = [
   {path: '', component: BodyComponent},
   {path: 'students', component: StudentsComponent},
   {path: 'science', component: ScienceComponent},
-  {path: 'structure', component: StructureComponent},
   {path: 'about', component: AboutComponent},
   {path: 'mailing', component: MailingComponent},
 ];
@@ -32,7 +30,6 @@ const routes = [
     StudentsComponent,
     FooterComponent,
     ScienceComponent,
-    StructureComponent,
     AboutComponent,
     MailingComponent,
   ],
@@ -49,7 +46,6 @@ const routes = [
     BodyComponent,
     StudentsComponent,
     ScienceComponent,
-    StructureComponent,
     AboutComponent,
     MailingComponent,
     FooterComponent,

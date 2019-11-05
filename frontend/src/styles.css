@@ -64,6 +64,12 @@ ul {
   text-align: center;
   padding-top: 5vh;
 }
+.logo_img{
+  width: 70px;
+  height: auto;
+  position: relative;
+  left: 30px;
+}
 .dvs-1{
   font-size: 13px;
 }
@@ -245,6 +251,12 @@ ul {
   border: none;
 }
 @media (min-width: 768px) {
+  .logo_img{
+    width: 80px;
+    height: auto;
+    position: relative;
+    left: 50px;
+  }
   .text-2 {
     font-size: 15px;
   }
@@ -357,6 +369,12 @@ ul {
 }
 
 @media (min-width: 992px) {
+  .logo_img{
+    width: 90px;
+    height: auto;
+    position: relative;
+    left: 50px;
+  }
   .text-2 {
     font-size: 16px;
   }
@@ -474,6 +492,13 @@ ul {
 }
 
 @media (min-width: 1200px) {
+  .logo_img{
+    width: 100px;
+    height: auto;
+    position: relative;
+    left: 50px;
+  }
+
   .text-2 {
     font-size: 16px;
   }
