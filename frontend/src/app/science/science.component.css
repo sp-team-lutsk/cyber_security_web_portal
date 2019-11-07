@@ -86,7 +86,6 @@
 }
 .content_materials
 {
-  margin: auto;
   position: relative;
   display: flex;
   justify-content: center;
@@ -95,8 +94,7 @@
   height: 170px;
   box-shadow: 0.4em 0.4em 7px rgba(122 , 122, 122, 0.5);
   background: #273959;
-  margin-bottom: 150px;
-  margin-top: 30px;
+  margin: 30px auto 150px;
 }
 .content_materials img
 {
@@ -112,6 +110,13 @@
   color: #77786f;
   border-radius: 3px;
   margin-left: 25px;
+  border: none;
+  min-height: 38px;
+}
+.content_materials button:hover
+{
+  background: #95979f;
+  color: #f0eee5;
 }
 .menu
 {
@@ -191,7 +196,128 @@
   border: 1px solid #77786f;
   border-radius: 3px;
 }
-@media (max-width: 1200px)
-{
 
+@media(max-width: 1200px)
+{
+  .content_materials img
+  {
+    width: 476px;
+    height: auto;
+  }
+  .content_materials
+  {
+    width: 75%;
+    height: 155px;
+  }
+  .content_materials button
+  {
+    padding: 0 50px;
+  }
+  .menu li
+  {
+    padding: 4px 8px;
+  }
+}
+@media (max-width: 992px)
+{
+  .first-blok .text p {
+    font-size: 18px;
+  }
+  .content_materials
+  {
+    height: 130px;
+  }
+  .content_materials img
+  {
+    top: 20px;
+    width: 376px;
+    height: auto;
+  }
+  .content_materials button
+  {
+    padding: 0 40px;
+    min-height: 30px;
+  }
+  .menu li
+  {
+    padding: 2px 4px;
+    font-size: 16px;
+  }
+}
+@media (max-width: 768px)
+{
+  .first-blok .text p {
+    font-size: 16px;
+    padding: 0 10px;
+  }
+  .control_panel a
+  {
+    font-size: 13pt;
+
+    padding-left: 0;
+    padding-right: 0;
+    min-width: 240px;
+  }
+  .content_materials
+  {
+    height: 130px;
+    width: 100%;
+  }
+  .content_materials img
+  {
+    top: 20px;
+    width: 376px;
+    height: auto;
+  }
+}
+@media (max-width: 576px)
+{
+  .image1
+  {
+    display: none;
+  }
+  .control_panel a
+  {
+    font-size: 12pt;
+    min-width: 180px;
+  }
+  .content_materials img
+  {
+    display: none;
+  }
+  .menu
+  {
+    position: relative;
+    margin: 0;
+  }
+}
+@media (max-width: 370px)
+{
+  .control_panel img
+  {
+    width: 44px;
+    height: auto;
+  }
+  .control_panel a:nth-child(2)
+  {
+    font-size: 11pt;
+  }
+  .control_panel a
+  {
+    min-width: 150px;
+    padding: 0 10px;
+  }
+  .content_materials li a
+  {
+    font-size: 14px;
+  }
+  .content_materials
+  {
+    padding: 0 10px;
+  }
+  .content_materials button
+  {
+    padding: 0 30px;
+    min-height: 30px;
+  }
 }
