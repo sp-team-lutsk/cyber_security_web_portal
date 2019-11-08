@@ -5,7 +5,7 @@ from allauth.socialaccount import providers
 from rest_framework_simplejwt.views import token_obtain_pair,token_refresh
 from django.contrib.auth import views as auth_views
 from authentication.views import (
-    UserAPIView,
+        UserAPIView,
     UsersAPIView,
     VerifyPassUserAPIView,
     UserInactiveAPIView,
@@ -17,6 +17,8 @@ from authentication.views import (
     StudentsAPIView,
     SetModeratorAPIView,
     AdminUserAPIView,
+    BanUserAPIView, 
+    ModeratorMailAPIView,
    )
 from ext_news.views import SetNews
 from utils.views import SendMailAPIView
@@ -40,8 +42,8 @@ urlpatterns = [
     path('students/', StudentsAPIView.as_view(), name='students'),
     path('students/<int:id>/', StudentAPIView.as_view(), name='student'),
     #moderator api
-    #path('moderator/ban_user/',view.as_view(),name='ban_user'),
-    #path('moderator/mass_mail/',view.as_view(),name=''),
+    path('moderator/ban_user/', BanUserAPIView.as_view(),name='ban_user'),
+    path('moderator/mass_mail/', ModeratorMailAPIView.as_view(),name=''),
     path('moderator/set_news/',SetNews.as_view(),name='set_news'),
     #admin api
     path('admin/set_moder/', SetModeratorAPIView.as_view(),name=''),

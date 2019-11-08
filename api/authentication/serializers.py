@@ -318,4 +318,14 @@ class SetModeratorSerializer(serializers.ModelSerializer):
         fields = (
                 'id',)
 
+class MassMailSerializer(serializers.ModelSerializer):
+
+    class Meta(object):
+        model = Mail
+        fields = (
+                'email',
+                'subject',
+                'body',
+                'to',)
+
 

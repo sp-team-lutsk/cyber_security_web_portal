@@ -36,7 +36,8 @@ class SendMailAPIView(APIView):
                 return Response({'Status': 'Mail Send'}, status=status.HTTP_200_OK)
 
 class MailingAPIView(APIView):
-    queryset = StdUser.objects.filter(**{'news_subscription':True})
+    permission_classes = [AllowAny, ]
+    queryset = StdUser.objects.filter(news_subscription = True)
 
     def get(self, request, **extra_kwargs):
         queryset = self.queryset
@@ -45,7 +46,7 @@ class MailingAPIView(APIView):
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
 
 def Mailing():
-    queryset = StdUser.objects.filter(**{'news_subscription':True})
+    queryset = StdUser.objects.filter(news_subscription = True)
     for user in queryset.iterator():
         News.mailing(data=user)
     return None
