@@ -83,7 +83,7 @@ class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
         queryset = User.objects.filter(id=number.get('id'))
         serializer = UpdateUserSerializer(queryset[0],  data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serilizer.save()
         return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
         
     @permissions(["IsModeratorUser","IsUser"]) 
@@ -351,7 +351,7 @@ class SetModeratorAPIView(APIView):
     permission_classes = [AllowAny, ]
     queryset = User.objects.none()
     
-    @permission("IsAdminUser") 
+    @permission('IsAdminUser') 
     def post(self, request, *args, **kwargs):
         self.serializer_class = SetModeratorSerializer
         serializer = SetModeratorSerializer(data=request.data)
@@ -413,4 +413,9 @@ class ModeratorMailAPIView(APIView):
     @permission("IsModeratorUser")
     def post(self, request, *args, **kwargs):
         self.serializer_class = MassMailSerializer
-        return Response({'Mail':'Sent'},status=status.HTTP_200_OK)
+        serializer = MassMailSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            print(request.data)
+            return Response({'Mail':'Sent'},status=status.HTTP_200_OK)
+        else:
+            return Response({'Mail':'failed'})

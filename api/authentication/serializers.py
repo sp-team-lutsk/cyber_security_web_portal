@@ -8,8 +8,8 @@ from django.db.models import Q
 
 from rest_framework.response import Response
 
-from .models import StdUser,Student, Teacher, Faculty, Profession, ACAD_GROUPS_CHOICES
-
+from authentication.models import StdUser,Student, Teacher, Faculty, Profession, ACAD_GROUPS_CHOICES
+from utils.serializers import SendMailSerializer
 User = get_user_model()
 
 class FacultySerializer(serializers.ModelSerializer):
@@ -319,13 +319,17 @@ class SetModeratorSerializer(serializers.ModelSerializer):
                 'id',)
 
 class MassMailSerializer(serializers.ModelSerializer):
-
+    subject = serializers.CharField(source = 'Mail.subject')
+    body = serializers.CharField(source = 'Mail.body') 
+    
     class Meta(object):
-        model = Mail
+        model = User
         fields = (
-                'email',
                 'subject',
                 'body',
-                'to',)
-
+                'is_active',
+                'is_student',
+                'is_teacher',
+                'is_moderator',
+                'is_admin',)
 
