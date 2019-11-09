@@ -19,7 +19,7 @@
 p {
   margin: 0;
 }
-.image {
+.image1 {
   padding-right: 0;
 }
 .panel {
@@ -38,11 +38,6 @@ p {
   margin: 0;
   padding: 20px 0 0 0;
 
-}
-.image-1-size {
-  width: 100%;
-  height: auto;
-  max-height: 390px;
 }
 .text1 {
   font-size: 16px;
@@ -316,10 +311,11 @@ p {
   -moz-transition-duration: 0.3s;
   transition-duration: 0.3s;
 }
-.menu ul li a {
+.menu ul li p {
   color: #77786f;
   font-size: 16px;
   text-decoration: none;
+  cursor: pointer;
 }
 .menu__vertical__button {
   width: 180px;
@@ -331,7 +327,7 @@ p {
 .menu__vertical__button:hover {
   background-color: #6bcad4;
 }
-.menu ul ul li a {
+.menu ul ul li p {
   color: #77786f;
   text-decoration: none;
   font-size: 12px;
@@ -339,7 +335,7 @@ p {
   padding-left: 10px;
 }
 
-.menu ul ul > li:hover a {
+.menu ul ul > li:hover p {
   color: #f1efe6;
   font-size: 15px;
 }
@@ -354,13 +350,6 @@ p {
 }
 .menu ul > li:hover ul {
   display: block;
-}
-li {
-  list-style-type: none;
-}
-ul {
-  margin-left: 0;
-  padding-left: 0;
 }
 .blog__block {
   width: 100%;
@@ -434,7 +423,7 @@ ul {
     font-size: 15px;
   }
 }
-.dws-menu > ul li a {
+.dws-menu > ul li p {
   font-size: 15px;
 }
 .faAngledown {
@@ -504,13 +493,13 @@ ul {
     display: flex;
     justify-content: left;
   }
-  .menu ul ul li a {
+  .menu ul ul li p {
     font-size: 10px;
   }
-  .menu ul ul li a:hover {
+  .menu ul ul li p:hover {
     font-size: 13px;
   }
-  .menu ul li a {
+  .menu ul li p {
     font-size: 14px;
   }
   .style_table div {
@@ -602,13 +591,13 @@ ul {
     display: flex;
     justify-content: left;
   }
-  .menu ul ul li a {
+  .menu ul ul li p {
     font-size: 9px;
   }
-  .menu ul ul li a:hover {
+  .menu ul ul li p:hover {
     font-size: 12px;
   }
-  .menu ul li a {
+  .menu ul li p {
     font-size: 13px;
   }
   .blog__field {
@@ -668,24 +657,27 @@ ul {
     display: flex;
     justify-content: left;
   }
-  .menu ul ul li a {
+  .menu ul ul li p {
     font-size: 8px;
   }
-  .menu ul ul li a:hover {
+  .menu ul ul li p:hover {
     font-size: 11px;
   }
-  .menu ul li a {
+  .menu ul li p {
     font-size: 12px;
   }
 }
 @media (max-width: 576px) {
+  .panel {
+    height: 200px;
+  }
   .top-text{
     font-size: 14px;
   }
   .bot-text{
     font-size: 12px;
   }
-  .image{
+  .image1{
     display: none;
   }
   .text1 {
@@ -731,13 +723,13 @@ ul {
     display: flex;
     justify-content: left;
   }
-  .menu ul ul li a {
+  .menu ul ul li p {
     font-size: 8px;
   }
-  .menu ul ul li a:hover {
+  .menu ul ul li p:hover {
     font-size: 11px;
   }
-  .menu ul li a {
+  .menu ul li p {
     font-size: 12px;
   }
   .line {
