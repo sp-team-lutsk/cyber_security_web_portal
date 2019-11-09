@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     
     'authentication',
     'ext_news',
-    'utils',
     
     'django_crontab', 
 ]
