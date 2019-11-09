@@ -21,13 +21,6 @@ from utils.decorators import permission, permissions, object_permission
 
 User = get_user_model()
 
-USER_PARAMS = {
-        'is_active': is_active,
-        'is_student': is_student,
-        'is_teacher': is_teacher,
-        'is_moderator': is_moderator,
-        'is_admin': is_admin,
-        }
 
 
 class SendMailAPIView(APIView):
@@ -71,15 +64,27 @@ class ModeratorMailAPIView(APIView):
         self.serializer_class = MassMailSerializer
         serializer = MassMailSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            print(request.data)
-            return Response({'Mail':'Sent'},status=status.HTTP_200_OK)
+            obj = request.data.copy()
+            MassMailing(obj)
+            return Response({'Mails':'Sent'},status=status.HTTP_200_OK)
         else:
-            return Response({'Mail':'failed'})
+            return Response({'Mails':'failed'})
 
 def MassMailing(obj):
-    queryset = StdUser.objects.filter(obj = True)
-    for user in queryset.iterator():
-        News.mailing(data=user)
+    users = []
+    if obj.get('is_active') != None:
+        users = list(StdUser.objects.filter(is_active = True))
+    if obj.get('is_student') != None:
+        users = users + list(StdUser.objects.filter(is_moderator = True))
+    if obj.get('is_teacher') != None:
+        users = users + list(StdUser.objects.filter(is_moderator = True))
+    if obj.get('is_moderator') != None:
+        users = users + list(StdUser.objects.filter(is_moderator = True))
+    if obj.get('is_admin') != None:
+        users = users + list(StdUser.objects.filter(is_moderator = True))
+
+    for user in users:
+        Mail.send_mail(email = user.email,subject=obj.get('subject'), body = obj.get('body'))
     return None
 
 
