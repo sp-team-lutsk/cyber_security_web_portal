@@ -1,13 +1,12 @@
-FROM node
+FROM node as builder
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+WORKDIR /app
+COPY package.json package-lock.json /app/
 
-COPY package*.json /usr/src/app/
 RUN npm install
+COPY . /app
 
-COPY . .
+RUN npm run build
 
-EXPOSE 4200
-
+CMD ["npm", "audit", "fix"]
 CMD ["npm", "start"]

@@ -42,9 +42,9 @@ class PostUpd(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+
 class MailingAPIView(APIView):
     queryset = StdUser.objects.filter(**{'news_subscription':True})
-    #permission_class = [IsAdminUser]
 
     def get(self, request, **extra_kwargs):
         queryset = self.queryset

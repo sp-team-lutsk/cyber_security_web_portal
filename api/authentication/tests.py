@@ -20,7 +20,7 @@ class TestSuperUser(TestCase):
 
     @classmethod
     def setUpTestData(self):
-        self.user = models.StdUser.objects.create_superuser(email="admin@examole.com", password="Admin123")
+        self.user = models.StdUser.objects.create_admin(email="admin@examole.com", password="Admin123")
 
     def test_is_staff(self):
         nt.assert_equal(self.user.is_staff, True)
@@ -28,8 +28,8 @@ class TestSuperUser(TestCase):
     def test_is_active(self):
         nt.assert_equal(self.user.is_active, True)
 
-    def test_is_superuser(self):
-        nt.assert_equal(self.user.is_superuser, True)
+    def test_is_admin(self):
+        nt.assert_equal(self.user.is_admin, True)
 
 
 class TestStdUser(TestCase):
@@ -231,7 +231,7 @@ class TestAPI(TestCase):
         nt.assert_equal(user.first_name, "Alexandr")
         
     def test_send_mail_api(self):
-        admin = models.StdUser.objects.create_superuser(email="auswahlen.a@gmail.com", password="teTTTst123!") 
+        admin = models.StdUser.objects.create_admin(email="auswahlen.a@gmail.com", password="teTTTst123!") 
         client.login(email='auswahlen.a@gmail.com', password='teTTTst123!')
         response = client.post(reverse('sendmail'), {'email': 'auswahlen.a@gmail.com', 'subject': 'TestSubj', 'body': 'TestBody'})
 
@@ -301,7 +301,7 @@ class TestAPI(TestCase):
         nt.assert_equal(response.data, {"success": "User 'test@example.com' created successfully"})
 
     def test_get_inactive(self):
-        admin = models.StdUser.objects.create_superuser(email="admin@example.com",
+        admin = models.StdUser.objects.create_admin(email="admin@example.com",
                 password="Admin123!")
         
         client.login(email="admin@example.com", password="Admin123!")
