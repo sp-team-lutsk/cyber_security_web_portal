@@ -15,9 +15,20 @@ from authentication.models import StdUser
 from utils.models import Mail
 from utils.serializers import (
     SendMailSerializer,
+    MassMailSerializer,
    )
+from utils.decorators import permission, permissions, object_permission
 
 User = get_user_model()
+
+USER_PARAMS = {
+        'is_active': is_active,
+        'is_student': is_student,
+        'is_teacher': is_teacher,
+        'is_moderator': is_moderator,
+        'is_admin': is_admin,
+        }
+
 
 class SendMailAPIView(APIView):
     """
@@ -50,3 +61,25 @@ def Mailing():
     for user in queryset.iterator():
         News.mailing(data=user)
     return None
+
+class ModeratorMailAPIView(APIView):
+    permission_classes = [AllowAny, ]
+    queryset = User.objects.none()
+    
+    @permission("IsModeratorUser")
+    def post(self, request, *args, **kwargs):
+        self.serializer_class = MassMailSerializer
+        serializer = MassMailSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            print(request.data)
+            return Response({'Mail':'Sent'},status=status.HTTP_200_OK)
+        else:
+            return Response({'Mail':'failed'})
+
+def MassMailing(obj):
+    queryset = StdUser.objects.filter(obj = True)
+    for user in queryset.iterator():
+        News.mailing(data=user)
+    return None
+
+

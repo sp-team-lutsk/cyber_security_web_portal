@@ -18,10 +18,9 @@ from authentication.views import (
     SetModeratorAPIView,
     AdminUserAPIView,
     BanUserAPIView, 
-    ModeratorMailAPIView,
    )
 from ext_news.views import SetNews
-from utils.views import SendMailAPIView
+from utils.views import SendMailAPIView, ModeratorMailAPIView
 
 urlpatterns = [
     

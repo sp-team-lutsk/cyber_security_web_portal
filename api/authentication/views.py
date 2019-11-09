@@ -48,7 +48,6 @@ from authentication.serializers import (
     UpdateStudentSerializer,
     BulkUpdateStudentSerializer,
     SetModeratorSerializer,
-    MassMailSerializer,
     )
 
 from authentication.models import StdUser, Student, Teacher
@@ -406,16 +405,4 @@ class BanUserAPIView(APIView):
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
 
 
-class ModeratorMailAPIView(APIView):
-    permission_classes = [AllowAny, ]
-    queryset = User.objects.none()
-    
-    @permission("IsModeratorUser")
-    def post(self, request, *args, **kwargs):
-        self.serializer_class = MassMailSerializer
-        serializer = MassMailSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            print(request.data)
-            return Response({'Mail':'Sent'},status=status.HTTP_200_OK)
-        else:
-            return Response({'Mail':'failed'})
+
