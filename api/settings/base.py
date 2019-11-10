@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_crontab',
     'ext_news',
     'int_news',
+    'django_crontab',
 
 ]
 
