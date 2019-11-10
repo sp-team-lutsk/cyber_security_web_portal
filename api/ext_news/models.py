@@ -28,4 +28,3 @@ class News(models.Model):
                 to=[data.email])
         msg.content_subtype = 'html'
         msg.send() 
-

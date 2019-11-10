@@ -25,9 +25,9 @@ class StdUserAdmin(UserAdmin):
     model = StdUser
 
     ordering = ('email', )
-    list_display = ('email', 'is_staff', 'is_active', 'is_teacher', 'is_student')
+    list_display = ('email', 'is_moderator', 'is_admin', 'is_active', 'is_teacher', 'is_student')
     list_filter = ('email',)
-    readonly_fields = ('date_joined', 'last_update', 'is_staff', 'is_superuser',)
+    readonly_fields = ('date_joined', 'last_update', 'is_moderator', 'is_admin',)
     inlines = [
             SocialUserInline, 
             StudentInline, 
@@ -49,8 +49,8 @@ class StdUserAdmin(UserAdmin):
                            'news_subscription',)
                 }),
             ('Permissions', {
-                'fields': ('is_staff',
-                           'is_superuser',
+                'fields': ('is_moderator',
+                           'is_admin',
                            'is_student',
                            'is_teacher',
                            'user_permissions',)

@@ -20,21 +20,6 @@
   padding: 0 0 0 0;
 }
 
-.my{
-  display: inline-block;
-  vertical-align: top;
-  margin: 0 18px;
-  color: #f1efe6;
-  text-decoration: none;
-  padding: 0 5% 0 5%;
-
-  transition: color .2s linear;
-}
-.my:hover {
-  color: #273959;
-  text-decoration: none;
-}
-
 .footer-info {
   height: 33px;
   width: auto;
@@ -47,11 +32,6 @@
   font-size: 9px;
   text-align-last: center;
 }
-.uu {
-  height: 36px;
-  width: auto;
-}
-
 
 @media (min-width: 768px) {
   .footer	{
@@ -80,12 +60,7 @@
      text-align-last: center;
      padding-bottom: 30px;
    }
-  .uu {
-    height: 41px;
-    width: auto;
-  }
 }
-
 
 /* на md */
 @media (min-width: 992px) {
@@ -115,10 +90,6 @@
     font-size: 11px;
     text-align-last: center;
   }
-  .uu {
-    height: 46px;
-    width: auto;
-  }
 }
 /* на lg */
 @media (min-width: 1200px) {
@@ -147,10 +118,5 @@
   .text2 {
     font-size: 12px;
     text-align-last: center;
-  }
-
-  .uu {
-    height: 51px;
-    width: auto;
   }
 }
