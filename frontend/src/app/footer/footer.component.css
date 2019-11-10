@@ -3,8 +3,8 @@
     url("assets/images/img9.png") center no-repeat;
   -webkit-background-size: cover;
   background-size: cover;
-  position: absolute;
-  height: auto;
+  position: relative;
+  height: fit-content;
   width: 100%;
 
   padding-top: 10px;
@@ -39,7 +39,6 @@
       url("assets/images/img9.png") center no-repeat;
     -webkit-background-size: cover;
     background-size: cover;
-    position: relative;
     height: auto;
     width: 100%;
 
@@ -69,7 +68,6 @@
       url("assets/images/img9.png") center no-repeat;
     -webkit-background-size: cover;
     background-size: cover;
-    position: relative;
     height: auto;
     width: 100%;
 
@@ -98,9 +96,8 @@
       url("assets/images/img9.png") center no-repeat;
     -webkit-background-size: cover;
     background-size: cover;
-    position: relative;
     height: auto;
-
+    position: absolute;
     padding-top: 50px;
     padding-left: 15px;
     padding-right: 15px;
