@@ -460,6 +460,68 @@
         }
       }
     },
+    "/modetator/ban_user/" : {
+      "post" : {
+        "summary" : "It takes away from the user the right to use the blog",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "User",
+          "description" : "User id",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/User_1"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/moderator/mass_mail/" : {
+      "post" : {
+        "summary" : "Provides mass mailing by query",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "Mail",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/Mail_1"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Inverted value of is_checked property",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_1"
+            }
+          }
+        }
+      }
+    },
+    "/moderator/set_news/" : {
+      "post" : {
+        "summary" : "Inverts checked status for post (news)",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "News",
+          "description" : "News id",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/News_1"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Inverted value of is_checked property",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_1"
+            }
+          }
+        }
+      }
+    },
     "/admin/set_moder/" : {
       "post" : {
         "summary" : "Inverts moder status for user",
@@ -469,7 +531,7 @@
           "description" : "User id",
           "required" : false,
           "schema" : {
-            "$ref" : "#/definitions/User_1"
+            "$ref" : "#/definitions/User_2"
           }
         } ],
         "responses" : {
@@ -494,6 +556,20 @@
         "responses" : {
           "201" : {
             "description" : "Created"
+          }
+        }
+      },
+      "delete" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "minimum" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
           }
         }
       }
@@ -626,6 +702,134 @@
         }
       }
     },
+    "/intnews/" : {
+      "get" : {
+        "summary" : "Returns a list of news.",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Creates a news",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "news",
+          "description" : "News creating",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/News"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Bulk news update",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "news",
+          "description" : "News updating",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/News"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Deletes all news",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/intnews/{id}/" : {
+      "get" : {
+        "summary" : "Returns info about news by ID.",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "minimum" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A news object",
+            "schema" : {
+              "$ref" : "#/definitions/News"
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
+      },
+      "post" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "minimum" : 1
+        } ],
+        "responses" : {
+          "405" : {
+            "description" : "Method not allowed"
+          }
+        }
+      },
+      "put" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "minimum" : 1
+        }, {
+          "in" : "body",
+          "name" : "news",
+          "description" : "News updating",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/News"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "delete" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "minimum" : 1
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
     "/auth/users/send_mail/" : {
       "post" : {
         "parameters" : [ {
@@ -659,7 +863,7 @@
           "200" : {
             "description" : "OK",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_1"
+              "$ref" : "#/definitions/inline_response_200_2"
             }
           }
         }
@@ -1001,6 +1205,46 @@
         }
       }
     },
+    "Mail_1" : {
+      "properties" : {
+        "data" : {
+          "$ref" : "#/definitions/Mail"
+        },
+        "to" : {
+          "type" : "string",
+          "example" : "Moders"
+        }
+      }
+    },
+    "inline_response_200_1" : {
+      "type" : "object",
+      "properties" : {
+        "is_checked" : {
+          "type" : "boolean",
+          "example" : true
+        }
+      }
+    },
+    "News_1" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "example" : 1
+        }
+      }
+    },
+    "User_2" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "example" : 1
+        }
+      }
+    },
     "user_2" : {
       "type" : "object",
       "required" : [ "email", "password" ],
@@ -1026,7 +1270,7 @@
         }
       }
     },
-    "inline_response_200_1" : {
+    "inline_response_200_2" : {
       "type" : "object",
       "properties" : {
         "access" : {
