@@ -1,9 +1,8 @@
-from django.contrib.auth import get_user_model  
+from django.http import Http404
 from rest_framework import status
 from rest_framework.generics import  GenericAPIView, ListCreateAPIView
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.views import APIView
-
 from rest_framework.response import Response
 from authentication.models import StdUser
 from .serializers import NewsSerializer
@@ -14,18 +13,34 @@ class Post(ListCreateAPIView):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
 
-class PostUpd(RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, GenericAPIView):
+class PostUpd(APIView):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
 
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+    def get_object(self, pk):
+        try:
+            return News.objects.get(pk=pk)
+        except News.DoesNotExist:
+            raise Http404
 
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
+    def get(self, request, pk):
+        news = self.get_object(pk)
+        serializer = NewsSerializer(news)
+        return Response(serializer.data)
 
-    def delete(self, request, *args, **kwargs):
-        return self.delete(request, *args, **kwargs)
+    def put(self, request, pk):
+        news = self.get_object(pk)
+        serializer = NewsSerializer(news, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        news = self.get_object(pk)
+        news.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 class MailingAPIView(APIView):
