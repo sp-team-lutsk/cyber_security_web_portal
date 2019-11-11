@@ -1,6 +1,7 @@
 #!/bin/bash
 
 rm -rf htmlcov/
+docker-compose up
 docker exec -it dpg_api coverage run --omit='*/migrations/*.py,*__init__*,wsgi.py,manage.py,*apps.py,*adapter.py' --source='.' manage.py test authentication ext_news
 docker exec -it dpg_api coverage report
 docker exec -it dpg_api coverage html
