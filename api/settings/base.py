@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'djangotoolbox',
     
     'authentication',
-    'django_crontab',
     'ext_news',
     'int_news',
     'django_crontab',
