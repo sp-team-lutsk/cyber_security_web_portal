@@ -15,7 +15,7 @@ SECRET_KEY = '#-+2%cfp05=)8q*u1s2itkffi$i^@ir5@bv%!9g3irbfi_)2h5'
 DEBUG = True
 
 # Update in prod it
-ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1', 'sp-lutsk.com']
 
 # Application definition
 INSTALLED_APPS = [
@@ -37,8 +37,11 @@ INSTALLED_APPS = [
     'django_nose',
 
     'djangotoolbox',
+    
     'authentication',
     'ext_news',
+    'int_news',
+    'django_crontab',
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -77,9 +80,9 @@ AUTHENTICATION_BACKENDS = (
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -96,8 +99,8 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
@@ -168,36 +171,31 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
     ),
 #Permissions
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.IsAdminUser'
-        
+        'authentication.permissions.IsAdminUser',
+        'authentication.permissions.IsModeratorUser',
+        'authentication.permissions.IsAuthenticated',
     ),
 }
 
-# JWT auth parameters
-JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=14)
+SIMPLE_JWT = {
+    'AUTH_HEADHER_TYPE': 'Bearer',
+    'USER_ID_FIELD': 'id',
+    'PAYLOAD_ID_FIELD': 'user_id',
+    'TOKEN_LIFETIME': datetime.timedelta(days=1),
+    'TOKEN_REFRESH_LIFETIME': datetime.timedelta(days=7),
+    'TOKEN_BACKEND': 'rest_framework_simplejwt.backends.TokenBackend',
 }
 
-# Internationalization
-# https://docs.djangoproject.com/en/dev/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-# Media files
 
+# Media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files')
 MEDIA_URL = '/media/'
 REST_USE_JWT = True
@@ -254,8 +252,8 @@ STATICFILES_FINDERS = (
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL ='/accounts/login/'
 
-CRONJOBS = [
-    ('00 16  *   *   6', 'ext_news.cron.CronParse'),
+CRONJOBS = [ 
+  ('00 16  *   *   6', 'ext_news.cron.CronMailing'),
+  ('00 16  *   *   6', 'ext_news.cron.CronParse')
 ]
-
 SITE_ID = 2

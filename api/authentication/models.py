@@ -34,23 +34,36 @@ class StdUserManager(UserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-
-    def create_user(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', False)
-        extra_fields.setdefault('is_superuser', False)
-        extra_fields.setdefault('is_active', False)
-
-        return self._create_user(email, password, **extra_fields)
-
+    
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
+        return self._create_user(email, password, **extra_fields)
+
+    def create_user(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_moderator', False)
+        extra_fields.setdefault('is_admin', False)
+        extra_fields.setdefault('is_active', False)
+
+        return self._create_user(email, password, **extra_fields)
+
+    def create_admin(self, email, password, **extra_fields):
+        extra_fields.setdefault('is_admin', True)
+        extra_fields.setdefault('is_active', True)
+
+        if extra_fields.get('is_admin') is not True:
+            raise ValueError('Superuser must have is_admin=True.')
+
+        return self._create_user(email, password, **extra_fields)
+
+    def create_moderator(self, email, password, **extra_fields):
+        extra_fields.setdefault('is_moderator', True)
+        extra_fields.setdefault('is_active', True)
+
+        if extra_fields.get('is_moderator') is not True:
+            raise ValueError('Superuser must have is_admin=True.')
 
         return self._create_user(email, password, **extra_fields)
 
@@ -137,9 +150,9 @@ class StdUser(AbstractUser):
     gender = models.CharField(max_length=64, blank=True, default="man") # Man/Wpman
     
     news_subscription = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)  # staff user non superuser
     is_active = models.BooleanField(default=False)  # can login
-    is_superuser = models.BooleanField(default=False)  # superuser
+    is_admin = models.BooleanField(default=False)  # admin
+    is_moderator = models.BooleanField(default=False) # moderator
 
     is_student = models.BooleanField('student status', default=False)
     is_teacher = models.BooleanField('teacher status', default=False)
@@ -288,17 +301,4 @@ class Faculty(Group):
     def __str__(self):
         return self.name
 
-class Mail(models.Model):
-    email = models.EmailField(max_length=64, blank=False, unique=False)
-    subject = models.CharField(max_length=256, blank=False, unique=False)
-    body = models.CharField(max_length=2048, blank=False, unique=False)
-
-    @classmethod
-    def send_mail(self, email, subject, body):
-        
-        msg = EmailMessage(subject=subject,
-                body=body,
-                to=[email])
-        msg.content_subtype = 'html'
-        msg.send()
 

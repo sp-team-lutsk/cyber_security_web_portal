@@ -8,4 +8,5 @@ COPY . /app
 
 RUN npm run build
 
+CMD ["npm", "audit", "fix"]
 CMD ["npm", "start"]
