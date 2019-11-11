@@ -122,6 +122,9 @@ DATABASES = {
         'PASSWORD': 'Admin123!',
         'HOST': 'postgresql',    # if you use docker you should specify  'HOST': 'postgresql', but if it is locally 'HOST': '127.0.0.1'
         'PORT': '5432',
+        'TEST': {
+            'NAME': 'test_database',
+        }
     }
 }
 
