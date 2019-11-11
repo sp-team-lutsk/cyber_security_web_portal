@@ -1,14 +1,91 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: "MyriadProRegular";
+  src: url("fonts/MyriadProRegular/MyriadProRegular.eot");
+  src: url("fonts/MyriadProRegular/MyriadProRegular.eot?#iefix")format("embedded-opentype"),
+  url("fonts/MyriadProRegular/MyriadProRegular.woff") format("woff"),
+  url("fonts/MyriadProRegular/MyriadProRegular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "MyriadProBold";
+  src: url("fonts/MyriadProBold/MyriadProBold.eot");
+  src: url("fonts/MyriadProBold/MyriadProBold.eot?#iefix")format("embedded-opentype"),
+  url("fonts/MyriadProBold/MyriadProBold.woff") format("woff"),
+  url("fonts/MyriadProBold/MyriadProBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "MyriadProItalic";
+  src: url("fonts/MyriadProItalic/MyriadProItalic.eot");
+  src: url("fonts/MyriadProItalic/MyriadProItalic.eot?#iefix")format("embedded-opentype"),
+  url("fonts/MyriadProItalic/MyriadProItalic.woff") format("woff"),
+  url("fonts/MyriadProItalic/MyriadProItalic.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "MyriadProSemiBold";
+  src: url("fonts/MyriadProSemiBold/MyriadProSemiBold.eot");
+  src: url("fonts/MyriadProSemiBold/MyriadProSemiBold.eot?#iefix")format("embedded-opentype"),
+  url("fonts/MyriadProSemiBold/MyriadProSemiBold.woff") format("woff"),
+  url("fonts/MyriadProSemiBold/MyriadProSemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "MyriadProBoldItalic";
+  src: url("fonts/MyriadProBoldItalic/MyriadProBoldItalic.eot");
+  src: url("fonts/MyriadProBoldItalic/MyriadProBoldItalic.eot?#iefix")format("embedded-opentype"),
+  url("fonts/MyriadProBoldItalic/MyriadProBoldItalic.woff") format("woff"),
+  url("fonts/MyriadProBoldItalic/MyriadProBoldItalic.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "MyriadProSemiBoldItalic";
+  src: url("fonts/MyriadProSemiBoldItalic/MyriadProSemiBoldItalic.eot");
+  src: url("fonts/MyriadProSemiBoldItalic/MyriadProSemiBoldItalic.eot?#iefix")format("embedded-opentype"),
+  url("fonts/MyriadProSemiBoldItalic/MyriadProSemiBoldItalic.woff") format("woff"),
+  url("fonts/MyriadProSemiBoldItalic/MyriadProSemiBoldItalic.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'MyriadProLight';
+  src: url('fonts/MyriadProLight/MyriadPro-Light.eot');
+  src: url('fonts/MyriadProLight/MyriadPro-Light.eot?#iefix') format('embedded-opentype'),
+  url('fonts/MyriadProLight/MyriadPro-Light.woff') format('woff'),
+  url('fonts/MyriadProLight/MyriadPro-Light.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+*{
+  border: none;
+  font-family: 'MyriadProSemiBold', sans-serif;
+}
 body {
   margin: 0;
 
-  font-family: 'Myriad Pro' , sans-serif;
   font-size: 18px;
   color: #f1efe6;
   text-decoration: none;
   text-align: center;
 }
-
+li {
+  list-style-type: none;
+}
+ul {
+  margin-left: 0;
+  padding-left: 0;
+}
 .header {
   background-color: #273959;
   background-size: cover;
@@ -57,6 +134,12 @@ body {
   top: 100%;
   text-align: center;
   padding-top: 5vh;
+}
+.logo_img{
+  width: 70px;
+  height: auto;
+  position: relative;
+  left: 30px;
 }
 .dvs-1{
   font-size: 13px;
@@ -153,7 +236,11 @@ body {
 
   margin: 0 0 0 0;
 }
-
+.image-1-size {
+  width: 100%;
+  height: auto;
+  max-height: 390px;
+}
 .white-line {
   background-color: #273959;
   height: 120px;
@@ -235,6 +322,12 @@ body {
   border: none;
 }
 @media (min-width: 768px) {
+  .logo_img{
+    width: 80px;
+    height: auto;
+    position: relative;
+    left: 50px;
+  }
   .text-2 {
     font-size: 15px;
   }
@@ -347,6 +440,12 @@ body {
 }
 
 @media (min-width: 992px) {
+  .logo_img{
+    width: 90px;
+    height: auto;
+    position: relative;
+    left: 50px;
+  }
   .text-2 {
     font-size: 16px;
   }
@@ -464,6 +563,13 @@ body {
 }
 
 @media (min-width: 1200px) {
+  .logo_img{
+    width: 100px;
+    height: auto;
+    position: relative;
+    left: 50px;
+  }
+
   .text-2 {
     font-size: 16px;
   }
@@ -561,3 +667,6 @@ body {
     border: none;
   }
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

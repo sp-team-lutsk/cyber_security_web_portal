@@ -29,7 +29,8 @@
 - 23.10.19 Updated Pillow to 6.2.0 (Security alert)
 - 25.10.19 Restructured authentication API, urls changed
 - 26.10.19 'Student' page added to front-end
-- 27.10.18 Permissions models created
+- 27.10.19 Permissions models created
+- 03.11.19 Add angular settings for reverse-proxy on real server
 
 ## Installation
 

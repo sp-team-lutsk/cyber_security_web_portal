@@ -15,7 +15,7 @@ SECRET_KEY = '#-+2%cfp05=)8q*u1s2itkffi$i^@ir5@bv%!9g3irbfi_)2h5'
 DEBUG = True
 
 # Update in prod it
-ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1', 'sp-lutsk.com']
 
 # Application definition
 INSTALLED_APPS = [
@@ -39,9 +39,10 @@ INSTALLED_APPS = [
     'djangotoolbox',
     
     'authentication',
+    'django_crontab',
     'ext_news',
-    
-    'django_crontab', 
+    'int_news',
+    'django_crontab',
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
