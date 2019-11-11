@@ -82,7 +82,7 @@ class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
         queryset = User.objects.filter(id=number.get('id'))
         serializer = UpdateUserSerializer(queryset[0],  data=request.data)
         if serializer.is_valid():
-            serilizer.save()
+            serializer.save()
         return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
         
     @permissions(["IsModeratorUser","IsUser"]) 
@@ -349,11 +349,11 @@ class UserInactiveAPIView(APIView):
 class SetModeratorAPIView(APIView):
     permission_classes = [AllowAny, ]
     queryset = User.objects.none()
-    
+    serializer_class = SetModeratorSerializer
+
     @permission('IsAdminUser') 
     def post(self, request, *args, **kwargs):
-        self.serializer_class = SetModeratorSerializer
-        serializer = SetModeratorSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         user = User.objects.get(id=request.data.get('id'))
         user.is_moderator = True
         user.save()
@@ -363,10 +363,10 @@ class SetModeratorAPIView(APIView):
 class AdminUserAPIView(APIView):
     permission_classes = [AllowAny, ]
     queryset = User.objects.none()
+    serializer_class = CreateUserSerializer 
 
     @permission("IsAdminUser")
     def post(self, request,*args,**kwargs):
-        self.serializer_class = CreateUserSerializer    
         serializer = self.serializer_class(data=request.data)
         user = StdUser()
         user.email = request.data.get('email')
@@ -393,11 +393,11 @@ class AdminUserAPIView(APIView):
 class BanUserAPIView(APIView):
     permission_classes = [AllowAny, ]
     queryset = User.objects.none()
+    serializer_class = SetModeratorSerializer
 
     @permission("IsModeratorUser")
-    def post(self,request,*args,**kwargs):
-        self.serializer_class = SetModeratorSerializer
-        serializer = SetModeratorSerializer(data=request.data)
+    def post(self,request,*args,**kwargs): 
+        serializer = self.serializer_class(data=request.data)
         queryset = User.objects.get(id=request.data.get('id'))
         user = queryset
         user.is_active = False
