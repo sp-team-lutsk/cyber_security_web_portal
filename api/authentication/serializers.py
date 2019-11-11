@@ -8,8 +8,8 @@ from django.db.models import Q
 
 from rest_framework.response import Response
 
-from .models import StdUser,Student, Teacher, Faculty, Profession, ACAD_GROUPS_CHOICES, Mail
-
+from authentication.models import StdUser,Student, Teacher, Faculty, Profession, ACAD_GROUPS_CHOICES
+from utils.serializers import SendMailSerializer
 User = get_user_model()
 
 class FacultySerializer(serializers.ModelSerializer):
@@ -117,22 +117,6 @@ class StudentSerializer(serializers.ModelSerializer):
             'profession',
             'acad_group',
         )
-
-class SendMailSerializer(serializers.ModelSerializer):
-    email = serializers.CharField(max_length=64)
-    subject = serializers.CharField(max_length=256)
-    body = serializers.CharField(max_length=2048)
-    
-    class Meta(object):
-        model = Mail
-
-        fields = '__all__'
-
-    def send(self, data):
-        email = data.get('email')
-        subject = data.get('subject')
-        body = data.get('body')
-        return Mail.send_mail(email=email,subject=subject,body=body)
 
 class FindUserSerializer(serializers.ModelSerializer):
     date_joined = serializers.ReadOnlyField() 
@@ -326,4 +310,12 @@ class BulkUpdateStudentSerializer(serializers.ModelSerializer):
                 'faculty',
                 'profession',
                 'acad_group',)
+ 
+class SetModeratorSerializer(serializers.ModelSerializer):
+
+    class Meta(object):
+        model = User
+        fields = (
+                'id',)
+
 

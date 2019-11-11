@@ -3,5 +3,5 @@ from .views import PostUpdInt, PostInt
 
 urlpatterns = [
     path('<int:pk>/', PostUpdInt.as_view(), name='update'),
-    path('/', PostInt.as_view(), name='list'),
+    path('', PostInt.as_view(), name='list'),
  ]

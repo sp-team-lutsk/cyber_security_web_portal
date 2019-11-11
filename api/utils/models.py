@@ -1,3 +1,6 @@
-from django.db import models
+import datetime
+import jwt
 
-# Create your models here.
+from django.db import models
+from django.utils import timezone
+from django.conf import settings 

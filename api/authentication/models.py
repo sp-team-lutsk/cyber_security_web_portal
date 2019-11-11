@@ -294,17 +294,4 @@ class Faculty(Group):
     def __str__(self):
         return self.name
 
-class Mail(models.Model):
-    email = models.EmailField(max_length=64, blank=False, unique=False)
-    subject = models.CharField(max_length=256, blank=False, unique=False)
-    body = models.CharField(max_length=2048, blank=False, unique=False)
-
-    @classmethod
-    def send_mail(self, email, subject, body):
-        
-        msg = EmailMessage(subject=subject,
-                body=body,
-                to=[email])
-        msg.content_subtype = 'html'
-        msg.send()
 

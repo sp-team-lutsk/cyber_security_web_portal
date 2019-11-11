@@ -37,12 +37,11 @@ INSTALLED_APPS = [
     'django_nose',
 
     'djangotoolbox',
+    
     'authentication',
-    'django_crontab',
     'ext_news',
     'int_news',
     'django_crontab',
-
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

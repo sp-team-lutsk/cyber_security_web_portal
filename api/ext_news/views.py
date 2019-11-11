@@ -4,9 +4,11 @@ from rest_framework.generics import  GenericAPIView, ListCreateAPIView
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from authentication.models import StdUser
-from .serializers import NewsSerializer
-from .models import News
+
+from authentication.permissions import AllowAny, IsModeratorUser
+from ext_news.serializers import NewsSerializer, SetNewsSerializer
+from ext_news.models import News
+from utils.decorators import permission
 
 
 class Post(ListCreateAPIView):
@@ -42,18 +44,17 @@ class PostUpd(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class SetNews(APIView):
+    permission_classes = [AllowAny, ]
+    serializer_class = NewsSerializer
+    queryset = News.objects.none()
 
-class MailingAPIView(APIView):
-    queryset = StdUser.objects.filter(**{'news_subscription':True})
-
-    def get(self, request, **extra_kwargs):
-        queryset = self.queryset
-        for user in queryset.iterator():
-            News.mailing(data=user)
-        return Response({'Status':'OK'},status=status.HTTP_200_OK)
-
-    def mailing():
-        queryset = StdUser.objects.filter(**{'news_subscription':True})
-        for user in queryset.iterator():
-            News.mailing(data=user)
-        return None
+    @permission("IsModeratorUser") 
+    def post(self, request, *args, **kwargs):
+        self.serializer_class = SetNewsSerializer
+        news = News.objects.filter(id=request.data.get('id'),is_checked = False)
+        serializer = self.serializer_class(news , data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        return Response(data={"is_checked": "News '{}' validated".format(str(news))},
+                status=status.HTTP_200_OK)
