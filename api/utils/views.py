@@ -48,14 +48,8 @@ class MailingAPIView(APIView):
     def get(self, request, **extra_kwargs):
         queryset = self.queryset
         for user in queryset.iterator():
-            Mail.mailing(data=user)  
+            news_mailing(data=user)  
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
-
-def Mailing():
-    queryset = StdUser.objects.filter(news_subscription = True)
-    for user in queryset.iterator():
-        News.mailing(data=user)
-    return None
 
 class ModeratorMailAPIView(APIView):
     permission_classes = [AllowAny, ]
@@ -86,18 +80,18 @@ def MassMailing(obj):
         users = users + list(StdUser.objects.filter(is_moderator = True))
 
     for user in users:
-        send_mail(email = user.email,subject=obj.get('subject'), body = obj.get('body'))
+        send_mail(email = user.email,
+                  subject=obj.get('subject'), 
+                  body = obj.get('body'))
     return None
 
-def send_mail(email, subject, body):
-        
-    msg = EmailMessage(subject=subject,
-                       body=body,
-                       to=[email])
-    msg.content_subtype = 'html'
-    msg.send()
+def news_subscription():
+    queryset = StdUser.objects.filter(news_subscription = True)
+    for user in queryset.iterator():
+        news_mailing(data=user)
+    return None
 
-def mailing(data):
+def news_mailing(data):
     queryset = list(News.objects.all()[:3])
     context = {'user': data.email, 
                'data': queryset,
@@ -106,4 +100,11 @@ def mailing(data):
                        body=render_to_string('ext_news/mail/mail.html',context), 
                        to=[data.email])
     msg.content_subtype = 'html'
-    msg.send() 
+    msg.send()
+
+def send_mail(email, subject, body):
+    msg = EmailMessage(subject=subject,
+                       body=body,
+                       to=[email])
+    msg.content_subtype = 'html'
+    msg.send()

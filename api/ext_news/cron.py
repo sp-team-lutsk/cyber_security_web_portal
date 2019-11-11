@@ -1,8 +1,8 @@
-from .views import Mailing
+from utils.views import news_subscription
 from parsing import main
 
 def CronMailing():
-    Mailing()
+    news_subscription()
 
 def CronParse():
     main()
