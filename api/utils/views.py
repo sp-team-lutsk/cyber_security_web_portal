@@ -1,5 +1,7 @@
 from django.conf import settings 
 from django.contrib.auth import get_user_model
+from django.core.mail import EmailMessage, send_mail
+from django.template.loader import render_to_string
 from rest_framework import status
 from rest_framework.views import APIView
 
@@ -12,7 +14,7 @@ from authentication.permissions import (IsAdminUser,
 from rest_framework.response import Response
 
 from authentication.models import StdUser
-from utils.models import Mail
+from ext_news.models import News
 from utils.serializers import (
     SendMailSerializer,
     MassMailSerializer,
@@ -84,7 +86,24 @@ def MassMailing(obj):
         users = users + list(StdUser.objects.filter(is_moderator = True))
 
     for user in users:
-        Mail.send_mail(email = user.email,subject=obj.get('subject'), body = obj.get('body'))
+        send_mail(email = user.email,subject=obj.get('subject'), body = obj.get('body'))
     return None
 
+def send_mail(email, subject, body):
+        
+    msg = EmailMessage(subject=subject,
+                       body=body,
+                       to=[email])
+    msg.content_subtype = 'html'
+    msg.send()
 
+def mailing(data):
+    queryset = list(News.objects.all()[:3])
+    context = {'user': data.email, 
+               'data': queryset,
+               }
+    msg = EmailMessage(subject='Новини за тиждень',
+                       body=render_to_string('ext_news/mail/mail.html',context), 
+                       to=[data.email])
+    msg.content_subtype = 'html'
+    msg.send() 
