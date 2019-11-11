@@ -49,11 +49,11 @@ class MailingAPIView(APIView):
     def get(self, request, **extra_kwargs):
         queryset = self.queryset
         for user in queryset.iterator():
-            News.mailing(data=user)  
+            News.mailing(data=user)
         return Response({'Status':'OK'},status=status.HTTP_200_OK)
 
-def Mailing():
-    queryset = StdUser.objects.filter(**{'news_subscription':True})
-    for user in queryset.iterator():
-        News.mailing(data=user)
-    return None
+    def mailing():
+        queryset = StdUser.objects.filter(**{'news_subscription':True})
+        for user in queryset.iterator():
+            News.mailing(data=user)
+        return None
