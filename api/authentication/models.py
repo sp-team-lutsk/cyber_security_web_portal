@@ -1,14 +1,15 @@
 import datetime
-import jwt
 
 from django.template.loader import render_to_string
-from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
-from django.core.signing import TimestampSigner, b64_encode,b64_decode, BadSignature, SignatureExpired,force_bytes
+from django.core.signing import (TimestampSigner, 
+        b64_encode, 
+        b64_decode, 
+        BadSignature,
+        force_bytes)
 from django.core.mail import EmailMessage
-from django.contrib.auth.models import UserManager
-from django.contrib.auth.models import AbstractBaseUser, AbstractUser, Group
+from django.contrib.auth.models import UserManager, AbstractUser, Group
 from django.conf import settings 
 
 ACAD_GROUPS_CHOICES = [
@@ -106,7 +107,7 @@ class StdUserManager(UserManager):
         user.last_update = timezone.now()
         user.save(using=self._db)
 
-        teacher = Teacher.objects.create(user=user, faculty=faculty)
+        Teacher.objects.create(user=user, faculty=faculty)
 
         return user
 
@@ -155,7 +156,7 @@ class StdUser(AbstractUser):
     REQUIRED_FIELDS = []
     
     class Meta:
-        permissions = [('read_news','Читати новини',),]
+        permissions = [('read_news', 'Читати новини',),]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -190,12 +191,12 @@ class StdUser(AbstractUser):
                 code = b64_decode(code)
                 code = code.decode()
                 email = signer.unsign(code, max_age=max_age)
-                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email, 'is_active':False})
+                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD: email, 'is_active': False})
                 user.is_active = True
                 user.code = "None code"
                 user.save()
                 return True, ('Your account has been activated.')  
-            except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
+            except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError):
                 raise ValueError('Error')
             return False, ('Activation link is incorrect, please resend request')
         else:
@@ -213,12 +214,12 @@ class StdUser(AbstractUser):
                 code = code.decode()
                 email = signer.unsign(code, max_age=max_age)
                  
-                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email})
+                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD: email})
                 user.set_password(password)
                 user.code = 'None code'
                 user.save()
                 return True
-            except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
+            except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError):
                 raise ValueError('Error')
             return False, ('Activation link is incorrect, please resend request')
         else:
@@ -234,7 +235,7 @@ class StdUser(AbstractUser):
                 }
         
         msg = EmailMessage(subject='subject',
-                body=render_to_string('authentication/mail/verification_body.html',context),
+                body=render_to_string('authentication/mail/verification_body.html', context),
                 to=[email])
         msg.content_subtype = 'html'
         msg.send()
@@ -244,13 +245,13 @@ class StdUser(AbstractUser):
         
         context = {'user': self,
                    'RECOVER_URL': settings.RECOVER_URL,
-                   'HOST':settings.ALLOWED_HOSTS[0],
+                   'HOST': settings.ALLOWED_HOSTS[0],
                    'code': verification_code.decode(),
                    'link': datetime.datetime.today() + datetime.timedelta(days=settings.RECOVER_CODE_EXPIRED)
                     }
         msg = EmailMessage(subject='subject',
                 body=render_to_string('authentication/mail/reset_body.html', context),
-                to = [email])
+                to=[email])
         msg.content_subtype = 'html'
         msg.send()
 
@@ -285,6 +286,7 @@ class Teacher(models.Model):
                        ('delete_post', 'Видалити пост'),
                        ('change_student_perm', 'Змiнювати права стундентiв'),]
 
+
 class Profession(Group):
     
     def __str__(self):
@@ -295,5 +297,3 @@ class Faculty(Group):
     
     def __str__(self):
         return self.name
-
-
