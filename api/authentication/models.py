@@ -228,6 +228,7 @@ class StdUser(AbstractUser):
         verification_code = self.get_verification_code(email=email)
         context = {'user': self,
                    'VERIFICATION_URL': settings.VERIFICATION_URL,
+                   'HOST': settings.ALLOWED_HOSTS[0],
                    'code': verification_code.decode(),
                    'link': datetime.datetime.today() + datetime.timedelta(days=settings.VERIFICATION_CODE_EXPIRED)   
                 }
@@ -243,6 +244,7 @@ class StdUser(AbstractUser):
         
         context = {'user': self,
                    'RECOVER_URL': settings.RECOVER_URL,
+                   'HOST':settings.ALLOWED_HOSTS[0],
                    'code': verification_code.decode(),
                    'link': datetime.datetime.today() + datetime.timedelta(days=settings.RECOVER_CODE_EXPIRED)
                     }

@@ -97,7 +97,7 @@ def news_mailing(data):
                'data': queryset,
                }
     msg = EmailMessage(subject='Новини за тиждень',
-                       body=render_to_string('ext_news/mail/mail.html',context), 
+                       body=render_to_string('utils/mail/mail.html',context), 
                        to=[data.email])
     msg.content_subtype = 'html'
     msg.send()
