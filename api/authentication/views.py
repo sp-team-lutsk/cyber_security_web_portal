@@ -97,8 +97,13 @@ class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
 class UsersAPIView(ListAPIView,CreateAPIView):
     permission_classes = [AllowAny,]
     serializer_class = UserSerializer
-    queryset = User.objects.all()
-    
+    queryset = User.objects.none()
+
+    @permission("IsStaffUser")
+    def get(self, request, *args, **kwargs):
+        self.queryset = User.objects.all()
+        return self.list(request, *args, **kwargs)
+
     def post(self, request):
         self.serializer_class = CreateUserSerializer    
         serializer = self.serializer_class(data=request.data)
@@ -176,8 +181,13 @@ class TeachersAPIView(ListAPIView):
     All teachers in db (for test)
     """
     permission_classes = [AllowAny,]
-    queryset = Teacher.objects.all()
+    queryset = Teacher.objects.none()
     serializer_class = TeacherSerializer
+    
+    @permission("IsStaffUser")
+    def get(self, request, *args, **kwargs):
+        self.queryset = Teacher.objects.all()
+        return self.list(request, *args, **kwargs)
 
     def post(self, request):
         self.serializer_class = CreateTeacherSerializer    
@@ -261,6 +271,12 @@ class StudentsAPIView(ListAPIView):
     permission_classes = [AllowAny,]
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+
+    @permission("IsStaffUser")
+    def get(self, request, *args, **kwargs):
+        self.queryset = Student.objects.all()
+        return self.list(request, *args, **kwargs)
+
 
     def post(self, request):
         self.serializer_class = CreateStudentSerializer    
