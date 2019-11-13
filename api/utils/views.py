@@ -24,9 +24,10 @@ class SendMailAPIView(APIView):
     Send mail from admin to user
     """
     serializer_class = SendMailSerializer
-    permission_classes = [IsAdminUser]
-    queryset = User.objects.all()
-    
+    permission_classes = [AllowAny]
+    queryset = User.objects.none()
+   
+    @permission("IsAdminUser")
     def post(self, request):
         serializer = SendMailSerializer(data=request.data)
         user = self.queryset.get(email=request.data.get('email'))
@@ -96,15 +97,19 @@ def news_mailing(data):
                'data': queryset,
                }
     msg = EmailMessage(subject='Новини за тиждень',
-                       body=render_to_string('utils/mail/mail.html', context), 
+                       body=render_to_string('utils/mail/news_mail.html', context), 
                        to=[data.email])
     msg.content_subtype = 'html'
     msg.send()
 
 
 def send_mail(email, subject, body):
+    context = {'body': body,
+               'user': StdUser.objects.get(email=email), 
+               'subject': subject, 
+               }
     msg = EmailMessage(subject=subject,
-                       body=body,
+                       body=render_to_string('utils/mail/single_mail.html', context),
                        to=[email])
     msg.content_subtype = 'html'
     msg.send()

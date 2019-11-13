@@ -236,7 +236,6 @@ class StudentAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
 
     @permissions(["IsModeratorUser", "IsUser"])
     def delete(self, request, *args, **kwargs):
-        # self.serializer_class = DeleteUserSerializer
         number = kwargs.get('id')
         queryset = User.objects.filter(id=number, is_student=True)
         user = queryset[0]
