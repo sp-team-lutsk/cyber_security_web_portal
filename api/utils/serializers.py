@@ -1,12 +1,9 @@
 from rest_framework import serializers
-from django.contrib.auth import (
-        get_user_model, 
-        authenticate,)
-from django.db.models import Q
+from django.contrib.auth import get_user_model
 
-from rest_framework.response import Response
 
 User = get_user_model()
+
 
 class SendMailSerializer(serializers.ModelSerializer):
     email = serializers.CharField(max_length=64)
@@ -24,7 +21,8 @@ class SendMailSerializer(serializers.ModelSerializer):
         email = data.get('email')
         subject = data.get('subject')
         body = data.get('body')
-        return send_mail(email=email,subject=subject,body=body)
+        return send_mail(email=email, subject=subject, body=body)
+
 
 class MassMailSerializer(serializers.ModelSerializer):
     subject = serializers.CharField(max_length=256)
