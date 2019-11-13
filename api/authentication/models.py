@@ -25,6 +25,12 @@ ACAD_GROUPS_CHOICES = [
     ("КСМс-21", "Комп'ютерні системи і мережі 2 курс (скорочений)"),
 ]
 
+USER_TYPES = {
+    "ADMIN": 1,
+    "MODERATOR": 2,
+    "USER": 3,
+}
+
 
 class StdUserManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
@@ -36,28 +42,26 @@ class StdUserManager(UserManager):
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_moderator', False)
-        extra_fields.setdefault('is_admin', False)
-        extra_fields.setdefault('is_active', False)
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_active', True)
 
         return self._create_user(email, password, **extra_fields)
 
-    def create_admin(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_admin', True)
-        extra_fields.setdefault('is_active', True)
+    def create_user(self, email, password=None, user_type=3, **extra_fields):
+        if user_type == USER_TYPES["USER"]:
+            extra_fields.setdefault('is_moderator', False)
+            extra_fields.setdefault('is_admin', False)
+            extra_fields.setdefault('is_active', False)
 
-        if extra_fields.get('is_admin') is not True:
-            raise ValueError('Superuser must have is_admin=True.')
-
-        return self._create_user(email, password, **extra_fields)
-
-    def create_moderator(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_moderator', True)
-        extra_fields.setdefault('is_active', True)
-
-        if extra_fields.get('is_moderator') is not True:
-            raise ValueError('Superuser must have is_admin=True.')
+        elif user_type == USER_TYPES["ADMIN"]:
+            extra_fields.setdefault('is_admin', True)
+            extra_fields.setdefault('is_active', True)
+        
+        elif user_type == USER_TYPES["MODERATOR"]:
+            extra_fields.setdefault('is_moderator', True)
+            extra_fields.setdefault('is_active', True)
 
         return self._create_user(email, password, **extra_fields)
 
@@ -111,18 +115,6 @@ class StdUserManager(UserManager):
 
         return user
 
-'''
-class SocialUserManager(UserManager):
-    def _create_user(self, email, **extra_fields):     
-        email = email                      
-        
-        user = self.model(email=email, **extra_fields)           
-        user.save(using=self._db)                                
-        return user                                              
-                                                             
-    def create_user(self, email, **extra_fields): 
-        return self._create_user(email, **extra_fields)
-'''
 
 # Base user class
 class StdUser(AbstractUser):

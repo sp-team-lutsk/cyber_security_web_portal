@@ -32,7 +32,7 @@ class StdUserAdmin(UserAdmin):
     ordering = ('email', )
     list_display = ('email', 'is_moderator', 'is_admin', 'is_active', 'is_teacher', 'is_student')
     list_filter = ('email',)
-    readonly_fields = ('date_joined', 'last_update', 'is_moderator', 'is_admin',)
+    readonly_fields = ('date_joined', 'last_update',)
     inlines = [
             SocialUserInline, 
             StudentInline, 
