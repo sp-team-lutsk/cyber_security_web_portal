@@ -111,7 +111,7 @@ class StdUserManager(UserManager):
 
         return user
 
-
+'''
 class SocialUserManager(UserManager):
     def _create_user(self, email, **extra_fields):     
         email = email                      
@@ -122,7 +122,7 @@ class SocialUserManager(UserManager):
                                                              
     def create_user(self, email, **extra_fields): 
         return self._create_user(email, **extra_fields)
-
+'''
 
 # Base user class
 class StdUser(AbstractUser):
