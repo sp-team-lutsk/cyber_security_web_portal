@@ -40,8 +40,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
                 user=validated_data.get('email'), 
                 password_validators=None)
         
-        email = validated_data.get('email')
-        user = User.objects.create_user(**validated_data) 
+        email = validated_data.get('email');
+        user = User.objects.create_user(**validated_data, user_type=3) 
         user.send_mail(email=email)
         return user
 
