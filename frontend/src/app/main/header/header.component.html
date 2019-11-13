@@ -13,8 +13,10 @@
             <a class="nav__link text-2" href="#"><img src="assets/images/USA.png"></a>
           </li>
           <li class="nav-item">
-            <a class="nav__link text-2" href="#">Реєстрація <span class="sr-only">(current)</span></a>
-            <a class="nav__link text-2" href="#">Вхід</a>
+            <button id="regbutt" (click)="toggle()">Реєстрація</button>
+            <button id="logbutt" (click)="toggle1()">Вхід</button>
+<!--            <a class="nav__link text-2" href="#">Реєстрація<span class="sr-only">(current)</span></a>-->
+<!--                <a class="nav__link text-2" href="#">Вхід</a>-->
           </li>
         </ul>
         <div class="input-group col-md-3 mx-xs-auto">
@@ -54,4 +56,5 @@
       <div class="col-auto"><p><img class="Images-3" src="assets/images/img4.png" alt="=("></p></div>
     </div>
   </div>
-
+<app-registration *ngIf="showRegistration" (close)="closeRegistration($event)"></app-registration>
+<app-log-in *ngIf="showLogin" (close)="closeLogin($event)"></app-log-in>
