@@ -1,11 +1,14 @@
 from rest_framework import serializers
 from .models import NewsInt
 
+
 class NewsIntSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = NewsInt
-        fields = ('id', 'title', 'content', 'author', 'date_created', 'date_publication', 'images', 'is_checked',)
+        fields = ('id', 'title', 'content', 
+                'author', 'date_created', 'date_publication', 
+                'images', 'is_checked',)
 
     def create(self, validated_data):
         return NewsInt.objects.create(**validated_data)

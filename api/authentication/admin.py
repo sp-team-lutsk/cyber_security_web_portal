@@ -5,21 +5,26 @@ from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 
 from .models import StdUser, Profession, Faculty, Student, Teacher
 
+
 class OutstandingTokenInline(admin.StackedInline):
     model = OutstandingToken 
     extra = 0
+
 
 class StudentInline(admin.TabularInline):
     model = Student
     extra = 0
 
+
 class TeacherInline(admin.TabularInline):
     model = Teacher
     extra = 0
 
+
 class SocialUserInline(admin.TabularInline):
     model = SocialAccount
     extra = 0
+
 
 class StdUserAdmin(UserAdmin):
     model = StdUser
@@ -27,7 +32,7 @@ class StdUserAdmin(UserAdmin):
     ordering = ('email', )
     list_display = ('email', 'is_moderator', 'is_admin', 'is_active', 'is_teacher', 'is_student')
     list_filter = ('email',)
-    readonly_fields = ('date_joined', 'last_update', 'is_moderator', 'is_admin',)
+    readonly_fields = ('date_joined', 'last_update',)
     inlines = [
             SocialUserInline, 
             StudentInline, 
