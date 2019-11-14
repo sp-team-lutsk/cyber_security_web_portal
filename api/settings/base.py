@@ -248,6 +248,58 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+
+    },
+    'formatters': {
+
+        'standart': {
+            'format' : ' [{levelname}] at {asctime} in {module} {message} ' ,
+            'style': '{',
+        },
+
+    },
+    'handlers': {
+
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'standart',
+        },
+        'docker': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standart',
+        },
+
+    },
+    'loggers': {
+
+        'django':{
+            'handlers': ['docker'],
+            'level': 'INFO',
+            'propagate': False,
+            },
+ 
+        'authentication':{
+            'handlers': ['docker'],
+            'level': 'INFO',
+            'propagate': False,
+            },
+    },
+}
+
 # redirect urls
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL ='/accounts/login/'
