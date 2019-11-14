@@ -8,6 +8,8 @@ docker exec -it dpg_api python manage.py shell -c "from authentication.models im
 
 docker exec -it dpg_api python manage.py shell -c "from authentication.models import StdUser; Teacher=StdUser();Teacher.email='teacher@example.com'; Teacher.set_password('Admin123!'); Teacher.is_active=True; Teacher.is_teacher=True; Teacher.name='test_Teacher'; Teacher.save()"
 
+docker exec -it dpg_api python manage.py shell -c "from authentication.models import StdUser; Student=StdUser();Student.email='student@example.com'; Student.set_password('Admin123!'); Student.is_active=True; Student.is_student=True; Student.name='test_Student'; Student.save()"
+
 
 
 
