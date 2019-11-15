@@ -18,7 +18,7 @@ done
 
 for i in 1 2 3 4 5 
 do
-docker exec -it dpg_api python manage.py shell -c "from int_news.models import NewsInt; news=NewsInt(); news.title='Test_News_$i'; news.content='content'; news.is_checked=True; news.save()"
+    docker exec -it dpg_api python manage.py shell -c "from int_news.models import NewsInt; from authentication.models import StdUser; author = StdUser.objects.get(email='moderator@example.com'); news=NewsInt(); news.title='Test_News_$i'; news.author=author;news.content='content'; news.is_checked=True; news.save()"
 done
 
 
