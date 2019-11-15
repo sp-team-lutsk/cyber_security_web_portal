@@ -170,10 +170,6 @@ class StdUser(AbstractUser):
         short_name = "%s" % self.first_name
         return short_name.strip()
 
-    def get_avatar(self):
-        """ Returns avatar (use Pillow) """
-        pass
-
     def get_verification_code(self, email):
         # verification token 
         signer = TimestampSigner()
@@ -194,6 +190,7 @@ class StdUser(AbstractUser):
                 user.is_active = True
                 user.code = "None code"
                 user.save()
+                
                 return True, ('Your account has been activated.')  
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError):
                 raise ValueError('Error')
@@ -218,7 +215,7 @@ class StdUser(AbstractUser):
                 user.code = 'None code'
                 user.save()
                 return True
-            except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError):
+            except (BadSignature, AttributeError, StdUser.DoesNotExist, TypeError, UnicodeDecodeError):
                 raise ValueError('Error')
             return False, ('Activation link is incorrect, please resend request')
         else:
@@ -264,10 +261,6 @@ class Student(models.Model):
     profession = models.ForeignKey('Profession', on_delete=models.SET_DEFAULT, default="")
     faculty = models.ForeignKey("Faculty", on_delete=models.SET_DEFAULT, default="")
     acad_group = models.CharField(max_length=256, choices=ACAD_GROUPS_CHOICES, default="")  
-
-    def __str__(self):
-        return self.user.email
-
     class Meta:
         permissions = [('write_to_teacher', 'Писати викладачу'),]
 
@@ -275,9 +268,6 @@ class Student(models.Model):
 class Teacher(models.Model):
     user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
     faculty = models.ForeignKey("Faculty", on_delete=models.SET_DEFAULT, default="")
-
-    def __str__(self):
-        return self.user.email
 
     class Meta:
         permissions = [('add_post', 'Створити пост'),
