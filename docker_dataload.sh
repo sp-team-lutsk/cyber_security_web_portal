@@ -13,8 +13,13 @@ docker exec -it dpg_api python manage.py shell -c "from authentication.models im
 
 for i in 1 2 3 4 5 
 do
-
 docker exec -it dpg_api python manage.py shell -c "from ext_news.models import News; news=News(); news.title='Test_News_$i'; news.description='description'; news.news_link='localhost/'; news.images_link='localhost/'; news.is_checked=True; news.save()"
 done
+
+for i in 1 2 3 4 5 
+do
+docker exec -it dpg_api python manage.py shell -c "from int_news.models import NewsInt; news=NewsInt(); news.title='Test_News_$i'; news.content='content'; news.is_checked=True; news.save()"
+done
+
 
 docker-compose stop
