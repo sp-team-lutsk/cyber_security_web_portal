@@ -2,8 +2,20 @@
   <div class="overflow"></div>
   <div class="registration__box">
     <div class="form-registration">
-      <h2>Registration</h2>
-      <button (click)="close.emit(false)">Close</button>
+      <p class="reg">Реєстрація</p>
+
+      <div class="email">
+        <input type="text" placeholder="Логін" name="email" required>
+      </div>
+      <div class="pass">
+        <input type="password" placeholder="Пароль" name="password" required>
+      </div>
+      <div class="repass">
+        <input type="password" placeholder="Повторіть Пароль" name=" password" required>
+      </div>
+      <div class="button">
+        <button  class="btn" (click)="close.emit(false)">Зареєструватись</button>
+      </div>
     </div>
   </div>
 </div>

@@ -12,27 +12,81 @@
 .overflow{
   position: absolute;
   background: rgba(0, 0, 0, 0.226);
-  width: 100%;
+  width: 150%;
   height: 100%;
   z-index: 100;
 }
 .login__box{
   display: flex;
-  background: #fff;
+  background: #f1efe6;
   border-radius: 10px;
-  width: 650px;
-  height: 400px;
+  width: 400px;
+  height: fit-content;
   z-index: 101;
   flex-direction: column;
   justify-content: space-between;
+  padding-bottom: 10px;
 }
 
 .form-login input {
+  z-index: 102;
   width: 100%;
   margin-bottom: 15px;
+  color: black;
 }
 .form-login{
+
   display: flex;
   flex-direction: column;
   width: 100%;
+  z-index: 102;
+  padding: 10px 10px 10px 10px;
 }
+.email, .pass{
+  width: auto;
+  margin:10px 20px;
+  color: black;
+
+}
+
+
+.form-login bottom {
+  width: 40%;
+}
+.reg{
+  color:black;
+  font-size: 32px;
+}
+.email input,
+.pass input{
+
+  background-color: rgba(0,0,0,0);
+  border-bottom: 2px solid #77786f;
+  color:#b5b4b6;
+
+}
+ .btn {
+   justify-self: right;
+   width: 40%;
+   border-radius: 4px;
+   background-color: #6bcad4;
+   color: black;
+   border: none;
+   margin-right: 30px;
+   font-size: 20px;
+   padding: 2px 20px;
+   font-family: "MyriadProRegular";
+ }
+
+ .button{
+   display: grid;
+   width: 100%;
+
+ }
+.email input:focus,
+.pass input:focus{
+  border-color: #6bcad4;
+  color: black;
+}
+:focus::-moz-placeholder{color:transparent;}
+:focus:-moz-placeholder{color:transparent;}
