@@ -53,8 +53,8 @@ from authentication.serializers import (
 from authentication.models import StdUser, Student, Teacher
 from utils.decorators import permission, permissions, object_permission
 
+import authentication.logger
 User = get_user_model()
-
 
 class UserAPIView(ListAPIView,ListModelMixin,DestroyAPIView):
     lookup_field = 'id'

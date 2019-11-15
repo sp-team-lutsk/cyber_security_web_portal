@@ -264,7 +264,12 @@ LOGGING = {
     'formatters': {
 
         'standart': {
-            'format' : ' [{levelname}] at {asctime} in {module} {message} ' ,
+            'format' : '[{levelname}] at {asctime} in {module} \nproblem:{message} ' ,
+            'style': '{',
+        },
+
+        'request': {
+            'format' : 'request [{levelname}] in {module} \nproblem:{message} ' ,
             'style': '{',
         },
 
@@ -282,19 +287,31 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standart',
         },
+        'request': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'request',
+        },
+
 
     },
     'loggers': {
 
         'django':{
             'handlers': ['docker'],
-            'level': 'INFO',
-            'propagate': False,
+            'level': 'DEBUG',
+            'propagate': True,
             },
- 
+
+        'authentication.logger':{
+            'handlers': ['request'],
+            'level': 'DEBUG',
+            'propagate': True,
+            },
+  
         'authentication':{
             'handlers': ['docker'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             'propagate': False,
             },
     },
