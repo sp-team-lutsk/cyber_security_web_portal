@@ -10,7 +10,5 @@ docker exec -it dpg_api python manage.py shell -c "from authentication.models im
 
 docker exec -it dpg_api python manage.py shell -c "from authentication.models import StdUser; Student=StdUser();Student.email='student@example.com'; Student.set_password('Admin123!'); Student.is_active=True; Student.is_student=True; Student.name='test_Student'; Student.save()"
 
-
-
-
+docker exec -it dpg_api python manage.py shell -c "from ext_news.models import News; news=News(); news.title='Test_News_1'; news.description='description'; news.news_link='localhost/'; news.images_link=None; news.is_checked=True;"
 docker-compose stop
