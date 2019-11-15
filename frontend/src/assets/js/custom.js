@@ -1,13 +1,17 @@
-$(document).ready(function () {
+function readMore() {
+  let more = document.getElementById("more");
+  let btn = document.getElementById("btn");
+  let text = document.getElementById("text");
 
-    $('#informationBlock').hide();
 
-    $('#slideToggle').on('click', function (){
 
-        $('#informationBlock').slideToggle(1000);
-
-        $(this).css("background","#273959");
-
-    });
-
-});
+  if (more.style.maxHeight) {
+    btn.innerHTML = "Докладніше";
+    more.style.maxHeight = null;
+    text.style.opacity = "0";
+  }else {
+    btn.innerHTML = "Закрити";
+    more.style.maxHeight = more.scrollHeight + 'px';
+    text.style.opacity = "1";
+  }
+}
