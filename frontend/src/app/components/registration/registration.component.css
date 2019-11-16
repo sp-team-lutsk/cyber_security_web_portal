@@ -17,15 +17,17 @@
   z-index: 100;
 }
 .registration__box{
-  display: flex;
+  display: block;
   background: #f1efe6;
   border-radius: 10px;
   width: 400px;
   height: fit-content;
-  z-index: 101;
   flex-direction: column;
   justify-content: space-between;
   padding-bottom: 10px;
+  margin: 0 10px;
+  z-index: 10000;
+  position: relative;
 }
 
 .form-registration input {
@@ -72,7 +74,7 @@
 }
 .btn {
   justify-self: right;
-  width: 50%;
+  width: fit-content;
   border-radius: 4px;
   background-color: #6bcad4;
   color: black;

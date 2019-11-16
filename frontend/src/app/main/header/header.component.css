@@ -195,28 +195,6 @@
     width: 100%;
     z-index: 100;
   }
-  #regbutt {
-    font-size: 16px;
-    display: inline-block;
-    vertical-align: top;
-    margin: 0 18px;
-    color: #f1efe6;
-    text-decoration: none;
-    transition: color .2s linear;
-    background-color: transparent;
-    cursor: pointer;
-  }
-  #logbutt {
-    font-size: 16px;
-    display: inline-block;
-    vertical-align: top;
-    margin: 0 18px;
-    color: #f1efe6;
-    text-decoration: none;
-    transition: color .2s linear;
-    background-color: transparent;
-    cursor: pointer;
-  }
 }
 
 
