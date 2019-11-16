@@ -20,15 +20,69 @@ MSG_ACCOUNT_ACTIVATED = 'Your account has been activated.'
 
 MAIL_SUBJECT = 'subject'
 
+class TestSuperUser(TestCase):
+
+    ''' Creates test superuser '''
+    @classmethod
+    def setUpTestData(cls):
+        cls.su = StdUser.objects.create_superuser(email=TEST_EMAIL, 
+                password=TEST_PASSWORD)
+
+    ''' Check permission fiels '''
+    def test_permissions(self):
+        nt.assert_true(self.su.is_superuser)
+        nt.assert_true(self.su.is_staff)
+
+    ''' Check is_active '''
+    def test_is_active(self):
+        nt.assert_true(self.su.is_active)
+    
+
 class TestAdminUser(TestCase):
-    pass
+    
+    ''' Creates test admin '''
+    @classmethod
+    def setUpTestData(cls):
+        cls.admin = StdUser.objects.create_user(email=TEST_EMAIL, 
+                password=TEST_PASSWORD,
+                user_type=1)
+
+    ''' Check permission fields '''
+    def test_permissions(self):
+        nt.assert_true(self.admin.is_admin)
+        nt.assert_false(self.admin.is_moderator)
+        nt.assert_false(self.admin.is_superuser)
+
+    ''' Check is_active '''
+    def test_is_active(self):
+        nt.assert_true(self.admin.is_active)
+
+
+class TestModeratorUser(TestCase):
+
+    ''' Creates test moderator '''
+    @classmethod
+    def setUpTestData(cls):
+        cls.moderator = StdUser.objects.create_user(email=TEST_EMAIL,
+                password=TEST_PASSWORD,
+                user_type=2)
+    
+    ''' Check permission fields '''
+    def test_permissions(self):
+        nt.assert_true(self.moderator.is_moderator)
+        nt.assert_false(self.moderator.is_admin)
+
+    ''' Check is_active '''
+    def test_is_active(self):
+        nt.assert_true(self.moderator.is_active)
 
 class TestStdUser(TestCase):
 
     ''' This method creates base data for tests '''
     @classmethod
     def setUpTestData(cls):
-        cls.user = StdUser.objects.create_user(email=TEST_EMAIL, password=TEST_PASSWORD)
+        cls.user = StdUser.objects.create_user(email=TEST_EMAIL, 
+                password=TEST_PASSWORD)
         cls.user.first_name = TEST_NAME
         cls.user.last_name  = TEST_SURNAME
         cls.user.patronymic = TEST_PATRONIM
@@ -128,3 +182,11 @@ class TestStdUser(TestCase):
             TEST_NAME, 
             TEST_SURNAME, 
             TEST_PATRONIM))
+
+
+class TestStudent(TestCase):
+    pass
+
+
+class TestTeacher(TestCase):
+    pass
