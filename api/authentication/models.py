@@ -65,9 +65,10 @@ class StdUserManager(UserManager):
 
         return self._create_user(email, password, **extra_fields)
 
-    def create_student(self, email, profession, faculty, password=None):
+    def create_student(self, email, profession, faculty, password=None): 
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError("Email must be set")
+
 
         user = self.model(
             email=self.normalize_email(email),
@@ -93,7 +94,7 @@ class StdUserManager(UserManager):
 
     def create_teacher(self, email, faculty, password=None):
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError("Email must be set")
 
         user = self.model(
             email=self.normalize_email(email),
@@ -270,12 +271,8 @@ class Teacher(models.Model):
 
 
 class Profession(Group):
-    
-    def __str__(self):
-        return self.name
+    pass
 
 
 class Faculty(Group):
-    
-    def __str__(self):
-        return self.name
+    pass

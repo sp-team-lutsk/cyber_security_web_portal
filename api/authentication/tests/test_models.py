@@ -7,7 +7,12 @@ from django.core import mail
 
 from django.test import TestCase
 
-from authentication.models import StdUser
+from authentication.models import (
+        StdUser, 
+        Profession, 
+        Faculty, 
+        Student, 
+        Teacher )
 
 
 TEST_EMAIL      = "test_email@gmail.com"
@@ -15,6 +20,8 @@ TEST_PASSWORD   = "Str0ngp4ss!"
 TEST_NAME       = "Alexandr"
 TEST_SURNAME    = "Alexandrov"
 TEST_PATRONIM   = "Alexandrovich"
+TEST_PROFESSION = "Cybersecurity"
+TEST_FACULTY    = "FKNIT"
 
 MSG_ACCOUNT_ACTIVATED = 'Your account has been activated.'
 
@@ -75,6 +82,7 @@ class TestModeratorUser(TestCase):
     ''' Check is_active '''
     def test_is_active(self):
         nt.assert_true(self.moderator.is_active)
+
 
 class TestStdUser(TestCase):
 
@@ -184,9 +192,104 @@ class TestStdUser(TestCase):
             TEST_PATRONIM))
 
 
-class TestStudent(TestCase):
-    pass
+class TestProfession(TestCase):
+    
+    ''' Setup test data '''
+    @classmethod
+    def setUpTestData(cls):
+        cls.profession = Profession.objects.create(name=TEST_PROFESSION)
 
+    ''' Test profession title '''
+    def test_title(self):
+        nt.assert_equal(self.profession.name, TEST_PROFESSION)
+
+class TestFaculty(TestCase):
+    
+    ''' Setup test data '''
+    @classmethod
+    def setUpTestData(cls):
+        cls.faculty = Faculty.objects.create(name=TEST_FACULTY)
+
+    ''' Test faculty title '''
+    def test_title(self):
+        nt.assert_equal(self.faculty.name, TEST_FACULTY)
+
+
+class TestStudent(TestCase):
+    
+    ''' Setup test data '''
+    @classmethod
+    def setUpTestData(cls):
+        cls.faculty = Faculty.objects.create(name=TEST_FACULTY)
+        cls.profession = Profession.objects.create(name=TEST_PROFESSION)
+
+        cls.student = StdUser.objects.create_student(
+                email=TEST_EMAIL,
+                profession=cls.profession,
+                faculty=cls.faculty,
+                password=TEST_PASSWORD)
+
+    ''' Test user is object '''
+    def test_user_not_none(self):
+        nt.assert_not_equal(self.student.student.user, None)
+
+    ''' Test if no email passed '''
+    @raises(ValueError)
+    def test_not_email(self):
+        StdUser.objects.create_student(
+            email=None,
+            profession=self.profession,
+            faculty=self.faculty,
+            password=TEST_PASSWORD)
+
+    ''' Test if no such profession '''
+    @raises(ValueError)
+    def test_not_profession(self):
+        StdUser.objects.create_student(
+            email=TEST_EMAIL,
+            profession=None,
+            faculty=self.faculty,
+            password=TEST_PASSWORD)
+   
+    ''' Test if not such faculty ''' 
+    @raises(ValueError)
+    def test_not_faculty(self):
+        StdUser.objects.create_student(
+            email=TEST_EMAIL,
+            profession=self.profession,
+            faculty=None,
+            password=TEST_PASSWORD)
 
 class TestTeacher(TestCase):
-    pass
+    
+    ''' Setup test data '''
+    @classmethod
+    def setUpTestData(cls):
+        cls.faculty = Faculty.objects.create(name=TEST_FACULTY)
+
+        cls.teacher = StdUser.objects.create_teacher(
+                email=TEST_EMAIL,
+                faculty=cls.faculty,
+                password=TEST_PASSWORD)
+
+    ''' Test user is object '''
+    def test_user_not_none(self):
+        nt.assert_not_equal(self.teacher.teacher.user, None)
+
+    ''' Test if no email passed '''
+    @raises(ValueError)
+    def test_not_email(self):
+        StdUser.objects.create_teacher(
+            email=None,
+            faculty=self.faculty,
+            password=TEST_PASSWORD)
+
+    ''' Test if not such faculty ''' 
+    @raises(ValueError)
+    def test_not_faculty(self):
+        StdUser.objects.create_teacher(
+            email=TEST_EMAIL,
+            faculty=None,
+            password=TEST_PASSWORD)
+
+
