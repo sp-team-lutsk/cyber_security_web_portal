@@ -26,4 +26,4 @@ mongoenv/
 media_files/
 
 # Logging
-.log.log
+**/log.log
