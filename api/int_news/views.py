@@ -3,8 +3,11 @@ from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
-from .serializers import NewsIntSerializer
-from .models import NewsInt
+from int_news.serializers import NewsIntSerializer
+from int_news.models import NewsInt
+from int_news.logger import Logger
+
+
 
 class PostInt(CreateAPIView):
     serializer_class = NewsIntSerializer

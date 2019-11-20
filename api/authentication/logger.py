@@ -1,60 +1,59 @@
 import os
 import logging as log
 
-BASE_DIR = '/opt/docker_polls_group/api/authentication'
 
-conf = {
+
+
+class Logger:
+    BASE_DIR = '/opt/docker_polls_group/api/'
+    conf = {
     'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
+    'disable_existing_loggers': False,}
+    filters = {'filters': {
 
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse',
         },
         'require_debug_true': {
             '()': 'django.utils.log.RequireDebugTrue',
-        },
+        },}
+              }
 
-    },
-    'formatters': {
-
-        'views': {
-            'format' : ('[{levelname} in views]\n{message} ') ,
-            'style': '{',
-        },
+    formatter = {'formatters': {
+        'debug': {
+            'format' : ('[{levelname} in authentication]\n{message}'),
+            'style': '{',},
 
         'file': {
-            'format' : '[{levelname} in ]\n{message} ' ,
-            'style': '{',
-        },
-         
-
-    },
-     'handlers': {
-         
+            'format' : ('[{levelname} in authentication]\nat {asctime}: {message} ') ,
+            'style': '{',},},
+                }
+    
+    handlers = {'handlers': {
          'file': {
             'level': 'WARNING',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'log.log'),
-            'formatter':'views'
-,
-        },
+            'formatter':'file',},
          'debug': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'views',
-        },
-    },
-  
-        'loggers':{
+            'formatter': 'debug',},}
+               }
 
+    loggers = {'loggers':{
             'django':{
             'handlers': ['debug','file'],
             'level': 'DEBUG',
-            'propagate': True,
-            },
+            'propagate': True,},
+            }
+             }
 
-            },
-        }
+    def __init__(self):
+        self.conf.update(self.filters)
+        self.conf.update(self.formatter)
+        self.conf.update(self.handlers)
+        self.conf.update(self.loggers) 
+        log.config.dictConfig(self.conf)
+        return None
 
-log.config.dictConfig(conf)
