@@ -256,4 +256,44 @@ CRONJOBS = [
   ('00 16  *   *   6', 'ext_news.cron.CronMailing'),
   ('00 16  *   *   6', 'ext_news.cron.CronParse')
 ]
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },},
+
+    'formatters': {
+        'default': {
+            'format' : ('[{levelname}]\n{message}'),
+            'style': '{',},
+
+        'file': {
+            'format' : ('[{levelname}]\nat {asctime}: {message} ') ,
+            'style': '{',},},
+    
+    'handlers': {
+         'file': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'log.log'),
+            'formatter':'file',},
+         'default': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',},},
+
+    'loggers':{
+            'django':{
+            'handlers': ['default','file'],
+            'level': 'DEBUG',
+            'propagate': True,},
+            },
+             }
+
 SITE_ID = 2

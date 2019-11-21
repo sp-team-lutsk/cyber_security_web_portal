@@ -52,8 +52,6 @@ from authentication.serializers import (
 
 from authentication.models import StdUser, Student, Teacher
 from utils.decorators import permission, permissions, object_permission
-from authentication.logger import Logger
-
 User = get_user_model()
 
 

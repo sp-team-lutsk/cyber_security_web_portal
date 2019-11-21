@@ -21,11 +21,11 @@ class Logger:
 
     formatter = {'formatters': {
         'debug': {
-            'format' : ('[{levelname} in authentication]\n{message}'),
+            'format' : ('[{levelname}]\n{message}'),
             'style': '{',},
 
         'file': {
-            'format' : ('[{levelname} in authentication]\nat {asctime}: {message} ') ,
+            'format' : ('[{levelname}]\nat {asctime}: {message} ') ,
             'style': '{',},},
                 }
     
@@ -42,7 +42,7 @@ class Logger:
                }
 
     loggers = {'loggers':{
-            'django':{
+        'django':{
             'handlers': ['debug','file'],
             'level': 'DEBUG',
             'propagate': True,},
@@ -53,7 +53,7 @@ class Logger:
         self.conf.update(self.filters)
         self.conf.update(self.formatter)
         self.conf.update(self.handlers)
-        self.conf.update(self.loggers) 
+        self.conf.update(self.loggers)
         log.config.dictConfig(self.conf)
         return None
 
