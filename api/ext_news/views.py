@@ -43,18 +43,13 @@ class PostUpd(APIView):
         news.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class ModeratorCheckNewsAPIView(APIView):
+    queryset = News.object.none()
+    serializer_class = SetNewsSerializer
 
-class SetNews(APIView):
-    permission_classes = [AllowAny, ]
-    serializer_class = NewsSerializer
-    queryset = News.objects.none()
+    def post(self, request, args, kwargs):
+        news = News.objects.get(id=request.data.get('id'))
+        news.is_checked = True
+        if news.is_checked == True:
+            return Response(status=status.HTTP_200_OK)
 
-    @permission("IsModeratorUser")
-    def post(self, request, *args, **kwargs):
-        self.serializer_class = SetNewsSerializer
-        news = News.objects.filter(id=request.data.get('id'), is_checked=False)
-        serializer = self.serializer_class(news, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        
-        return Response(data={"is_checked": "News '{}' validated".format(str(news))},
-                status=status.HTTP_200_OK)
