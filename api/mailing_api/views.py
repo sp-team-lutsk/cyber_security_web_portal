@@ -52,3 +52,18 @@ class PostUpdInt(APIView):
         news = self.get_object(id)
         news.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+def moder_check(self, request, id):
+    lookup_field = 'id'
+    news = self.get_object(id)
+    is_checked = True
+    if news.is_checked(raise_exception=True):
+        return Response({'is_checked': 'True'}, status=status.HTTP_200_OK)
+
+def moder_uncheck(self, request, id):
+    def moder_check(self, request, id):
+        lookup_field = 'id'
+        news = self.get_object(id)
+        is_checked = True
+        if news.is_checked(raise_exception=False):
+            return Response({'is_checked': 'False'}, status=status.HTTP_200_OK)
