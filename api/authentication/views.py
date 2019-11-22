@@ -48,7 +48,7 @@ class UserAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
         number = args[0]
         queryset = User.objects.filter(id=number.get('id'))
         if queryset:
-            serializer = self.get_serializer(queryset, muany=True)
+            serializer = self.get_serializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({'Status': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     
@@ -83,8 +83,11 @@ class UsersAPIView(ListAPIView, CreateAPIView):
 
     @permission("IsStaffUser")
     def get(self, request, *args, **kwargs):
-        self.queryset = User.objects.all()
-        return self.list(request, *args, **kwargs)
+        queryset = User.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(
+                data=serializer.data,
+                status=status.HTTP_200_OK)
 
     def post(self, request):
         self.serializer_class = CreateUserSerializer    
