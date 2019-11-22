@@ -5,11 +5,7 @@ from django.test import TestCase
 from int_news.models import NewsInt
 from authentication.models import StdUser
 
-# Create your tests here.
-
-TEST_TITLE    = "In LNTU was created a website"
-TEST_EMAIL    = "author@gmail.com"
-TEST_PASSWORD = "Author123!"
+from settings.tests import *
 
 class TestIntNews(TestCase):
 
