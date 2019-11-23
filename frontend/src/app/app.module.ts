@@ -13,13 +13,15 @@ import { MailingComponent } from './mailing/mailing.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { LogInComponent } from './components/log-in/log-in.component';
 
 const routes = [
-  {path: '', component: BodyComponent},
-  {path: 'students', component: StudentsComponent},
-  {path: 'science', component: ScienceComponent},
-  {path: 'about', component: AboutComponent},
-  {path: 'mailing', component: MailingComponent},
+      {path: '', component: BodyComponent},
+      {path: 'students', component: StudentsComponent},
+      {path: 'science', component: ScienceComponent},
+      {path: 'about', component: AboutComponent},
+      {path: 'mailing', component: MailingComponent}
 ];
 
 @NgModule({
@@ -32,6 +34,9 @@ const routes = [
     ScienceComponent,
     AboutComponent,
     MailingComponent,
+    RegistrationComponent,
+    LogInComponent,
+
   ],
   imports: [
     BrowserModule,

@@ -500,9 +500,9 @@
         }
       }
     },
-    "/moderator/set_news/" : {
+    "/moderator/check/" : {
       "post" : {
-        "summary" : "Inverts checked status for post (news)",
+        "summary" : "Set is_checked status for news",
         "parameters" : [ {
           "in" : "body",
           "name" : "News",
@@ -514,7 +514,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "Inverted value of is_checked property",
+            "description" : "Set is_checked status for news",
             "schema" : {
               "$ref" : "#/definitions/inline_response_200_1"
             }
@@ -522,9 +522,31 @@
         }
       }
     },
+    "/moderator/uncheck/" : {
+      "post" : {
+        "summary" : "Unset is_checked status for news",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "News",
+          "description" : "News id",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/News_2"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Set is_checked status for news",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_2"
+            }
+          }
+        }
+      }
+    },
     "/admin/set_moder/" : {
       "post" : {
-        "summary" : "Inverts moder status for user",
+        "summary" : "Set moder status for user",
         "parameters" : [ {
           "in" : "body",
           "name" : "User",
@@ -532,6 +554,25 @@
           "required" : false,
           "schema" : {
             "$ref" : "#/definitions/User_2"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/admin/unset_moder/" : {
+      "post" : {
+        "summary" : "Unset moder status for user",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "User",
+          "description" : "User id",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/User_3"
           }
         } ],
         "responses" : {
@@ -570,6 +611,50 @@
         "responses" : {
           "200" : {
             "description" : "OK"
+          }
+        }
+      }
+    },
+    "/mailing/subscribe/" : {
+      "post" : {
+        "summary" : "Set news_subscribtion status for user",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "User",
+          "description" : "user id",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/User_4"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Set news_subscribtion status for user",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_3"
+            }
+          }
+        }
+      }
+    },
+    "/mailing/unsubscribe/" : {
+      "post" : {
+        "summary" : "Unset news_subscribtion status for user",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "User",
+          "description" : "user id",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/User_5"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Unset news_subscribtion status for user",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_4"
+            }
           }
         }
       }
@@ -863,7 +948,7 @@
           "200" : {
             "description" : "OK",
             "schema" : {
-              "$ref" : "#/definitions/inline_response_200_2"
+              "$ref" : "#/definitions/inline_response_200_5"
             }
           }
         }
@@ -1235,7 +1320,36 @@
         }
       }
     },
+    "News_2" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "example" : 1
+        }
+      }
+    },
+    "inline_response_200_2" : {
+      "type" : "object",
+      "properties" : {
+        "is_checked" : {
+          "type" : "boolean",
+          "example" : false
+        }
+      }
+    },
     "User_2" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "example" : 1
+        }
+      }
+    },
+    "User_3" : {
       "type" : "object",
       "required" : [ "id" ],
       "properties" : {
@@ -1261,6 +1375,44 @@
         }
       }
     },
+    "User_4" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "example" : 1
+        }
+      }
+    },
+    "inline_response_200_3" : {
+      "type" : "object",
+      "properties" : {
+        "news_subscribtion" : {
+          "type" : "boolean",
+          "example" : true
+        }
+      }
+    },
+    "User_5" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "example" : 1
+        }
+      }
+    },
+    "inline_response_200_4" : {
+      "type" : "object",
+      "properties" : {
+        "news_subscribtion" : {
+          "type" : "boolean",
+          "example" : false
+        }
+      }
+    },
     "token" : {
       "type" : "object",
       "properties" : {
@@ -1270,7 +1422,7 @@
         }
       }
     },
-    "inline_response_200_2" : {
+    "inline_response_200_5" : {
       "type" : "object",
       "properties" : {
         "access" : {
