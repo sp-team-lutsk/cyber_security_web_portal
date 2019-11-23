@@ -1,5 +1,6 @@
 """ Constants for authentication """
 TEST_ADMIN_EMAIL      = "admin@example.com"
+TEST_ADMIN_PASSWORD   = "Admin123!"
 TEST_EMAIL            = "test_email@gmail.com"
 TEST_PASSWORD         = "Str0ngp4ss!"
 TEST_NAME             = "Alexandr"

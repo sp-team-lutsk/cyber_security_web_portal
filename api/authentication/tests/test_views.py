@@ -23,8 +23,9 @@ class TestGetAllUsers(APITestCase):
                 password=TEST_PASSWORD,)
 
     """ Get all users """
-    def test_get_all_users(self): 
-        response = self.client.get(reverse('users'), format='json')
+    def test_get_all_users(self):
+        self.client.login(email=TEST_ADMIN_EMAIL, password=TEST_ADMIN_PASSWORD)
+        response = self.client.get(reverse('users_list'))
         users = StdUser.objects.all()
         serializer = UserSerializer(users, many=True)
        

@@ -79,12 +79,11 @@ class UserAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
 class UsersAPIView(ListAPIView, CreateAPIView):
     permission_classes = [AllowAny,]
     serializer_class = UserSerializer
-    queryset = User.objects.none()
 
     @permission("IsStaffUser")
     def get(self, request, *args, **kwargs):
-        queryset = User.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        self.queryset = User.objects.all()
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(
                 data=serializer.data,
                 status=status.HTTP_200_OK)

@@ -24,7 +24,7 @@ from utils.views import SendMailAPIView, ModeratorMailAPIView
 urlpatterns = [
     
     # user api
-    path('users/', UsersAPIView.as_view(), name='users'),   
+    path('users/', UsersAPIView.as_view(), name='users_list'),   
     path('users/<int:id>/', UserAPIView.as_view(), name='user'),
     path('users/token_obtain/', token_obtain_pair, name='login'),    
     path('users/inactive/', UserInactiveAPIView.as_view(), name='account_inactive'),
