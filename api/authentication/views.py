@@ -359,9 +359,10 @@ class SetModeratorAPIView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         user = User.objects.get(id=request.data.get('id'))
-        user.is_moderator = True
+        set_check = request.data.get('is_moderator')
+        user.is_moderator = set_check
         user.save()
-        return Response(data={"success": "User with id {} moderator now".format(str(request.data.get('id')))},
+        return Response(data={"is_moderator": "{}".format(str(set_check))},
                     status=status.HTTP_200_OK)
 
 

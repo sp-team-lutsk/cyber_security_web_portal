@@ -328,6 +328,6 @@ class SetModeratorSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
         fields = (
-                'id',)
+                'id','is_moderator',)
 
 
