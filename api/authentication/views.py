@@ -1,10 +1,8 @@
 ﻿from django.conf import settings
 from django.contrib.auth import get_user_model
+
 from rest_framework import status
 from rest_framework.views import APIView
-
-from authentication.permissions import AllowAny
-
 from rest_framework.generics import (ListAPIView,
                                      DestroyAPIView,
                                      CreateAPIView)
@@ -31,6 +29,7 @@ from authentication.serializers import (
     SetModeratorSerializer,
     )
 
+from authentication.permissions import AllowAny
 from authentication.models import StdUser, Student, Teacher
 from utils.decorators import permission, permissions
 
@@ -95,22 +94,17 @@ class UsersAPIView(ListAPIView, CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user_saved = serializer.save()
         
-        return Response(
-                data={"success": "User '{}' created successfully".format(str(user_saved))},
-                status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_201_CREATED)
     
     @permission("IsModeratorUser")
     def put(self, request, *args, **kwargs):
         self.serializer_class = UpdateUserSerializer
         queryset = User.objects.all()
         
-        for user in list(queryset):
-            serializer = BulkUpdateUserSerializer(user,  data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-        
-            return Response(serializer.errors)
+        serializer = BulkUpdateUserSerializer(queryset, many=True)
+        return Response(
+                data=serializer.data,
+                status=status.HTTP_200_OK)
     
     @permission("IsModeratorUser")
     def delete(self, request):
