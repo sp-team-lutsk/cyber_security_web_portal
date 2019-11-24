@@ -12,11 +12,13 @@ from utils.decorators import permission
 
 class Post(ListCreateAPIView):
     queryset = News.objects.all()
+    permission_classes = [AllowAny, ]
     serializer_class = NewsSerializer
 
 
 class PostUpd(APIView):
     queryset = News.objects.all()
+    permission_classes = [AllowAny, ]
     serializer_class = NewsSerializer
 
     def get_object(self, pk):
@@ -44,12 +46,16 @@ class PostUpd(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ModeratorCheckNewsAPIView(APIView):
-    queryset = News.object.none()
+    queryset = News.objects.none()
+    permission_classes = [AllowAny, ]
     serializer_class = SetNewsSerializer
-
-    def post(self, request, args, kwargs):
-        news = News.objects.get(id=request.data.get('id'))
-        news.is_checked = True
-        if news.is_checked == True:
-            return Response(status=status.HTTP_200_OK)
-
+    
+    def post(self, request, *args, **kwargs):
+        try:
+            news = News.objects.get(id=request.data.get('id'))
+            serializer = self.serializer_class(news, data = request.data)
+            news.is_checked = True
+            news.save()
+            return Response(data={"is_checked": "True"},status=status.HTTP_200_OK)
+        except:
+            return Response(data={"News": "Not Found"},status=status.HTTP_404_NOT_FOUND)

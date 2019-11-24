@@ -43,6 +43,7 @@ urlpatterns = [
     path('moderator/ban_user/', BanUserAPIView.as_view(), name='ban_user'),
     path('moderator/mass_mail/', ModeratorMailAPIView.as_view(), name='mass_mail'),
     path('moderator/check/', ModeratorCheckNewsAPIView.as_view(), name='set_news'),
+    path('moderator/unchek/',ModeratorCheckNewsAPIView.as_view(), name='set_news'),
     # admin api
     path('admin/set_moder/', SetModeratorAPIView.as_view(), name='set_moder'),
     path('admin/user/', AdminUserAPIView.as_view(), name='admin_user'),
