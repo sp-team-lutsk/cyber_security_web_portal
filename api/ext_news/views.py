@@ -54,13 +54,9 @@ class ModeratorCheckNewsAPIView(APIView):
         try:
             news = News.objects.get(id=request.data.get('id'))
             serializer = self.serializer_class(news, data = request.data)
-            if news.is_checked == True:
-                news.is_checked = False
-                news.save()
-                return Response(data={"is_checked": "False"}, status=status.HTTP_200_OK)
-            else:
-                news.is_checked = True
-                news.save()
-                return Response(data={"is_checked": "True"},status=status.HTTP_200_OK)
+            check = request.data.get('status')
+            news.is_checked = check
+            news.save()
+            return Response(data={"is_checked": "{}".format(str(check))}, status=status.HTTP_200_OK)
         except:
             return Response(data={"News": "Not Found"},status=status.HTTP_404_NOT_FOUND)
