@@ -1,11 +1,12 @@
 import json
 import nose.tools as nt
 
+from nose.tools.nontrivial import raises
+
 from django.urls import reverse
 
 from rest_framework import status
 from rest_framework.test import APITestCase
-from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 
 from authentication.models import StdUser
 from authentication.serializers import UserSerializer
@@ -13,37 +14,29 @@ from authentication.serializers import UserSerializer
 from settings.tests import *
 
 
-""" Tests all UserAPIView methonds """
-class TestUsersAPIView(APITestCase):
+""" Tests user access to api methonds """
+class TestAdminPermsAPIViews(APITestCase):
     
     """ Setup test data """
     @classmethod
     def setUpTestData(cls):
-        cls.admin = StdUser.objects.create_user(
+        cls.user = StdUser.objects.create_user(
                 email=TEST_ADMIN_EMAIL,
                 password=TEST_PASSWORD,
                 user_type=1)
-        cls.moderator = StdUser.objects.create_user(
-                email=TEST_MODER_EMAIL,
-                password=TEST_PASSWORD,
-                user_type=2)
-        cls.user = StdUser.objects.create_user(
-                email=TEST_EMAIL,
-                password=TEST_PASSWORD,
-                user_type=3)
-
-    """ Test admin request to get users list """
-    def test_get_all_users_admin(self):
+    
+    """ Test request to get users list """
+    def test_get_all_users(self):
         url = reverse('obtain_jwt')
 
-        access_admin = self.client.post(
+        access_token = self.client.post(
                 url, 
-                { "email": TEST_ADMIN_EMAIL, "password": TEST_PASSWORD },
+                { "email": self.user.email, "password": TEST_PASSWORD },
                 format='json').data['access']
 
 
         url = reverse('users_list')
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + access_admin)
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + access_token)
         response = self.client.get(url)
     
         users = StdUser.objects.all()
@@ -51,7 +44,35 @@ class TestUsersAPIView(APITestCase):
         
         nt.assert_equal(response.data, serializer.data)
         nt.assert_equal(response.status_code, status.HTTP_200_OK)
-        
+
+
+""" Tests admin access to api methonds """
+class TestUserPermsAPIViews(TestAdminPermsAPIViews):
+    
+    """ Setup test data """
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = StdUser.objects.create_user(
+                email=TEST_EMAIL,
+                password=TEST_PASSWORD,
+                user_type=3)
+    
+    """ Standart user does not have such perms, so it will raise KeyError """
+    @raises(KeyError)
+    def test_get_all_users(self):
+        super().test_get_all_users()
+
+
+""" Test moderator access to api """
+class TestModerPermsAPIViews(TestAdminPermsAPIViews):
+    
+    """ Setup test data """
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = StdUser.objects.create_user(
+                email=TEST_MODER_EMAIL,
+                password=TEST_PASSWORD,
+                user_type=2)
 
 
 """ Tests API of all user list """
