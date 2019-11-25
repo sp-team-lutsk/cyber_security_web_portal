@@ -133,7 +133,7 @@ class TestModerPermsAPIViews(TestAdminPermsAPIViews):
                 email=TEST_MODER_EMAIL,
                 password=TEST_PASSWORD,
                 user_type=2)
-
+    
     """ Tests users bulk update """
     def test_put_bulk_update_users(self):
         queryset = StdUser.objects.all()
@@ -151,6 +151,15 @@ class TestModerPermsAPIViews(TestAdminPermsAPIViews):
         nt.assert_equal(response.data, serializer.data)
         nt.assert_equal(response.status_code, status.HTTP_200_OK)
 
+    """ Tests users bulk delete """
+    def test_delete_bulk_users(self):
+        queryset = StdUser.objects.all() 
+        
+        url = reverse('users_list')
+
+        response = self.client.delete(url)
+
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
 
 """ Tests API of all user list """
 class TestJWTToken(APITestCase):

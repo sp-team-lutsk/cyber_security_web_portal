@@ -107,13 +107,12 @@ class UsersAPIView(ListAPIView, CreateAPIView):
                 status=status.HTTP_200_OK)
     
     @permission("IsModeratorUser")
-    def delete(self, request):
-        self.serializer_class = DeleteAllSerializer
-        q = list(self.queryset)
-        for u in q:
-            serializer = self.serializer_class(request.user, data=request.data)
-            serializer.delete(request)
-        return Response({'Status': 'OK'}, status=status.HTTP_200_OK)
+    def delete(self, request, *args, **kwargs):
+        queryset = User.objects.all()
+        for user in list(queryset):
+            user.is_active = False
+            user.save()
+        return Response(status=status.HTTP_200_OK)
 
 
 class TeacherAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
