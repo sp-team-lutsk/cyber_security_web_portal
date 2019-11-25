@@ -1,0 +1,216 @@
+<div class="header">
+  <nav class="navbar navbar-expand-md navbar-dark position">
+    <a class="navbar-brand" routerLink="/"><img class="logo_img" src="assets/images/l2-3.svg" alt="=("></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbar1" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbar1">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item Otstup">
+          <a class="nav__link text-2" href="#"><img src="assets/images/UKRAINE.png"></a>
+          <a class="nav__link text-2" href="#"><img src="assets/images/USA.png"></a>
+        </li>
+        <li class="nav-item Otstup">
+          <a class="nav__link text-2" href="#">Реєстрація <span class="sr-only">(current)</span></a>
+          <a class="nav__link text-2" href="#">Вхід</a>
+        </li>
+      </ul>
+      <div class="input-group col-md-3 mx-xs-auto">
+        <input class="form-control py-2 border-right-0 border" type="" value="" id="example-search-input">
+        <span class="input-group-append">
+                  <button class="btn border-left-0 border QQQ" type="button">
+                    <i class="fa fa-search"><img src="assets/images/i%20class=fas%20fa-searchi.png" alt=""></i>
+                  </button>
+                </span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dvs dvs-1">
+    <div class="col"></div>
+    <div class="col">
+      <a class="butt butt-borde" routerLink="/">головна</a>
+      <a class="butt butt-borde" routerLink="/students">студенту</a>
+      <a class="butt butt-borde" routerLink="/science">наука</a>
+      <a class="butt butt-borde" routerLink="/about">про нас</a></div>
+    <div class="col"></div>
+  </div>
+
+  <div class="row first-blok">
+    <div class="col-sm-6 text">
+      <div class="full-text">
+        <p class="top-text">ЛУЦЬКИЙ
+          НАЦІОНАЛЬНИЙ ТЕХНІЧНИЙ
+          УНІВЕРСИТЕТ</p>
+        <p class="bot-text">Кафедра комп'ютерної іженерії та
+          КІБЕРБЕЗПЕКИ</p>
+      </div>
+    </div>
+
+    <div class="col-6 image1">
+      <img class="image-1-size" src="assets/img1/img1.png" alt="(">
+    </div>
+  </div>
+</div>
+
+<div class="body">
+  <div class="row panel">
+    <div class="col-12">
+      <a routerLink="/students" class="my text1">
+        <img src="assets/icon_png/i%20class=far%20fa-newspaperi.png" class="image-size">
+        <p>ОГОЛОШЕННЯ</p>
+      </a>
+
+      <a href="#" class="my text1">
+        <img src="assets/icon_png/i%20class=fas%20fa-graduation-capi.png" class="image-size">
+        <p>ЗАНЯТТЯ</p>
+      </a>
+
+      <a href="#" class="my text1">
+        <img src="assets/icon_png/i%20class=far%20fa-editi.png" class="image-size">
+        <p>НАВЧАЛЬНІ МАТЕРІАЛИ</p>
+      </a>
+
+      <a href="#" class="my text1">
+        <img src="assets/icon_png/i%20class=fas%20fa-chalkboard-teacheri.png" class="image-size">
+        <p>ЗДАЧА ОНЛАЙН</p>
+      </a>
+
+      <a href="#" class="my text1">
+        <img src="assets/icon_png/i%20class=fas%20fa-blogi%20copy.png" class="image-size">
+        <p>БЛОГ</p>
+      </a>
+    </div>
+  </div>
+  <div class="announcement">
+    <div class="col-12 settings-announcement">
+      <img src="assets/icon_png/i%20class=far%20fa-newspaperi.png" alt="">
+      <p>ОГОЛОШЕННЯ</p>
+    </div>
+    <div class="announcement-blok">
+      <p class="date">{{date}}</p>
+      <p class="announcement-text">{{announcemet}}</p>
+    </div>
+    <div class="col-12 settings-announcement">
+      <img src="assets/icon_png/i%20class=fas%20fa-graduation-capi.png" alt="">
+      <p>ЗАНЯТТЯ</p>
+    </div>
+    <div class="blok-lessons">
+      <nav class="dws-menu">
+        <ul>
+          <li><a href="#">СПИСОК ЗАНЯТЬ <fa-icon [icon]="faAngleDown" class="faAngledown"></fa-icon></a></li>
+          <li><a href="#">СПИСОК ПРEДМЕТІВ <fa-icon [icon]="faAngleDown" class="faAngledown"></fa-icon></a></li>
+          <li><a href="#">ВІДВІДУВАННЯ <fa-icon [icon]="faAngleDown" class="faAngledown"></fa-icon></a></li>
+          <li><a href="#">УСПІШНІСТЬ <fa-icon [icon]="faAngleDown" class="faAngledown"></fa-icon></a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div class="style_table">
+    <table>
+      <tr class="line-first">
+        <td class="column">Вівторок</td>
+        <td class="column">Середа</td>
+        <td class="column">Четвер</td>
+        <td class="column">П'ятниця</td>
+        <td class="column">Субота</td>
+      </tr>
+      <tr class="line">
+        <td class="column">Вища</td>
+        <td class="column">{{lesson}}</td>
+        <td class="column">{{lesson}}</td>
+        <td class="column">{{lesson}}</td>
+        <td class="column">{{lesson}}</td>
+      </tr>
+    </table>
+    <div>
+      <a href="#">
+        <fa-icon [icon]="faAngleUp" class="faAngle_1"></fa-icon>
+      </a>
+      <a href="#">
+        <fa-icon [icon]="faAngleDown" class="faAngle_1"></fa-icon>
+      </a>
+    </div>
+  </div>
+  <div class="col-12 settings-announcement padding_45px">
+    <img src="assets/icon_png/i%20class=far%20fa-editi.png" alt="">
+    <p>НАВЧАЛЬНІ МАТЕРІАЛИ</p>
+  </div>
+  <div class="row blou-blok">
+    <div class="img">
+      <img src="assets/icon_png/i%20class=fas%20fa-laptopi.png" class="img_size" alt="">
+    </div>
+    <div class="content">
+      <p class="text_1">Знання-сила</p>
+      <p class="text_2">Навчальні матеріали</p>
+      <input type="text" class="input_field">
+    </div>
+  </div>
+  <div class="col-12 settings-announcement padding_45px">
+    <img src="assets/icon_png/i%20class=fas%20fa-chalkboard-teacheri.png" alt="">
+    <p>ЗДАЧА ОНЛАЙН</p>
+  </div>
+  <div class="test__online">
+    <div class="full__line">
+      <div class="blou__blok">
+        <nav class="menu">
+          <ul>
+            <li><div class="menu__button"><p>Вибрати предмет <fa-icon [icon]="faAngleDown" class="faAngledown__menu"></fa-icon></p></div>
+              <ul>
+                <li><div class="menu__vertical__button"><p>Програмування</p></div></li>
+                <li><div class="menu__vertical__button"><p>Вища математика</p></div></li>
+                <li><div class="menu__vertical__button"><p>Фізика</p></div></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="back__img">
+        <img src="assets/img1/img3.png" alt="">
+        <button class="button__img">Здати онлайн</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 settings-announcement padding_45px">
+    <img src="assets/icon_png/i%20class=fas%20fa-blogi%20copy.png" alt="">
+    <p>БЛОГ</p>
+  </div>
+  <div class="blog__block">
+    <div class="blog__field">
+      <div class="blog__field__border">
+        <div class="author">Анатолійович</div>
+        <div class="date">2019-07-25</div>
+        <div class="contents">Lorem asfsfasaf safaf sfasaf fasfsa saf afsfsafsasafs s s s s s s s ss s s s sfasfasaffas asfasfs</div>
+      </div>
+    </div>
+  </div>
+  <div class="row blok-5">
+    <div class="white-line">
+      <div class="blou-blok1">
+        <div class="col uku"><button type="button" class="btn borders">
+          <img src="assets/icon_png/fb.png" alt="" class="img-blou-blok">
+        </button>
+          <button type="button" class="btn borders ">
+            <img src="assets/icon_png/ins.png" alt="" class="img-blou-blok">
+          </button>
+          <button type="button" class="btn borders ">
+            <img src="assets/icon_png/tw.png" alt="" class="img-blou-blok">
+          </button>
+          <button type="button" class="btn borders ">
+            <img src="assets/icon_png/wa.png" alt="" class="img-blou-blok">
+          </button>
+          <button type="button" class="btn borders ">
+            <img src="assets/icon_png/t.png" alt="" class="img-blou-blok">
+          </button></div>
+      </div>
+      <div class="backe-image">
+        <img src="assets/images/img10.png" alt="" class="image">
+      </div>
+      <div class="buttons">
+        <button class="btn btn-light button-1" type="submit">Долучитися</button>
+        <button class="btn btn-primary button-2" type="submit">Прийднатися</button>
+      </div>
+    </div>
+  </div>
+
