@@ -160,7 +160,7 @@ class FindUserSerializer(serializers.ModelSerializer):
  
 
 class UserSerializer(serializers.ModelSerializer):
-    date_joined = serializers.ReadOnlyField() 
+    #date_of_birth = serializers.ReadOnlyField()
     student = StudentSerializer(many=False, read_only=True)
     teacher = TeacherSerializer(many=False, read_only=True)
 
@@ -174,7 +174,7 @@ class UserSerializer(serializers.ModelSerializer):
             'patronymic',
             'bio',
             'avatar',
-            'date_of_birth',
+            #'date_of_birth',
             
             'date_joined',
             'last_update',
@@ -192,7 +192,6 @@ class UserSerializer(serializers.ModelSerializer):
 
             'password',
         )
-
         extra_kwargs = {'password': {'write_only': True}}
 
 

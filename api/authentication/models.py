@@ -133,7 +133,7 @@ class StdUser(AbstractUser):
     patronymic = models.CharField(max_length=64, blank=True, default="")  # Ivanovych
     avatar = models.ImageField(upload_to='static/media/', blank=True, max_length=1000)  # select image
     bio = models.CharField(max_length=512, blank=True, default="")
-    date_of_birth = models.DateField(default=timezone.now)
+    date_of_birth = models.DateTimeField(default=timezone.now)
     gender = models.CharField(max_length=64, blank=True, default="man") # Man/Wpman
     
     news_subscription = models.BooleanField(default=True)

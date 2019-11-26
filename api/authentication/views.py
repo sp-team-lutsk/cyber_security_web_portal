@@ -45,11 +45,11 @@ class UserAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
     @permission("IsStaffUser")
     def get(self, request, *args, **kwargs):
         number = args[0]
-        queryset = User.objects.filter(id=number.get('id'))
+        queryset = User.objects.get(id=number.get('id'))
         if queryset:
-            serializer = self.get_serializer(queryset, many=True)
+            serializer = self.get_serializer(queryset)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({'Status': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_404_NOT_FOUND)
     
     @permission("IsStaffUser")
     def post(self, request, *args, **kwargs):

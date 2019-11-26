@@ -69,6 +69,17 @@ class TestAdminPermsAPIViews(APITestCase):
         nt.assert_equal(response.status_code, status.HTTP_201_CREATED)
         nt.assert_not_equal(user, None)
 
+    """ Test get one User """
+    def test_get_one_user(self):
+        url = reverse('user', args=[self.user.id,])
+        
+        response = self.client.get(url)
+        
+        serializer = UserSerializer(self.user)
+
+        nt.assert_equal(response.data, serializer.data)
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+        
 
 """ Tests inactive users access to api methods """
 class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
@@ -95,6 +106,12 @@ class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
         self.get_token()
         super().test_post_create_user()
 
+    @raises(KeyError)
+    def test_get_one_user(self):
+        self.get_token()
+        super.test_get_one_user()
+
+
 """ Tests active user access to api methonds """
 class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
     
@@ -111,7 +128,7 @@ class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
     def setUp(self):
         self.get_token()
 
-    """ Standart user does not have such perms, so it will raise KeyError """
+    """ Standart user does not have such perms """
     def test_get_all_users(self):
         url = reverse('users_list')
         
@@ -122,6 +139,16 @@ class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
         
         nt.assert_equal(response.data, NO_SUCH_PERM)
 
+    """ Standart user does not have such perms """
+    def test_get_one_user(self):
+        url = reverse('user', args=[self.user.id,])
+        
+        response = self.client.get(url)
+        
+        serializer = UserSerializer(self.user)
+
+        nt.assert_equal(response.data, NO_SUCH_PERM)
+        
 
 """ Test moderator access to api """
 class TestModerPermsAPIViews(TestAdminPermsAPIViews):

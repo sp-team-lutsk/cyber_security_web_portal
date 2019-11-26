@@ -13,6 +13,8 @@ TEST_FACULTY          = "FKNIT"
 MSG_ACCOUNT_ACTIVATED = 'Your account has been activated.'
 MAIL_SUBJECT          = 'subject'
 NO_SUCH_PERM          = {'Status': 'User has no permissions'}
+GOOD_USER_ID          = 1
+BAD_USER_ID           = 99999999
 
 """ Constants for int_news """
 TEST_TITLE           = "In LNTU was created a website"
