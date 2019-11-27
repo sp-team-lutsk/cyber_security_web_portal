@@ -11,8 +11,7 @@ class NewsSerializer(serializers.ModelSerializer):
 
 
 class SetNewsSerializer(serializers.ModelSerializer):
-    status = serializers.ChoiceField(
-    choices=['False', 'True'],)
+    
     class Meta(object):
         model = News
-        fields = ('id', 'status',)
+        fields = ('id', 'is_checked',)
