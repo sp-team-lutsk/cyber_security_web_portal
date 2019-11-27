@@ -331,3 +331,11 @@ class SetModeratorSerializer(serializers.ModelSerializer):
                 'id','is_moderator',)
 
 
+class NewsSubscriptionSerializer(serializers.ModelSerializer):
+
+    class Meta(object):
+        model = User
+        fields = (
+            'id', 'status',)
+
+

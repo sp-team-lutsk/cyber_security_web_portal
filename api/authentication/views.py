@@ -29,6 +29,7 @@ from authentication.serializers import (
     UpdateStudentSerializer,
     BulkUpdateStudentSerializer,
     SetModeratorSerializer,
+    NewsSubscriptionSerializer,
     )
 
 from authentication.models import StdUser, Student, Teacher
@@ -410,3 +411,22 @@ class BanUserAPIView(APIView):
         user.is_active = False
         user.save()
         return Response({'Status': 'OK'}, status=status.HTTP_200_OK)
+
+
+class NewsSubscriptionAPIView(APIView):
+    queryset = User.objects.none()
+    permission_classes = [AllowAny, ]
+    serializer_class = NewsSubscriptionSerializer
+
+    def post(self, request, *args, **kwargs):
+        try:
+            NewsForUser = User.objects.get(id=request.data.get('id'))
+            serializer = self.serializer_class(NewsForUser, data=request.data)
+            subscribe = request.data.get('status')
+            NewsForUser.is_subscribe = subscribe
+            NewsForUser.save()
+            return Response(data={"is_subscribe": "{}".format(str(subscribe))}, status=status.HTTP_200_OK)
+        except:
+            return Response(data={"Subscribe": "Not Found"}, status=status.HTTP_404_NOT_FOUND)
+
+
