@@ -160,7 +160,7 @@ class FindUserSerializer(serializers.ModelSerializer):
  
 
 class UserSerializer(serializers.ModelSerializer):
-    #date_of_birth = serializers.ReadOnlyField()
+    date_of_birth = serializers.ReadOnlyField()
     student = StudentSerializer(many=False, read_only=True)
     teacher = TeacherSerializer(many=False, read_only=True)
 
@@ -174,7 +174,7 @@ class UserSerializer(serializers.ModelSerializer):
             'patronymic',
             'bio',
             'avatar',
-            #'date_of_birth',
+            'date_of_birth',
             
             'date_joined',
             'last_update',
@@ -202,13 +202,18 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         exclude = (
                 'email',
                 'id',
+                'avatar',
                 'password',
                 'is_moderator', 
                 'is_active', 
+                'is_staff',
                 'is_admin',
+                'is_superuser',
                 'is_student', 
                 'is_teacher',
                 'username',
+                'date_joined',
+                'last_update',
                 'last_login',
                 'groups',
                 'code',

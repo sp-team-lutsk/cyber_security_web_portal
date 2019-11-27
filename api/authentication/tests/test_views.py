@@ -12,6 +12,7 @@ from rest_framework.test import APITestCase
 from authentication.models import StdUser
 from authentication.serializers import (
         UserSerializer,
+        UpdateUserSerializer,
         BulkUpdateUserSerializer,)
 
 from settings.tests import *
@@ -27,7 +28,7 @@ class TestAdminPermsAPIViews(APITestCase):
                 email=TEST_ADMIN_EMAIL,
                 password=TEST_PASSWORD,
                 user_type=1)
-   
+
     def setUp(self):
         self.get_token()
 
@@ -80,6 +81,22 @@ class TestAdminPermsAPIViews(APITestCase):
         nt.assert_equal(response.data, serializer.data)
         nt.assert_equal(response.status_code, status.HTTP_200_OK)
         
+    """ Test get one not existing User """
+    def test_get_one_which_not_exist(self):
+        url = reverse('user', args=[BAD_USER_ID,])
+        
+        response = self.client.get(url)
+        
+        nt.assert_equal(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    """ Test post one user """
+    def test_post_one_user(self):
+        url = reverse('user', args=[self.user.id],)
+
+        response = self.client.post(url)
+
+        nt.assert_equal(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 """ Tests inactive users access to api methods """
 class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
@@ -90,7 +107,8 @@ class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
         cls.user = StdUser.objects.create_user(
                 email=TEST_EMAIL,
                 password=TEST_PASSWORD,)
-   
+    
+    """ Turn off setup from parent """
     def setUp(cls):
         pass
 
@@ -106,10 +124,17 @@ class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
         self.get_token()
         super().test_post_create_user()
 
+    """ Must be active """
     @raises(KeyError)
     def test_get_one_user(self):
         self.get_token()
         super.test_get_one_user()
+
+    """ Must be active """
+    @raises(KeyError)
+    def test_get_one_which_not_exist(self):
+        self.get_token()
+        super.test_get_one_which_not_exist()
 
 
 """ Tests active user access to api methonds """
@@ -148,7 +173,15 @@ class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
         serializer = UserSerializer(self.user)
 
         nt.assert_equal(response.data, NO_SUCH_PERM)
+    
+    """ Standart user does not have such perms """
+    def test_get_one_which_not_exist(self):
+        url = reverse('user', args=[BAD_USER_ID,])
         
+        response = self.client.get(url)
+
+        nt.assert_equal(response.data, NO_SUCH_PERM)
+
 
 """ Test moderator access to api """
 class TestModerPermsAPIViews(TestAdminPermsAPIViews):
@@ -187,6 +220,7 @@ class TestModerPermsAPIViews(TestAdminPermsAPIViews):
         response = self.client.delete(url)
 
         nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
 
 """ Tests API of all user list """
 class TestJWTToken(APITestCase):
