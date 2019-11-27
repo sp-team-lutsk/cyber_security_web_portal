@@ -336,6 +336,6 @@ class NewsSubscriptionSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
         fields = (
-            'id', 'status',)
+            'id', 'news_subscription',)
 
 

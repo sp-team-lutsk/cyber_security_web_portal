@@ -34,6 +34,7 @@ from authentication.serializers import (
 
 from authentication.models import StdUser, Student, Teacher
 from utils.decorators import permission, permissions
+from utils.views import send_mail
 
 User = get_user_model()
 
@@ -418,15 +419,28 @@ class NewsSubscriptionAPIView(APIView):
     permission_classes = [AllowAny, ]
     serializer_class = NewsSubscriptionSerializer
 
+    @permissions(["IsModeratorUser", "IsUser"])
     def post(self, request, *args, **kwargs):
         try:
-            NewsForUser = User.objects.get(id=request.data.get('id'))
-            serializer = self.serializer_class(NewsForUser, data=request.data)
-            subscribe = request.data.get('status')
-            NewsForUser.is_subscribe = subscribe
-            NewsForUser.save()
-            return Response(data={"is_subscribe": "{}".format(str(subscribe))}, status=status.HTTP_200_OK)
+            user = User.objects.get(id=request.data.get('id'))
+            serializer = self.serializer_class(user, data=request.data)
+            subscribe = request.data.get('news_subscription')
+            user.news_subscription = subscribe
+            user.save()
+            subject = 'Лист для тебе, {}'.format(user.email)
+            if user.news_subscription == True:
+                status = 'підписалися на розсилку новин'
+            else:
+                status = 'відписалися від розсилки новин'
+            body = 'Шановний {}, вам надійшов цей лист, бо ви {}. Дякую за увагу.'.format(user.email,status)
+            send_mail(email=user.email,
+                      subject = subject,
+                      body = body)
+
+            return Response(data={"news_subscription": "{}".format(str(subscribe))}, status=status.HTTP_200_OK)
         except:
             return Response(data={"Subscribe": "Not Found"}, status=status.HTTP_404_NOT_FOUND)
+
+
 
 
