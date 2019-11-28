@@ -120,6 +120,7 @@ ul {
   margin: 0 18px;
   color: #f1efe6;
   text-decoration: none;
+  background-color: transparent;
 
   transition: color .2s linear;
 }

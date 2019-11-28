@@ -8,6 +8,7 @@ from int_news.models import NewsInt
 
 
 
+
 class PostInt(CreateAPIView):
     serializer_class = NewsIntSerializer
     queryset = NewsInt.objects.all()
@@ -23,6 +24,7 @@ class PostInt(CreateAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class PostUpdInt(APIView):
     serializer_class = NewsIntSerializer
