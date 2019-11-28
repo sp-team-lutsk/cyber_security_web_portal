@@ -60,10 +60,12 @@ class UserAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
     def put(self, request, *args, **kwargs):
         number = args[0]
         queryset = User.objects.filter(id=number.get('id'))
-        serializer = UpdateUserSerializer(queryset[0],  data=request.data)
-        print(serializer.get_fields())
-        if serializer.is_valid():
+        self.serializer_class = UpdateUserSerializer
+        serializer = self.serializer_class(queryset[0],  data=request.data)
+        
+        if(serializer.is_valid()):
             serializer.save()
+        
         return Response(data=serializer.errors, status=status.HTTP_200_OK)
         
     @permissions(["IsModeratorUser", "IsUser"])

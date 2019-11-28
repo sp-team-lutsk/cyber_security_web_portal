@@ -199,26 +199,14 @@ class UpdateUserSerializer(serializers.ModelSerializer):
    
     class Meta(object):
         model = User
-        exclude = (
-                'email',
-                'id',
-                'avatar',
-                'password',
-                'is_moderator', 
-                'is_active', 
-                'is_staff',
-                'is_admin',
-                'is_superuser',
-                'is_student', 
-                'is_teacher',
-                'username',
-                'date_joined',
-                'last_update',
-                'last_login',
-                'groups',
-                'code',
-                'user_permissions')
-
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+            'patronymic',
+            'bio',
+            'news_subscription'
+        )
 
 class BulkUpdateUserSerializer(serializers.ModelSerializer):
 

@@ -30,6 +30,9 @@ class TestAdminPermsAPIViews(APITestCase):
                 user_type=1)
 
     def setUp(self):
+        self.t_user = StdUser.objects.create_user(
+                email=TEST_EMAIL2,
+                password=TEST_PASSWORD)
         self.get_token()
 
     """ This func helps to get jwt access token many times """
@@ -60,23 +63,23 @@ class TestAdminPermsAPIViews(APITestCase):
         url = reverse('users_list')
         
         data = {
-                "email": TEST_EMAIL2,
+                "email": TEST_EMAIL3,
                 "password": TEST_PASSWORD,
         }
 
         response = self.client.post(url, data, format='json') 
-        user = StdUser.objects.get(email=TEST_EMAIL2)
+        user = StdUser.objects.get(email=TEST_EMAIL3)
 
         nt.assert_equal(response.status_code, status.HTTP_201_CREATED)
         nt.assert_not_equal(user, None)
 
     """ Test get one User """
     def test_get_one_user(self):
-        url = reverse('user', args=[self.user.id,])
+        url = reverse('user', args=[self.t_user.id,])
         
         response = self.client.get(url)
         
-        serializer = UserSerializer(self.user)
+        serializer = UserSerializer(self.t_user)
 
         nt.assert_equal(response.data, serializer.data)
         nt.assert_equal(response.status_code, status.HTTP_200_OK)
@@ -91,11 +94,114 @@ class TestAdminPermsAPIViews(APITestCase):
 
     """ Test post one user """
     def test_post_one_user(self):
-        url = reverse('user', args=[self.user.id],)
+        url = reverse('user', args=[self.t_user.id],)
 
         response = self.client.post(url)
 
         nt.assert_equal(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+""" Test moderator access to api """
+class TestModerPermsAPIViews(TestAdminPermsAPIViews):
+    
+    """ Setup test data """
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = StdUser.objects.create_user(
+                email=TEST_MODER_EMAIL,
+                password=TEST_PASSWORD,
+                user_type=2)
+
+    """ Tests users bulk update """
+    def test_put_bulk_update_users(self):
+        queryset = StdUser.objects.all()
+        serializer = BulkUpdateUserSerializer(queryset, many=True)
+
+        url = reverse('users_list')
+
+        data = {
+                "first_name": TEST_NAME,
+                "last_name": TEST_SURNAME
+        }
+        
+        response = self.client.put(url, data, format='json')
+
+        nt.assert_equal(response.data, serializer.data)
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ Tests users bulk delete """
+    def test_delete_bulk_users(self):
+        url = reverse('users_list')
+
+        response = self.client.delete(url)
+
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ Tests put update for one user """
+    def test_put_one_user(self):
+        url = reverse('user', args=[self.t_user.id])
+
+        data = {
+            "email": TEST_EMAIL3,
+            "fist_name": TEST_NAME,
+            "last_name": TEST_SURNAME,
+            "patronymic": TEST_PATRONIM,
+            "bio": TEST_BIO,
+            "news_subscription": "true"
+        }
+
+        response = self.client.put(url, data, format='json')
+        
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+
+""" Tests active user access to api methonds """
+class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
+    
+    """ Setup test data """
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = StdUser.objects.create_user(
+                email=TEST_EMAIL,
+                password=TEST_PASSWORD,
+                user_type=3)
+        cls.user.is_active = True
+        cls.user.save()
+  
+    def setUp(self):
+        self.t_user = StdUser.objects.create_user(
+                email=TEST_EMAIL2,
+                password=TEST_PASSWORD)
+        self.get_token()
+
+    """ Standart user does not have such perms """
+    def test_get_all_users(self):
+        url = reverse('users_list')
+        
+        response = self.client.get(url)
+    
+        users = StdUser.objects.all()
+        serializer = UserSerializer(users, many=True)
+        
+        nt.assert_equal(response.data, NO_SUCH_PERM)
+
+    """ Standart user does not have such perms """
+    def test_get_one_user(self):
+        url = reverse('user', args=[self.t_user.id,])
+        
+        response = self.client.get(url)
+        
+        serializer = UserSerializer(self.t_user)
+
+        nt.assert_equal(response.data, NO_SUCH_PERM)
+    
+    """ Standart user does not have such perms """
+    def test_get_one_which_not_exist(self):
+        url = reverse('user', args=[BAD_USER_ID,])
+        
+        response = self.client.get(url)
+
+        nt.assert_equal(response.data, NO_SUCH_PERM)
 
 
 """ Tests inactive users access to api methods """
@@ -109,8 +215,10 @@ class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
                 password=TEST_PASSWORD,)
     
     """ Turn off setup from parent """
-    def setUp(cls):
-        pass
+    def setUp(self):
+        self.t_user = StdUser.objects.create_user(
+                email=TEST_EMAIL2,
+                password=TEST_PASSWORD)
 
     """ Standart user does not have such perms, so it will raise KeyError """
     @raises(KeyError)
@@ -135,91 +243,6 @@ class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
     def test_get_one_which_not_exist(self):
         self.get_token()
         super.test_get_one_which_not_exist()
-
-
-""" Tests active user access to api methonds """
-class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
-    
-    """ Setup test data """
-    @classmethod
-    def setUpTestData(cls):
-        cls.user = StdUser.objects.create_user(
-                email=TEST_EMAIL,
-                password=TEST_PASSWORD,
-                user_type=3)
-        cls.user.is_active = True
-        cls.user.save()
-  
-    def setUp(self):
-        self.get_token()
-
-    """ Standart user does not have such perms """
-    def test_get_all_users(self):
-        url = reverse('users_list')
-        
-        response = self.client.get(url)
-    
-        users = StdUser.objects.all()
-        serializer = UserSerializer(users, many=True)
-        
-        nt.assert_equal(response.data, NO_SUCH_PERM)
-
-    """ Standart user does not have such perms """
-    def test_get_one_user(self):
-        url = reverse('user', args=[self.user.id,])
-        
-        response = self.client.get(url)
-        
-        serializer = UserSerializer(self.user)
-
-        nt.assert_equal(response.data, NO_SUCH_PERM)
-    
-    """ Standart user does not have such perms """
-    def test_get_one_which_not_exist(self):
-        url = reverse('user', args=[BAD_USER_ID,])
-        
-        response = self.client.get(url)
-
-        nt.assert_equal(response.data, NO_SUCH_PERM)
-
-
-""" Test moderator access to api """
-class TestModerPermsAPIViews(TestAdminPermsAPIViews):
-    
-    """ Setup test data """
-    @classmethod
-    def setUpTestData(cls):
-        cls.user = StdUser.objects.create_user(
-                email=TEST_MODER_EMAIL,
-                password=TEST_PASSWORD,
-                user_type=2)
-    
-    """ Tests users bulk update """
-    def test_put_bulk_update_users(self):
-        queryset = StdUser.objects.all()
-        serializer = BulkUpdateUserSerializer(queryset, many=True)
-
-        url = reverse('users_list')
-
-        data = {
-                "first_name": TEST_NAME,
-                "last_name": TEST_SURNAME
-        }
-        
-        response = self.client.put(url, data, format='json')
-
-        nt.assert_equal(response.data, serializer.data)
-        nt.assert_equal(response.status_code, status.HTTP_200_OK)
-
-    """ Tests users bulk delete """
-    def test_delete_bulk_users(self):
-        queryset = StdUser.objects.all() 
-        
-        url = reverse('users_list')
-
-        response = self.client.delete(url)
-
-        nt.assert_equal(response.status_code, status.HTTP_200_OK)
 
 
 """ Tests API of all user list """
