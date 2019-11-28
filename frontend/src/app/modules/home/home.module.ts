@@ -6,6 +6,7 @@ import { StudentsComponent } from './pages/students/students.component';
 import { ScienceComponent } from './pages/science/science.component';
 import { AboutComponent } from './pages/about/about.component';
 import { MainComponent } from './pages/main/main.component';
+import {AppRoutingModule} from "../../app-routing.module";
 
 
 
@@ -15,8 +16,9 @@ import { MainComponent } from './pages/main/main.component';
     HeaderComponent,
     FooterComponent
   ],
-  imports: [
-    CommonModule
-  ]
+    imports: [
+        CommonModule,
+        AppRoutingModule
+    ]
 })
 export class HomeModule { }

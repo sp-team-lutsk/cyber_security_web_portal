@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { faAngleDown, faAngleUp } from '@fortawesome/fontawesome-free';
 
 @Component({
   selector: 'app-science',
@@ -7,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScienceComponent implements OnInit {
 
+  faAngleDown = faAngleDown;
+  faAngleUp = faAngleUp;
   constructor() { }
 
   ngOnInit() {

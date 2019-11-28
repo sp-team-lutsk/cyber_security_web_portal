@@ -51,8 +51,7 @@ li {
   height: 0;
   width: 0;
   position: relative;
-  display: block;
-  display: none; }
+  display: block; }
 
 .field {
   position: absolute;
@@ -63,10 +62,9 @@ li {
 .blok-1 > .col {
   height: 0;
   font-size: 0; }
-  .blok-1 > .col > .btn {
+  .blok-1 > .col .btn {
     position: absolute;
     display: block;
-    display: none;
     width: 0;
     font-size: 0;
     top: 0;
@@ -92,7 +90,7 @@ li {
     .blok-2 .col-7 .col-5 {
       padding: 0 0 0 0;
       margin: 0 0 0 0;
-      max-height: auto; }
+      max-height: fit-content; }
 
 ul > li {
   list-style-type: none; }
@@ -176,7 +174,7 @@ ul > li {
   margin-bottom: 40px; }
 
 .blou-line {
-  background-color: none; }
+  display: none; }
 
 .page-1 {
   width: 288px;
@@ -252,8 +250,6 @@ ul > li {
   .image-1 {
     width: 70px;
     height: auto;
-    width: 70px;
-    height: auto;
     padding: 0 0 0 0; }
 
   .outer-2 {
@@ -271,8 +267,7 @@ ul > li {
     height: 175px;
     width: 140px;
     position: relative;
-    display: block;
-    height: 175px; }
+    display: block; }
 
   .field {
     position: absolute;
@@ -483,8 +478,7 @@ ul > li {
     height: 175px;
     width: 170px;
     position: relative;
-    display: block;
-    height: 175px; }
+    display: block; }
 
   .field {
     position: absolute;
@@ -666,7 +660,7 @@ ul > li {
     .outer img {
       position: absolute;
       margin: auto;
-      left: 0%;
+      left: 0;
       top: 0;
       bottom: 0;
       right: 0; }
@@ -692,8 +686,7 @@ ul > li {
     display: block;
     width: 200px;
     padding-right: 0;
-    padding-left: 0;
-    height: 175px; }
+    padding-left: 0; }
 
   .field {
     position: absolute;
@@ -704,7 +697,7 @@ ul > li {
   .blok-1 > .col-md {
     height: 175px;
     width: auto; }
-    .blok-1 > .col-md > .btn {
+    .blok-1 > .col-md .btn {
       position: absolute;
       display: block;
       width: 157px;

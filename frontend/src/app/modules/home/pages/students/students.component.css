@@ -350,8 +350,7 @@ p {
   border-radius: 10px;
   box-shadow: 4px 4px #95979f;
   height: fit-content;
-  margin: auto;
-  margin-bottom: 30px;
+  margin: auto auto 30px;
   text-align: left;
   position: relative; }
 
