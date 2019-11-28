@@ -5,7 +5,6 @@ from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
 from int_news.serializers import NewsIntSerializer
 from int_news.models import NewsInt
-from int_news.logger import Logger
 
 
 

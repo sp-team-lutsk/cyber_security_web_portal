@@ -9,8 +9,6 @@ from authentication.permissions import AllowAny, IsModeratorUser
 from ext_news.serializers import NewsSerializer, SetNewsSerializer
 from ext_news.models import News
 from utils.decorators import permission
-from ext_news.logger import Logger
-
 
 class Post(ListCreateAPIView):
     queryset = News.objects.all()

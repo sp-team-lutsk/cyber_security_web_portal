@@ -13,6 +13,7 @@ from utils.serializers import SendMailSerializer
 User = get_user_model()
 
 
+
 class FacultySerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Faculty
