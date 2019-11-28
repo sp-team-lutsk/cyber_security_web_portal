@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faAngleDown, faAngleUp } from '@fortawesome/fontawesome-free';
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-students',

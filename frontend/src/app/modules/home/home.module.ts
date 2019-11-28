@@ -6,19 +6,26 @@ import { StudentsComponent } from './pages/students/students.component';
 import { ScienceComponent } from './pages/science/science.component';
 import { AboutComponent } from './pages/about/about.component';
 import { MainComponent } from './pages/main/main.component';
-import {AppRoutingModule} from "../../app-routing.module";
-
-
+import { HomeRoutingModule } from './home-routing.module'
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent, StudentsComponent, ScienceComponent, AboutComponent, MainComponent],
+  declarations: [
+      HeaderComponent, 
+      FooterComponent, 
+      StudentsComponent, 
+      ScienceComponent, 
+      AboutComponent, 
+      MainComponent,
+  ],
   exports: [
     HeaderComponent,
     FooterComponent
   ],
-    imports: [
-        CommonModule,
-        AppRoutingModule
-    ]
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    HomeRoutingModule,
+  ]
 })
 export class HomeModule { }

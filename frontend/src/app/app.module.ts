@@ -4,16 +4,16 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeModule } from './modules/home/home.module';
-import { FontAwesomeModule } from '@fortawesome/fontawesome-free';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    HomeModule,
     BrowserModule,
     AppRoutingModule,
-    HomeModule,
     FontAwesomeModule,
   ],
   providers: [],
