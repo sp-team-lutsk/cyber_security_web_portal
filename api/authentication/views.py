@@ -426,12 +426,17 @@ class NewsSubscriptionAPIView(APIView):
         subscribe = request.data.get('news_subscription')
         user.news_subscription = subscribe
         user.save()
-        subject = 'Лист для тебе, {}'.format(user.email)
         if user.news_subscription == True:
             subs = 'підписалися на розсилку новин'
         else:
             subs = 'відписалися від розсилки новин'
-        body = 'Шановний {}, вам надійшов цей лист, бо ви {}. Дякую за увагу.'.format(user.email,subs)
+        if user.name == "":
+            subject = 'Лист для тебе, користувач'
+            body = 'Шановний користувач, вам надійшов цей лист, бо ви {}. Дякую за увагу.'.format(subs)
+        else:
+            subject = 'Лист для тебе, {}'.format(user.name)
+            body = 'Шановний {}, вам надійшов цей лист, бо ви {}. Дякую за увагу.'.format(user.name, subs)
+
         send_mail(email=user.email,
                   subject = subject,
                   body = body)
