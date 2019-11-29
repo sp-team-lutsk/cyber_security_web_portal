@@ -12,6 +12,7 @@ from authentication.models import (Student, Teacher, Faculty,
 User = get_user_model()
 
 
+
 class FacultySerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Faculty
@@ -306,6 +307,14 @@ class SetModeratorSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
         fields = (
-                'id',)
+                'id','is_moderator',)
+
+
+class NewsSubscriptionSerializer(serializers.ModelSerializer):
+
+    class Meta(object):
+        model = User
+        fields = (
+            'id', 'news_subscription',)
 
 

@@ -27,14 +27,15 @@ class SendMailAPIView(APIView):
     permission_classes = [AllowAny]
     queryset = User.objects.none()
    
-    @permission("IsAdminUser")
-    def post(self, request):
+    @permission("IsModeratorUser")
+    def post(self, request,*args,**kwargs):
         serializer = SendMailSerializer(data=request.data)
-        user = self.queryset.get(email=request.data.get('email'))
+        user = User.objects.get(email=request.data.get('email'))
         if user is not None:
-            if serializer.is_valid(raise_exception=True):
-                serializer.send(data=request.data)
-                return Response({'Status': 'Mail Send'}, status=status.HTTP_200_OK)
+            send_mail(email=request.data.get('email'),
+                      subject=request.data.get('subject'),
+                      body=request.data.get('body'))
+            return Response({'Status': 'Mail Send'}, status=status.HTTP_200_OK)
 
 
 class MailingAPIView(APIView):
@@ -97,7 +98,7 @@ def news_mailing(data):
                'data': queryset,
                }
     msg = EmailMessage(subject='Новини за тиждень',
-                       body=render_to_string('utils/mail/news_mail.html', context), 
+                       body=render_to_string('/utils/mail/news_mail.html', context), 
                        to=[data.email])
     msg.content_subtype = 'html'
     msg.send()
@@ -109,7 +110,7 @@ def send_mail(email, subject, body):
                'subject': subject, 
                }
     msg = EmailMessage(subject=subject,
-                       body=render_to_string('utils/mail/single_mail.html', context),
+            body=render_to_string('utils/mail/single_mail.html', context),
                        to=[email])
     msg.content_subtype = 'html'
     msg.send()

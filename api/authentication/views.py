@@ -27,11 +27,14 @@ from authentication.serializers import (
     UpdateStudentSerializer,
     BulkUpdateStudentSerializer,
     SetModeratorSerializer,
+    NewsSubscriptionSerializer,
     )
 
 from authentication.permissions import AllowAny
 from authentication.models import StdUser, Student, Teacher
+
 from utils.decorators import permission, permissions
+from utils.views import send_mail
 
 User = get_user_model()
 
@@ -356,9 +359,10 @@ class SetModeratorAPIView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         user = User.objects.get(id=request.data.get('id'))
-        user.is_moderator = True
+        set_check = request.data.get('is_moderator')
+        user.is_moderator = set_check
         user.save()
-        return Response(data={"success": "User with id {} moderator now".format(str(request.data.get('id')))},
+        return Response(data={"is_moderator": "{}".format(str(set_check))},
                     status=status.HTTP_200_OK)
 
 
@@ -406,3 +410,38 @@ class BanUserAPIView(APIView):
         user.is_active = False
         user.save()
         return Response({'Status': 'OK'}, status=status.HTTP_200_OK)
+
+
+class NewsSubscriptionAPIView(APIView):
+    queryset = User.objects.none()
+    permission_classes = [AllowAny, ]
+    serializer_class = NewsSubscriptionSerializer
+
+    @permissions(["IsModeratorUser", "IsUser"])
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.data.get('id'))
+        serializer = self.serializer_class(user, data=request.data)
+        subscribe = request.data.get('news_subscription')
+        user.news_subscription = subscribe
+        user.save()
+        if user.news_subscription == True:
+            subs = 'підписалися на розсилку новин'
+        else:
+            subs = 'відписалися від розсилки новин'
+        if user.name == "":
+            subject = 'Лист для тебе, користувач'
+            body = 'Шановний користувач, вам надійшов цей лист, бо ви {}. Дякую за увагу.'.format(subs)
+        else:
+            subject = 'Лист для тебе, {}'.format(user.name)
+            body = 'Шановний {}, вам надійшов цей лист, бо ви {}. Дякую за увагу.'.format(user.name, subs)
+
+        send_mail(email=user.email,
+                  subject = subject,
+                  body = body)
+        if serializer.is_valid(raise_exception=True):
+            return Response(data={"news_subscription": "{}".format(str(subscribe))},
+                    status=status.HTTP_200_OK)
+        else:
+            return Response(data={"User": "Not Found"}, 
+                    status=status.HTTP_404_NOT_FOUND)
+

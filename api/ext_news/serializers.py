@@ -11,7 +11,7 @@ class NewsSerializer(serializers.ModelSerializer):
 
 
 class SetNewsSerializer(serializers.ModelSerializer):
-
+    
     class Meta(object):
         model = News
         fields = ('id', 'is_checked',)
