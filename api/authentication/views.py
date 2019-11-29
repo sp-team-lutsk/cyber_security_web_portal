@@ -124,7 +124,8 @@ class TeacherAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
     lookup_field = 'id'
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    
+    permission_classes = [AllowAny,]
+
     @permissions(["IsStaffUser", "IsUser"])
     def get(self, request, *args, **kwargs):
         number = kwargs.get('id')
