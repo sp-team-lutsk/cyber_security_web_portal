@@ -242,15 +242,6 @@ class CreateTeacherSerializer(serializers.ModelSerializer):
             'faculty',
         )
 
-    def create(self, validated_data):
-
-        validate_password(password=validated_data.get('password',), user=validated_data.get('email'), password_validators=None)
-        
-        email = validated_data.get('email')
-        user = User.objects.create_teacher(**validated_data) 
-        user.send_mail(email=email)
-        return user
-
 
 class UpdateTeacherSerializer(serializers.ModelSerializer):
    
@@ -258,6 +249,7 @@ class UpdateTeacherSerializer(serializers.ModelSerializer):
         model = Teacher
         fields = (
                 'faculty',)
+
 
 class BulkUpdateTeacherSerializer(serializers.ModelSerializer):
 
@@ -282,14 +274,6 @@ class CreateStudentSerializer(serializers.ModelSerializer):
             'acad_group',
         )
 
-    def create(self, validated_data):
-
-        validate_password(password=validated_data.get('password',), user=validated_data.get('email'), password_validators=None)
-        
-        email = validated_data.get('email')
-        user = User.objects.create_student(**validated_data) 
-        user.send_mail(email=email)
-        return user
 
 class UpdateStudentSerializer(serializers.ModelSerializer):
     faculty = serializers.CharField(max_length=128)
@@ -303,6 +287,7 @@ class UpdateStudentSerializer(serializers.ModelSerializer):
                 'profession',
                 'acad_group',)
 
+
 class BulkUpdateStudentSerializer(serializers.ModelSerializer):
     faculty = serializers.CharField(max_length=128)
     profession = serializers.CharField(max_length=128)
@@ -315,6 +300,7 @@ class BulkUpdateStudentSerializer(serializers.ModelSerializer):
                 'profession',
                 'acad_group',)
  
+
 class SetModeratorSerializer(serializers.ModelSerializer):
 
     class Meta(object):

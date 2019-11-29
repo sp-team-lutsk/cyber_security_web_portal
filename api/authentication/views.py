@@ -66,16 +66,15 @@ class UserAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
         if(serializer.is_valid()):
             serializer.save()
         
-        return Response(data=serializer.errors, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
         
     @permissions(["IsModeratorUser", "IsUser"])
     def delete(self, request, *args, **kwargs):
-        number = kwargs.get('id')
-        queryset = User.objects.filter(id=number)
-        user = queryset[0]
+        number = args[0].get('id')
+        user = User.objects.get(id=number)
         user.is_active = False
         user.save()
-        return Response({'Status': 'OK'}, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
 
 class UsersAPIView(ListAPIView, CreateAPIView):
@@ -129,8 +128,8 @@ class TeacherAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
         queryset = User.objects.filter(id=number, is_teacher=True)
         if queryset:
             serializer = self.get_serializer(queryset, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({'Status': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_404_NOT_FOUND)
      
     @permissions(["IsModeratorUser", "IsUser"])
     def post(self, request, *args, **kwargs):

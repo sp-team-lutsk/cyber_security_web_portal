@@ -9,7 +9,10 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from authentication.models import StdUser
+from authentication.models import (
+        StdUser,
+        Teacher,
+        Faculty)
 from authentication.serializers import (
         UserSerializer,
         UpdateUserSerializer,
@@ -33,6 +36,12 @@ class TestAdminPermsAPIViews(APITestCase):
         self.t_user = StdUser.objects.create_user(
                 email=TEST_EMAIL2,
                 password=TEST_PASSWORD)
+        self.faculty = Faculty.objects.create(name=TEST_FACULTY)
+        self.teacher = StdUser.objects.create_teacher(
+                email=TEST_TEACHER_EMAIL,
+                password=TEST_PASSWORD,
+                faculty=self.faculty)
+
         self.get_token()
 
     """ This func helps to get jwt access token many times """
@@ -100,6 +109,40 @@ class TestAdminPermsAPIViews(APITestCase):
 
         nt.assert_equal(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
+    """ Tests put update for one user """
+    def test_put_one_user(self):
+        url = reverse('user', args=[self.t_user.id])
+
+        data = {
+            "email": TEST_EMAIL3,
+            "fist_name": TEST_NAME,
+            "last_name": TEST_SURNAME,
+            "patronymic": TEST_PATRONIM,
+            "bio": TEST_BIO,
+            "news_subscription": True
+        }
+
+        response = self.client.put(url, data, format='json')
+        
+        nt.assert_equal(response.data, NO_SUCH_PERM)
+    
+    """ Tests delete for one user """
+    def test_delete_one_user(self):
+        url = reverse('user', args=[self.t_user.id])
+
+        response = self.client.delete(url)
+        
+        nt.assert_equal(response.data, NO_SUCH_PERM)
+
+    """ Test get teacher """
+    def test_get_one_teacher(self):
+        url = reverse('teacher', args=[self.teacher.id])
+        
+        serializer = UserSerializer(self.teacher)
+        response = self.client.get(url)
+        
+        nt.assert_equal(serializer.data, response.data)
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
 
 """ Test moderator access to api """
 class TestModerPermsAPIViews(TestAdminPermsAPIViews):
@@ -147,10 +190,18 @@ class TestModerPermsAPIViews(TestAdminPermsAPIViews):
             "last_name": TEST_SURNAME,
             "patronymic": TEST_PATRONIM,
             "bio": TEST_BIO,
-            "news_subscription": "true"
+            "news_subscription": True
         }
 
         response = self.client.put(url, data, format='json')
+        
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+    
+    """ Tests delete for one user """
+    def test_delete_one_user(self):
+        url = reverse('user', args=[self.t_user.id])
+
+        response = self.client.delete(url)
         
         nt.assert_equal(response.status_code, status.HTTP_200_OK)
 
@@ -172,6 +223,11 @@ class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
         self.t_user = StdUser.objects.create_user(
                 email=TEST_EMAIL2,
                 password=TEST_PASSWORD)
+        self.faculty = Faculty.objects.create(name=TEST_FACULTY)
+        self.teacher = StdUser.objects.create_teacher(
+                email=TEST_TEACHER_EMAIL,
+                password=TEST_PASSWORD,
+                faculty=self.faculty)
         self.get_token()
 
     """ Standart user does not have such perms """
@@ -202,6 +258,31 @@ class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
         response = self.client.get(url)
 
         nt.assert_equal(response.data, NO_SUCH_PERM)
+    
+    """ Tests put update for one user """
+    def test_put_one_user(self):
+        url = reverse('user', args=[self.t_user.id])
+
+        data = {
+            "email": TEST_EMAIL3,
+            "fist_name": TEST_NAME,
+            "last_name": TEST_SURNAME,
+            "patronymic": TEST_PATRONIM,
+            "bio": TEST_BIO,
+            "news_subscription": True
+        }
+
+        response = self.client.put(url, data, format='json')
+        
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+    
+    """ Tests delete for one user """
+    def test_delete_one_user(self):
+        url = reverse('user', args=[self.t_user.id])
+
+        response = self.client.delete(url)
+        
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
 
 
 """ Tests inactive users access to api methods """
@@ -219,6 +300,11 @@ class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
         self.t_user = StdUser.objects.create_user(
                 email=TEST_EMAIL2,
                 password=TEST_PASSWORD)
+        self.faculty = Faculty.objects.create(name=TEST_FACULTY)
+        self.teacher = StdUser.objects.create_teacher(
+                email=TEST_TEACHER_EMAIL,
+                password=TEST_PASSWORD,
+                faculty=self.faculty)
 
     """ Standart user does not have such perms, so it will raise KeyError """
     @raises(KeyError)
@@ -244,6 +330,23 @@ class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
         self.get_token()
         super.test_get_one_which_not_exist()
 
+    """ Must be active """
+    @raises(KeyError)
+    def test_put_one_user(self):
+        self.get_token()
+        super.test_get_one_which_not_exist()
+
+    """ Must be active """
+    @raises(KeyError)
+    def test_delete_one_user(self):
+        self.get_token()
+        super.test_delete_one_user()
+
+    """ Must be active """
+    @raises(KeyError)
+    def test_get_one_teacher(self):
+        self.get_token()
+        super.test_get_one_teacher()
 
 """ Tests API of all user list """
 class TestJWTToken(APITestCase):

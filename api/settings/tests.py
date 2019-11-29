@@ -1,7 +1,9 @@
 """ Constants for authentication """
 TEST_ADMIN_EMAIL      = "admin@example.com"
 TEST_MODER_EMAIL      = "moder@example.com"
-TEST_ADMIN_PASSWORD   = "Admin123!"
+TEST_TEACHER_EMAIL    = 'teacher_t@example.com'
+TEST_STUDENT_EMAIL    = 'student_t@example.com'
+EST_ADMIN_PASSWORD    = "Admin123!"
 TEST_EMAIL            = "test_email@gmail.com"
 TEST_EMAIL2           = "test_email2@gmail.com"
 TEST_EMAIL3           = "test_email3@gmail.com"
