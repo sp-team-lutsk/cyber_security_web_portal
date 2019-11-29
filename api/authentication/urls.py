@@ -16,9 +16,10 @@ from authentication.views import (
     StudentsAPIView,
     SetModeratorAPIView,
     AdminUserAPIView,
-    BanUserAPIView, 
+    BanUserAPIView,
+    NewsSubscriptionAPIView,
    )
-from ext_news.views import SetNews
+from ext_news.views import ModeratorCheckNewsAPIView
 from utils.views import SendMailAPIView, ModeratorMailAPIView
 
 urlpatterns = [
@@ -33,6 +34,8 @@ urlpatterns = [
     path('users/verify/<str:code>/', VerifyUserAPIView.as_view(), name='verify'),
     path('users/recovery/<str:code>/', VerifyPassUserAPIView.as_view(), name='completerecover'),
     path('users/send_mail/', SendMailAPIView.as_view(), name='send_mail'),
+    path('mailing/subscribe/', NewsSubscriptionAPIView.as_view(), name='set_subscribe'),
+    path('mailing/unsubscribe/', NewsSubscriptionAPIView.as_view(), name='unset_subscribe'),
     # teacher api
     path('teachers/', TeachersAPIView.as_view(), name='teahers'),
     path('teachers/<int:id>/', TeacherAPIView.as_view(), name='teacher'),
@@ -42,7 +45,8 @@ urlpatterns = [
     # moderator api
     path('moderator/ban_user/', BanUserAPIView.as_view(), name='ban_user'),
     path('moderator/mass_mail/', ModeratorMailAPIView.as_view(), name='mass_mail'),
-    path('moderator/set_news/', SetNews.as_view(), name='set_news'),
+    path('moderator/check/', ModeratorCheckNewsAPIView.as_view(), name='set_news'),
+    path('moderator/uncheck/',ModeratorCheckNewsAPIView.as_view(), name='unset_news'),
     # admin api
     path('admin/set_moder/', SetModeratorAPIView.as_view(), name='set_moder'),
     path('admin/user/', AdminUserAPIView.as_view(), name='admin_user'),

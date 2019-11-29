@@ -329,6 +329,14 @@ class SetModeratorSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
         fields = (
-                'id',)
+                'id','is_moderator',)
+
+
+class NewsSubscriptionSerializer(serializers.ModelSerializer):
+
+    class Meta(object):
+        model = User
+        fields = (
+            'id', 'news_subscription',)
 
 
