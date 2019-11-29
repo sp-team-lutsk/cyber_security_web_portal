@@ -32,6 +32,7 @@ from authentication.serializers import (
     )
 
 from authentication.models import StdUser, Student, Teacher
+
 from utils.decorators import permission, permissions
 
 User = get_user_model()

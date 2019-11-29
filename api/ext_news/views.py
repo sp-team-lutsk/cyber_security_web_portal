@@ -9,7 +9,6 @@ from ext_news.serializers import NewsSerializer, SetNewsSerializer
 from ext_news.models import News
 from utils.decorators import permission
 
-
 class Post(ListCreateAPIView):
     queryset = News.objects.all()
     serializer_class = NewsSerializer

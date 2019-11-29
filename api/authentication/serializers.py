@@ -12,6 +12,7 @@ from authentication.models import (Student, Teacher, Faculty,
 User = get_user_model()
 
 
+
 class FacultySerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Faculty
