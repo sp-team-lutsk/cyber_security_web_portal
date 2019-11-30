@@ -114,12 +114,13 @@ class UsersAPIView(ListAPIView, CreateAPIView):
             return Response(serializer.errors)
     
     @permission("IsModeratorUser")
-    def delete(self, request):
+    def delete(self, request,*args,**kwargs):
+        self.queryset = User.objects.all()
         self.serializer_class = DeleteAllSerializer
         q = list(self.queryset)
         for u in q:
             serializer = self.serializer_class(request.user, data=request.data)
-            serializer.delete(request)
+            serializer.delete(u)
         return Response({'Status': 'OK'}, status=status.HTTP_200_OK)
 
 
