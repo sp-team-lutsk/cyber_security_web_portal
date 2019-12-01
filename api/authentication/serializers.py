@@ -238,6 +238,10 @@ class DeleteAllSerializer(serializers.ModelSerializer):
         fields = ('email',
                   'password')
 
+    def delete(self, u):
+        u.is_active = False
+        u.save()
+
 
 class CreateTeacherSerializer(serializers.ModelSerializer):
     faculty = serializers.CharField(max_length=128)
