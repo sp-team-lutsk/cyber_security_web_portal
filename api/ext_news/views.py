@@ -49,10 +49,11 @@ class ModeratorCheckNewsAPIView(APIView):
     permission_classes = [AllowAny, ]
     serializer_class = SetNewsSerializer
     
+    @permission("IsModeratorUser")
     def post(self, request, *args, **kwargs):
         news = News.objects.get(id=request.data.get('id'))
         serializer = self.serializer_class(news, data = request.data)
-        check = request.data.get('status')
+        check = request.data.get('is_checked')
         news.is_checked = check
         news.save()
         if serializer.is_valid():
