@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.views import APIView
 
-from authentication.permissions import AllowAny
+from utils.permissions import AllowAny
 
 from rest_framework.generics import (ListAPIView,
                                      DestroyAPIView,

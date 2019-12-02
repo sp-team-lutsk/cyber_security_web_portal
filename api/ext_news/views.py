@@ -4,7 +4,7 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from authentication.permissions import AllowAny
+from utils.permissions import AllowAny
 from ext_news.serializers import NewsSerializer, SetNewsSerializer
 from ext_news.models import News
 from utils.decorators import permission
