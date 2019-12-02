@@ -54,3 +54,58 @@ class PostUpdInt(APIView):
         news = self.get_object(id)
         news.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class News_Bulk(APIView):
+    permission_classes = [AllowAny, ]
+    serializer_class = NewsIntSerializer
+    queryset = NewsInt.objects.none()
+
+    def get(self, request, *args, **kwargs):
+        self.queryset = NewsInt.objects.all()
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request):
+        self.serializer_class = NewsIntSerializer
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        news_saved = serializer.save()
+        return Response(
+            data={"success": "News '{}' created successfully".format(str(news_saved))},
+            status=status.HTTP_201_CREATED)
+
+    def put(self, request, *args, **kwargs):
+        self.serializer_class = NewsIntSerializer
+        queryset = NewsInt.objects.all()
+        for nev in list(queryset):
+            serializer = NewsIntSerializer(nev, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+        return Response(data={"200": "OK"}, status=status.HTTP_200_OK)
+
+    @permission("IsModeratorUser")
+    def delete(self, request, *args, **kwargs):
+        self.queryset = NewsInt.objects.all()
+        self.serializer_class = NewsIntSerializer
+        q = list(self.queryset)
+        for u in q:
+            serializer = self.serializer_class(request.user, data=request.data)
+            serializer.delete(u)
+        return Response({'Status': 'OK'}, status=status.HTTP_200_OK)
+
+
+class ModeratorCheckNewsAPIView(APIView):
+    queryset = News.objects.none()
+    permission_classes = [AllowAny, ]
+    serializer_class = SetNewsSerializer
+
+    def post(self, request, *args, **kwargs):
+        try:
+            news = News.objects.get(id=request.data.get('id'))
+            serializer = self.serializer_class(news, data=request.data)
+            check = request.data.get('status')
+            news.is_checked = check
+            news.save()
+            return Response(data={"is_checked": "{}".format(str(check))}, status=status.HTTP_200_OK)
+        except:
+            return Response(data={"News": "Not Found"}, status=status.HTTP_404_NOT_FOUND)

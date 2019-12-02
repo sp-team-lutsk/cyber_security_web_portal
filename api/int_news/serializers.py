@@ -13,6 +13,10 @@ class NewsIntSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return NewsInt.objects.create(**validated_data)
 
+    def delete(self, u):
+        u.is_active = False
+        u.save()
+
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
         instance.content = validated_data.get('content', instance.content)
