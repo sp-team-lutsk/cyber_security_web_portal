@@ -4,7 +4,7 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from authentication.permissions import AllowAny
+from utils.permissions import AllowAny
 from ext_news.serializers import NewsSerializer, SetNewsSerializer
 from ext_news.models import News
 from utils.decorators import permission
@@ -49,10 +49,11 @@ class ModeratorCheckNewsAPIView(APIView):
     permission_classes = [AllowAny, ]
     serializer_class = SetNewsSerializer
     
+    @permission("IsModeratorUser")
     def post(self, request, *args, **kwargs):
         news = News.objects.get(id=request.data.get('id'))
         serializer = self.serializer_class(news, data = request.data)
-        check = request.data.get('status')
+        check = request.data.get('is_checked')
         news.is_checked = check
         news.save()
         if serializer.is_valid():

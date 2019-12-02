@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.views import APIView
 
-from authentication.permissions import AllowAny
+from utils.permissions import AllowAny
 
 from rest_framework.generics import (ListAPIView,
                                      DestroyAPIView,
@@ -428,7 +428,7 @@ class NewsSubscriptionAPIView(APIView):
         subscribe = request.data.get('news_subscription')
         user.news_subscription = subscribe
         user.save()
-        if user.news_subscription == True:
+        if StdUser.objects.get(id=request.data.get('id')).news_subscription == True:
             subs = 'підписалися на розсилку новин'
         else:
             subs = 'відписалися від розсилки новин'
@@ -438,7 +438,6 @@ class NewsSubscriptionAPIView(APIView):
         else:
             subject = 'Лист для тебе, {}'.format(user.first_name)
             body = 'Шановний {}, вам надійшов цей лист, бо ви {}. Дякую за увагу.'.format(user.first_name, subs)
-
         send_mail(email=user.email,
                   subject = subject,
                   body = body)
