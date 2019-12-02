@@ -9,6 +9,7 @@ import { MainComponent } from './pages/main/main.component';
 import { HomeRoutingModule } from './home-routing.module'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+
 @NgModule({
   declarations: [
       HeaderComponent, 
