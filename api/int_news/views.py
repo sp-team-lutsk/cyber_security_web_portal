@@ -5,11 +5,13 @@ from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
 from int_news.serializers import NewsIntSerializer
 from int_news.models import NewsInt
-
-
+from utils.decorators import permission, permissions
+from ext_news.serializers import SetNewsSerializer
+from authentication.permissions import AllowAny
 
 
 class PostInt(CreateAPIView):
+    permission_classes = [AllowAny, ]
     serializer_class = NewsIntSerializer
     queryset = NewsInt.objects.all()
 
@@ -27,6 +29,7 @@ class PostInt(CreateAPIView):
 
 
 class PostUpdInt(APIView):
+    permission_classes = [AllowAny, ]
     serializer_class = NewsIntSerializer
     queryset = NewsInt.objects.all()
     lookup_field = 'id'
@@ -65,7 +68,8 @@ class News_Bulk(APIView):
         self.queryset = NewsInt.objects.all()
         return self.list(request, *args, **kwargs)
 
-    def post(self, request):
+
+    def post(self, request, *args, **kwargs):
         self.serializer_class = NewsIntSerializer
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -73,6 +77,7 @@ class News_Bulk(APIView):
         return Response(
             data={"success": "News '{}' created successfully".format(str(news_saved))},
             status=status.HTTP_201_CREATED)
+
 
     def put(self, request, *args, **kwargs):
         self.serializer_class = NewsIntSerializer
@@ -83,7 +88,7 @@ class News_Bulk(APIView):
                 serializer.save()
         return Response(data={"200": "OK"}, status=status.HTTP_200_OK)
 
-    @permission("IsModeratorUser")
+
     def delete(self, request, *args, **kwargs):
         self.queryset = NewsInt.objects.all()
         self.serializer_class = NewsIntSerializer
@@ -95,13 +100,13 @@ class News_Bulk(APIView):
 
 
 class ModeratorCheckNewsAPIView(APIView):
-    queryset = News.objects.none()
+    queryset = NewsInt.objects.none()
     permission_classes = [AllowAny, ]
     serializer_class = SetNewsSerializer
 
     def post(self, request, *args, **kwargs):
         try:
-            news = News.objects.get(id=request.data.get('id'))
+            news = NewsInt.objects.get(id=request.data.get('id'))
             serializer = self.serializer_class(news, data=request.data)
             check = request.data.get('status')
             news.is_checked = check
