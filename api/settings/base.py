@@ -24,9 +24,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles', 
+    'django.contrib.staticfiles',
     'django.contrib.sites',
-    
+
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'allauth',
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django_nose',
 
     'djangotoolbox',
-    
+
     'authentication',
     'ext_news',
     'int_news',
@@ -53,7 +53,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'lntu.website.it@gmail.com'
 EMAIL_HOST_PASSWORD = 'GRPKiT8izUCGUB2'
@@ -134,27 +134,27 @@ AUTH_PASSWORD_VALIDATORS = [
         'OPTIONS':{
             'min_length':8,
             }
-    
+
     },
-    
+
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
-    
+
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
-    
+
     {
         'NAME': 'authentication.validators.SymbolPasswordValidator',
-    
+
     },
-    
+
     {
         'NAME': 'authentication.validators.CharPasswordValidator',
 
     },
-    
+
     {
         'NAME': 'authentication.validators.UpPasswordValidator',
 
@@ -167,17 +167,17 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # settings for rest framework
 REST_FRAMEWORK = {
-  
-#JWT 
+
+#JWT
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 #Permissions
     'DEFAULT_PERMISSION_CLASSES': (
-        'authentication.permissions.IsAdminUser',
-        'authentication.permissions.IsModeratorUser',
-        'authentication.permissions.IsAuthenticated',
+        'utils.permissions.IsAdminUser',
+        'utils.permissions.IsModeratorUser',
+        'utils.permissions.IsAuthenticated',
     ),
 }
 
@@ -253,7 +253,7 @@ STATICFILES_FINDERS = (
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL ='/accounts/login/'
 
-CRONJOBS = [ 
+CRONJOBS = [
   ('00 16  *   *   6', 'ext_news.cron.CronMailing'),
   ('00 16  *   *   6', 'ext_news.cron.CronParse')
 ]
@@ -272,10 +272,9 @@ def setup_logger(config=None):
     if config == None:
         logger=logging.basicConfig(**LOGGER)  # TODO: config from LOGGING
     else:
-        logger=logging.config.dictConfig(config) 
+        logger=logging.config.dictConfig(config)
     return logger
 
 LOG = setup_logger()
 
 SITE_ID = 2
-

@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from authentication.permissions import * 
+from utils.permissions import *
 from authentication.models import StdUser
 
 
@@ -21,7 +21,7 @@ def permission(permission):
                 return Response({'Status': 'User has no permissions'})
         return p
     return perm
- 
+
 
 # decorator for owner
 def object_permission(permission):

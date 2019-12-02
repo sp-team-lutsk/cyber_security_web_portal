@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from authentication.permissions import (IsAdminUser, AllowAny)
+from utils.permissions import (IsAdminUser, AllowAny)
 
 from authentication.models import StdUser
 from ext_news.models import News
@@ -26,7 +26,7 @@ class SendMailAPIView(APIView):
     serializer_class = SendMailSerializer
     permission_classes = [AllowAny]
     queryset = User.objects.none()
-   
+
     @permission("IsModeratorUser")
     def post(self, request,*args,**kwargs):
         serializer = SendMailSerializer(data=request.data)
@@ -45,14 +45,14 @@ class MailingAPIView(APIView):
     def get(self, request, **extra_kwargs):
         queryset = self.queryset
         for user in queryset.iterator():
-            news_mailing(data=user)  
+            news_mailing(data=user)
         return Response({'Status': 'OK'}, status=status.HTTP_200_OK)
 
 
 class ModeratorMailAPIView(APIView):
     permission_classes = [AllowAny, ]
     queryset = User.objects.none()
-    
+
     @permission("IsModeratorUser")
     def post(self, request, *args, **kwargs):
         self.serializer_class = MassMailSerializer
@@ -80,7 +80,7 @@ def MassMailing(obj):
 
     for user in users:
         send_mail(email=user.email,
-                  subject=obj.get('subject'), 
+                  subject=obj.get('subject'),
                   body=obj.get('body'))
     return None
 
@@ -94,11 +94,11 @@ def news_subscription():
 
 def news_mailing(data):
     queryset = list(News.objects.all()[:3])
-    context = {'user': data.email, 
+    context = {'user': data.email,
                'data': queryset,
                }
     msg = EmailMessage(subject='Новини за тиждень',
-                       body=render_to_string('/utils/mail/news_mail.html', context), 
+                       body=render_to_string('/utils/mail/news_mail.html', context),
                        to=[data.email])
     msg.content_subtype = 'html'
     msg.send()
@@ -106,8 +106,8 @@ def news_mailing(data):
 
 def send_mail(email, subject, body):
     context = {'body': body,
-               'user': StdUser.objects.get(email=email), 
-               'subject': subject, 
+               'user': StdUser.objects.get(email=email),
+               'subject': subject,
                }
     msg = EmailMessage(subject=subject,
             body=render_to_string('utils/mail/single_mail.html', context),
