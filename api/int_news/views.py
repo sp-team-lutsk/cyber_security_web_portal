@@ -7,7 +7,7 @@ from int_news.serializers import NewsIntSerializer
 from int_news.models import NewsInt
 from utils.decorators import permission, permissions
 from ext_news.serializers import SetNewsSerializer
-from authentication.permissions import AllowAny
+from utils.permissions import AllowAny
 
 
 class PostUpdInt(APIView):
