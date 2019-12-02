@@ -10,24 +10,6 @@ from ext_news.serializers import SetNewsSerializer
 from authentication.permissions import AllowAny
 
 
-class PostInt(CreateAPIView):
-    permission_classes = [AllowAny, ]
-    serializer_class = NewsIntSerializer
-    queryset = NewsInt.objects.all()
-
-    def get(self, request):
-        list = NewsInt.objects.all()
-        serializer = NewsIntSerializer(list, many=True)
-        return Response(serializer.data)
-
-    def post(self, request, *args, **kwargs):
-        serializer = NewsIntSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class PostUpdInt(APIView):
     permission_classes = [AllowAny, ]
     serializer_class = NewsIntSerializer
@@ -56,7 +38,7 @@ class PostUpdInt(APIView):
     def delete(self, request, id):
         news = self.get_object(id)
         news.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'status': 'ok'}, status=status.HTTP_200_OK)
 
 
 class News_Bulk(APIView):
@@ -65,9 +47,9 @@ class News_Bulk(APIView):
     queryset = NewsInt.objects.none()
 
     def get(self, request, *args, **kwargs):
-        self.queryset = NewsInt.objects.all()
-        return self.list(request, *args, **kwargs)
-
+        news = NewsInt.objects.all()
+        serializer = NewsIntSerializer(news, many=True)
+        return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
         self.serializer_class = NewsIntSerializer
@@ -75,7 +57,7 @@ class News_Bulk(APIView):
         serializer.is_valid(raise_exception=True)
         news_saved = serializer.save()
         return Response(
-            data={"success": "News '{}' created successfully".format(str(news_saved))},
+            data={"success": "News '{}' created successfully".format((news_saved))},
             status=status.HTTP_201_CREATED)
 
 
@@ -86,17 +68,13 @@ class News_Bulk(APIView):
             serializer = NewsIntSerializer(nev, data=request.data)
             if serializer.is_valid():
                 serializer.save()
+
         return Response(data={"200": "OK"}, status=status.HTTP_200_OK)
 
-
-    def delete(self, request, *args, **kwargs):
-        self.queryset = NewsInt.objects.all()
-        self.serializer_class = NewsIntSerializer
-        q = list(self.queryset)
-        for u in q:
-            serializer = self.serializer_class(request.user, data=request.data)
-            serializer.delete(u)
-        return Response({'Status': 'OK'}, status=status.HTTP_200_OK)
+    def delete(self, request,):
+        news = NewsInt.objects.all()
+        news.delete()
+        return Response({'Status': 'OK'},status=status.HTTP_200_OK)
 
 
 class ModeratorCheckNewsAPIView(APIView):
