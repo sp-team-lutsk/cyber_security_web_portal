@@ -134,8 +134,7 @@ class TestAdminPermsAPIViews(APITestCase):
         
         nt.assert_equal(response.data, NO_SUCH_PERM)
     
-    """
-    Test get one teacher
+    """ Test get one teacher """
     def test_get_one_teacher(self):
         url = reverse('teacher', args=[self.teacher.id])
         
@@ -144,7 +143,15 @@ class TestAdminPermsAPIViews(APITestCase):
         
         nt.assert_equal(serializer.data, response.data)
         nt.assert_equal(response.status_code, status.HTTP_200_OK)
-    """
+
+    """ Test get one teacher which not exist """
+    def test_get_one_teacher_which_not_exist(self):
+        url = reverse('teacher', args=[BAD_USER_ID])
+        
+        response = self.client.get(url)
+        
+        nt.assert_equal(response.status_code, status.HTTP_404_NOT_FOUND)
+
 
 """ Test moderator access to api """
 class TestModerPermsAPIViews(TestAdminPermsAPIViews):
@@ -207,6 +214,14 @@ class TestModerPermsAPIViews(TestAdminPermsAPIViews):
         
         nt.assert_equal(response.status_code, status.HTTP_200_OK)
 
+    """ Not allowed """
+    def test_post_one_teacher(self):
+        url = reverse('teacher', args=[self.teacher.id])
+
+        response = self.client.post(url)
+
+        nt.assert_equal(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+     
 
 """ Tests active user access to api methonds """
 class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
@@ -286,6 +301,22 @@ class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
         
         nt.assert_equal(response.status_code, status.HTTP_200_OK)
 
+    """ No such perm """
+    def test_get_one_teacher(self):
+        url = reverse('teacher', args=[self.teacher.id])
+        
+        response = self.client.get(url)
+        
+        nt.assert_equal(response.data, NO_SUCH_PERM)
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ No such perm """
+    @raises(StdUser.DoesNotExist)
+    def test_get_one_teacher_which_not_exist(self):
+        url = reverse('teacher', args=[BAD_USER_ID])
+        
+        response = self.client.get(url)
+    
 
 """ Tests inactive users access to api methods """
 class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
@@ -349,6 +380,13 @@ class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
     def test_get_one_teacher(self):
         self.get_token()
         super.test_get_one_teacher()
+
+    """ Must be active """
+    @raises(KeyError)
+    def test_get_one_teacher_which_not_exist(self):
+        self.get_token()
+        super.test_get_one_teacher_which_not_exist()
+
 
 """ Tests API of all user list """
 class TestJWTToken(APITestCase):

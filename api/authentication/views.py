@@ -27,8 +27,7 @@ from authentication.serializers import (
     UpdateStudentSerializer,
     BulkUpdateStudentSerializer,
     SetModeratorSerializer,
-    NewsSubscriptionSerializer,
-    )
+    NewsSubscriptionSerializer,)
 
 from authentication.permissions import AllowAny
 from authentication.models import StdUser, Student, Teacher
@@ -128,16 +127,18 @@ class TeacherAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
 
     @permissions(["IsStaffUser", "IsUser"])
     def get(self, request, *args, **kwargs):
-        number = kwargs.get('id')
-        queryset = User.objects.filter(id=number, is_teacher=True)
-        if queryset:
-            serializer = self.get_serializer(queryset, many=True)
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        number = args[0].get('id')
+        try:
+            queryset = User.objects.get(id=number, is_teacher=True)
+            if queryset:
+                serializer = self.get_serializer(queryset)
+                return Response(data=serializer.data, status=status.HTTP_200_OK)
+        except StdUser.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
      
     @permissions(["IsModeratorUser", "IsUser"])
     def post(self, request, *args, **kwargs):
-        return Response({'Status': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     @permissions(["IsModeratorUser", "IsUser"])
     def put(self, request, *args, **kwargs):
