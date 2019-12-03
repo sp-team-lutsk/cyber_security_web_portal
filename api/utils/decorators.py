@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from authentication.permissions import (IsAuthenticated,
+from utils.permissions import (IsAuthenticated,
                                         IsAdminUser,
                                         IsModeratorUser,
                                         IsStaffUser,
@@ -25,7 +25,7 @@ def permission(permission):
                 return Response({'Status': 'User has no permissions'})
         return p
     return perm
- 
+
 
 # decorator for owner
 def object_permission(permission):

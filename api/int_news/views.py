@@ -2,7 +2,6 @@ from rest_framework import status
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
 from int_news.serializers import NewsIntSerializer
 from int_news.models import NewsInt
 from utils.decorators import permission, permissions
@@ -22,12 +21,12 @@ class PostUpdInt(APIView):
         except NewsInt.DoesNotExist:
             raise Http404
 
-    def get(self, request, id):
+    def get(self, request, id,*args, **kwargs):
         news = self.get_object(id)
         serializer = NewsIntSerializer(news)
         return Response(serializer.data)
 
-    def put(self, request, id):
+    def put(self, request, id,*args, **kwargs):
         news = self.get_object(id)
         serializer = NewsIntSerializer(news, data=request.data)
         if serializer.is_valid():
@@ -35,7 +34,7 @@ class PostUpdInt(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id):
+    def delete(self, request, id,*args, **kwargs):
         news = self.get_object(id)
         news.delete()
         return Response({'status': 'ok'}, status=status.HTTP_200_OK)
@@ -71,7 +70,7 @@ class News_Bulk(APIView):
 
         return Response(data={"200": "OK"}, status=status.HTTP_200_OK)
 
-    def delete(self, request,):
+    def delete(self, request, *args, **kwargs):
         news = NewsInt.objects.all()
         news.delete()
         return Response({'Status': 'OK'},status=status.HTTP_200_OK)
