@@ -7,9 +7,9 @@ docker exec -it dpg_api python manage.py shell -c "from authentication.models im
 
 docker exec -it dpg_api python manage.py shell -c "from authentication.models import StdUser; User=StdUser(); User.email='user@example.com'; User.set_password('Admin123!'); User.is_active=True; User.first_name='test_User'; User.save()"
 
-docker exec -it dpg_api python manage.py shell -c "from authentication.models import StdUser,Faculty,Profession; faculty=Faculty.objects.create(name='KNIT');profession=Profession.objects.create(name='cybersecurity');Teacher=StdUser();Teacher.create_teacher(email='teacher@example.com',password='Admin123!',faculty=Faculty.objects.get(name='KNIT'))"
+docker exec -it dpg_api python manage.py shell -c "from authentication.models import StdUser,Faculty,Profession; f=Faculty.objects.create(name='KNIT');p=Profession.objects.create(name='cybersecurity');StdUser.objects.create_teacher(email='teacher@example.com',password='Admin123!',faculty=f)" 
 
-docker exec -it dpg_api python manage.py shell -c "from authentication.models import StdUser,Profession,Faculty; Student=StdUser(); Student.create_student(email='student@example.com',password='Admin123!',profession=Profession.objects.get(name='cybersecurity'),faculty=Faculty.objects.get(name='KNIT')); "
+docker exec -it dpg_api python manage.py shell -c "from authentication.models import StdUser,Profession,Faculty; Student=StdUser; Student.objects.create_student(email='student@example.com',password='Admin123!',profession=Profession.objects.get(name='cybersecurity'),faculty=Faculty.objects.get(name='KNIT')) "
 
 for i in 1 2 3 4 5 
 do
