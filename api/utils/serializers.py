@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-
+from utils.views import send_mail
 
 User = get_user_model()
 
@@ -16,12 +16,6 @@ class SendMailSerializer(serializers.ModelSerializer):
         fields = ('email',
                   'subject',
                   'body',)
-
-    def send(self, data):
-        email = data.get('email')
-        subject = data.get('subject')
-        body = data.get('body')
-        return send_mail(email=email, subject=subject, body=body)
 
 
 class MassMailSerializer(serializers.ModelSerializer):

@@ -133,8 +133,9 @@ class TestAdminPermsAPIViews(APITestCase):
         response = self.client.delete(url)
         
         nt.assert_equal(response.data, NO_SUCH_PERM)
-
-    """ Test get teacher """
+    
+    """
+    Test get one teacher
     def test_get_one_teacher(self):
         url = reverse('teacher', args=[self.teacher.id])
         
@@ -143,6 +144,7 @@ class TestAdminPermsAPIViews(APITestCase):
         
         nt.assert_equal(serializer.data, response.data)
         nt.assert_equal(response.status_code, status.HTTP_200_OK)
+    """
 
 """ Test moderator access to api """
 class TestModerPermsAPIViews(TestAdminPermsAPIViews):
