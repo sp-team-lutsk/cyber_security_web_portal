@@ -1,5 +1,9 @@
 from rest_framework.response import Response
-from authentication.permissions import * 
+from authentication.permissions import (IsAuthenticated,
+                                        IsAdminUser,
+                                        IsModeratorUser,
+                                        IsStaffUser,
+                                        IsUser) 
 from authentication.models import StdUser
 
 
