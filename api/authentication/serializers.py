@@ -256,11 +256,9 @@ class CreateTeacherSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-
         validate_password(password=validated_data.get('password',), user=validated_data.get('email'), password_validators=None)
-        
         email = validated_data.get('email')
-        user = User.objects.create_teacher(**validated_data) 
+        user = User.objects.create_teacher(**validated_data)
         user.send_mail(email=email)
         return user
 

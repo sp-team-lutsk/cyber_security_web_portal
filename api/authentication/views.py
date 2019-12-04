@@ -32,7 +32,7 @@ from authentication.serializers import (
     NewsSubscriptionSerializer,
     )
 
-from authentication.models import StdUser, Student, Teacher
+from authentication.models import StdUser, Student, Teacher, Faculty
 
 from utils.decorators import permission, permissions
 from utils.views import get_user,send_mail
@@ -177,16 +177,15 @@ class TeachersAPIView(ListAPIView):
         self.queryset = Teacher.objects.all()
         return self.list(request, *args, **kwargs)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         self.serializer_class = CreateTeacherSerializer
         serializer = self.serializer_class(data=request.data)
-       
-        serializer.is_valid(raise_exception=True)
-        user_saved = serializer.save()
-        
+        user = StdUser.objects.create_teacher(email=request.data.get('email'),
+                                       password=request.data.get('password'),
+                                       faculty=Faculty.objects.get(name = request.data.get('faculty')))
         return Response(
-                data={"success": "User '{}' created successfully".format(str(user_saved))},
-                status=status.HTTP_201_CREATED)
+            data={"success": "User '{}' created successfully".format(str(user))},
+            status=status.HTTP_201_CREATED)
     
     @permission("IsModeratorUser")
     def put(self, request, *args, **kwargs):
