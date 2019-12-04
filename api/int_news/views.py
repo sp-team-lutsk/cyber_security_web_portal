@@ -7,7 +7,7 @@ from int_news.models import NewsInt
 from utils.decorators import permission, permissions
 from ext_news.serializers import SetNewsSerializer
 from utils.permissions import AllowAny
-
+from utils.views import get_int_news
 
 class PostUpdInt(APIView):
     permission_classes = [AllowAny, ]
@@ -15,19 +15,13 @@ class PostUpdInt(APIView):
     queryset = NewsInt.objects.all()
     lookup_field = 'id'
 
-    def get_object(self, id):
-        try:
-            return NewsInt.objects.get(id=id)
-        except NewsInt.DoesNotExist:
-            raise Http404
-
     def get(self, request, id,*args, **kwargs):
-        news = self.get_object(id)
+        news = get_int_news(id)
         serializer = NewsIntSerializer(news)
         return Response(serializer.data)
 
     def put(self, request, id,*args, **kwargs):
-        news = self.get_object(id)
+        news = get_int_news(id)
         serializer = NewsIntSerializer(news, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -35,7 +29,7 @@ class PostUpdInt(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id,*args, **kwargs):
-        news = self.get_object(id)
+        news = self.get_int_news(id)
         news.delete()
         return Response({'status': 'ok'}, status=status.HTTP_200_OK)
 

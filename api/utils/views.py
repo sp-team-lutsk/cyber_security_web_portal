@@ -19,6 +19,30 @@ from utils.decorators import permission
 User = get_user_model()
 
 
+"""
+get_ functions for raise DoesNotExist error
+"""
+def get_user(arg):
+    try:
+        return StdUser.objects.get(id=arg)
+    except ValueError: 
+        return StdUser.objects.get(email=arg)
+    except DoesNotExist:
+        return Response(data={"User":"DoesNotExist"},status=status.HTTP_404_NOT_FOUND)
+
+def get_ext_news(arg):
+    try:
+        return News.objects.get(id=arg)
+    except News.DoesNotExist:
+        return Response(data={"Ext News":"DoesNotExist"},status=status.HTTP_404_NOT_FOUND)
+
+def get_int_news(arg):
+    try:
+        return NewsInt.objects.get(id=arg)
+    except NewsInt.DoesNotExist:
+        return Response(data={"Int News":"DoesNotExist"},status=status.HTTP_404_NOT_FOUND)
+
+
 class SendMailAPIView(APIView):
     """
     Send mail from admin to user
@@ -30,12 +54,11 @@ class SendMailAPIView(APIView):
     @permission("IsModeratorUser")
     def post(self, request,*args,**kwargs):
         serializer = SendMailSerializer(data=request.data)
-        user = User.objects.get(email=request.data.get('email'))
-        if user is not None:
-            send_mail(email=request.data.get('email'),
-                      subject=request.data.get('subject'),
-                      body=request.data.get('body'))
-            return Response({'Status': 'Mail Send'}, status=status.HTTP_200_OK)
+        user = get_user(request.data.get('email'))
+        send_mail(email=request.data.get('email'),
+                  subject=request.data.get('subject'),
+                  body=request.data.get('body'))
+        return Response({'Status': 'Mail Send'}, status=status.HTTP_200_OK)
 
 
 class MailingAPIView(APIView):
@@ -106,7 +129,7 @@ def news_mailing(data):
 
 def send_mail(email, subject, body):
     context = {'body': body,
-               'user': StdUser.objects.get(email=email),
+               'user': get_user(email),
                'subject': subject,
                }
     msg = EmailMessage(subject=subject,
@@ -114,3 +137,6 @@ def send_mail(email, subject, body):
                        to=[email])
     msg.content_subtype = 'html'
     msg.send()
+
+
+

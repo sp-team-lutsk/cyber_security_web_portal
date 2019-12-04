@@ -35,7 +35,7 @@ from authentication.serializers import (
 from authentication.models import StdUser, Student, Teacher
 
 from utils.decorators import permission, permissions
-from utils.views import send_mail
+from utils.views import get_user,send_mail
 
 User = get_user_model()
 
@@ -362,7 +362,7 @@ class SetModeratorAPIView(APIView):
     @permission('IsAdminUser') 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        user = User.objects.get(id=request.data.get('id'))
+        user = get_user(id=request.data.get('id'))
         set_check = request.data.get('is_moderator')
         user.is_moderator = set_check
         user.save()
@@ -394,7 +394,7 @@ class AdminUserAPIView(APIView):
     def delete(self, request, *args, **kwargs):
         self.serializer_class = SetModeratorSerializer
         serializer = SetModeratorSerializer(data=request.data)
-        queryset = User.objects.get(id=request.data.get('id'))
+        queryset = get_user(id=request.data.get('id'))
         user = queryset
         user.is_active = False
         user.save()
@@ -409,7 +409,7 @@ class BanUserAPIView(APIView):
     @permission("IsModeratorUser")
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        queryset = User.objects.get(id=request.data.get('id'))
+        queryset = get_user(id=request.data.get('id'))
         user = queryset
         user.is_active = False
         user.save()
@@ -423,12 +423,12 @@ class NewsSubscriptionAPIView(APIView):
 
     @permissions(["IsModeratorUser", "IsUser"],"args")
     def post(self, request, *args, **kwargs):
-        user = User.objects.get(id=request.data.get('id'))
+        user = get_user(id=request.data.get('id'))
         serializer = self.serializer_class(user, data=request.data)
         subscribe = request.data.get('news_subscription')
         user.news_subscription = subscribe
         user.save()
-        if StdUser.objects.get(id=request.data.get('id')).news_subscription == True:
+        if get_user(id=request.data.get('id')).news_subscription == True:
             subs = 'підписалися на розсилку новин'
         else:
             subs = 'відписалися від розсилки новин'

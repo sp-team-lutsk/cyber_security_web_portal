@@ -8,6 +8,7 @@ from utils.permissions import AllowAny
 from ext_news.serializers import NewsSerializer, SetNewsSerializer
 from ext_news.models import News
 from utils.decorators import permission
+from utils.views import get_ext_news
 
 class Post(ListCreateAPIView):
     queryset = News.objects.all()
@@ -20,19 +21,13 @@ class PostUpd(APIView):
     permission_classes = [AllowAny, ]
     serializer_class = NewsSerializer
 
-    def get_object(self, id):
-        try:
-            return News.objects.get(id=id)
-        except News.DoesNotExist:
-            raise Http404
-
     def get(self, request, id):
-        news = self.get_object(id)
+        news = get_ext_news(id)
         serializer = NewsSerializer(news)
         return Response(serializer.data)
 
     def put(self, request, id):
-        news = self.get_object(id)
+        news = get_ext_news(id)
         serializer = NewsSerializer(news, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -40,7 +35,7 @@ class PostUpd(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id):
-        news = self.get_object(id)
+        news = get_ext_news(id)
         news.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -51,7 +46,7 @@ class ModeratorCheckNewsAPIView(APIView):
     
     @permission("IsModeratorUser")
     def post(self, request, *args, **kwargs):
-        news = News.objects.get(id=request.data.get('id'))
+        news = get_news(request.data.get('id'))
         serializer = self.serializer_class(news, data = request.data)
         check = request.data.get('is_checked')
         news.is_checked = check
