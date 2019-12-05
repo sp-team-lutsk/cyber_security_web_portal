@@ -42,13 +42,6 @@ class StdUserManager(UserManager):
         user.save(using=self._db)
         return user
     
-    def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_active', True)
-
-        return self._create_user(email, password, **extra_fields)
-
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_staff', True)
@@ -72,9 +65,10 @@ class StdUserManager(UserManager):
 
         return self._create_user(email, password, **extra_fields)
 
-    def create_student(self, email, profession, faculty, password=None):
+    def create_student(self, email, profession, faculty, password=None): 
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError("Email must be set")
+
 
         user = self.model(
             email=self.normalize_email(email),
@@ -100,7 +94,7 @@ class StdUserManager(UserManager):
 
     def create_teacher(self, email, faculty, password=None):
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError("Email must be set")
 
         user = self.model(
             email=self.normalize_email(email),
@@ -139,7 +133,7 @@ class StdUser(AbstractUser):
     patronymic = models.CharField(max_length=64, blank=True, default="")  # Ivanovych
     avatar = models.ImageField(upload_to='static/media/', blank=True, max_length=1000)  # select image
     bio = models.CharField(max_length=512, blank=True, default="")
-    date_of_birth = models.DateField(default=timezone.now)
+    date_of_birth = models.DateTimeField(default=timezone.now)
     gender = models.CharField(max_length=64, blank=True, default="man") # Man/Wpman
     
     news_subscription = models.BooleanField(default=True)
@@ -170,10 +164,6 @@ class StdUser(AbstractUser):
         short_name = "%s" % self.first_name
         return short_name.strip()
 
-    def get_avatar(self):
-        """ Returns avatar (use Pillow) """
-        pass
-
     def get_verification_code(self, email):
         # verification token 
         signer = TimestampSigner()
@@ -194,6 +184,7 @@ class StdUser(AbstractUser):
                 user.is_active = True
                 user.code = "None code"
                 user.save()
+                
                 return True, ('Your account has been activated.')  
             except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError):
                 raise ValueError('Error')
@@ -218,7 +209,7 @@ class StdUser(AbstractUser):
                 user.code = 'None code'
                 user.save()
                 return True
-            except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError):
+            except (BadSignature, AttributeError, StdUser.DoesNotExist, TypeError, UnicodeDecodeError):
                 raise ValueError('Error')
             return False, ('Activation link is incorrect, please resend request')
         else:
@@ -264,10 +255,6 @@ class Student(models.Model):
     profession = models.ForeignKey('Profession', on_delete=models.SET_DEFAULT, default="")
     faculty = models.ForeignKey("Faculty", on_delete=models.SET_DEFAULT, default="")
     acad_group = models.CharField(max_length=256, choices=ACAD_GROUPS_CHOICES, default="")  
-
-    def __str__(self):
-        return self.user.email
-
     class Meta:
         permissions = [('write_to_teacher', 'Писати викладачу'),]
 
@@ -275,9 +262,6 @@ class Student(models.Model):
 class Teacher(models.Model):
     user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
     faculty = models.ForeignKey("Faculty", on_delete=models.SET_DEFAULT, default="")
-
-    def __str__(self):
-        return self.user.email
 
     class Meta:
         permissions = [('add_post', 'Створити пост'),
@@ -287,12 +271,8 @@ class Teacher(models.Model):
 
 
 class Profession(Group):
-    
-    def __str__(self):
-        return self.name
+    pass
 
 
 class Faculty(Group):
-    
-    def __str__(self):
-        return self.name
+    pass

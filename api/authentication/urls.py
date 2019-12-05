@@ -25,12 +25,12 @@ from utils.views import SendMailAPIView, ModeratorMailAPIView
 urlpatterns = [
     
     # user api
-    path('users/', UsersAPIView.as_view(), name='register'),   
+    path('users/', UsersAPIView.as_view(), name='users_list'),   
     path('users/<int:id>/', UserAPIView.as_view(), name='user'),
-    path('users/token_obtain/', token_obtain_pair, name='login'),    
+    path('users/token_obtain/', token_obtain_pair, name='obtain_jwt'),    
     path('users/inactive/', UserInactiveAPIView.as_view(), name='account_inactive'),
     path('users/recover_pass/', RecoveryAPIView.as_view(), name='recover'),
-    path('users/token_refresh/', token_refresh, name='refresh'),
+    path('users/token_refresh/', token_refresh, name='refresh_jwt'),
     path('users/verify/<str:code>/', VerifyUserAPIView.as_view(), name='verify'),
     path('users/recovery/<str:code>/', VerifyPassUserAPIView.as_view(), name='completerecover'),
     path('users/send_mail/', SendMailAPIView.as_view(), name='send_mail'),

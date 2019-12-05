@@ -9,6 +9,3 @@ class News(models.Model):
     news_link = models.URLField(default="", blank=True)
     images_link = models.URLField(default="", blank=True)
     is_checked = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.title

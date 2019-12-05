@@ -15,7 +15,6 @@ def permission(permission):
     def perm(func):
         def p(request, args, **kwargs):
             permis = P.get(permission)
-            print(args.user)
             if (permis.has_permission(StdUser.objects.get(email=args.user))) is True:
                 return func(request, args, kwargs)
             else:
