@@ -15,7 +15,7 @@ SECRET_KEY = '#-+2%cfp05=)8q*u1s2itkffi$i^@ir5@bv%!9g3irbfi_)2h5'
 DEBUG = True
 
 # Update in prod it
-ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1', 'sp-lutsk.com']
+ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1', 'sp-lutsk.com', 'testserver']
 
 # Application definition
 INSTALLED_APPS = [
@@ -123,6 +123,9 @@ DATABASES = {
         'PASSWORD': 'Admin123!',
         'HOST': 'postgresql',    # if you use docker you should specify  'HOST': 'postgresql', but if it is locally 'HOST': '127.0.0.1'
         'PORT': '5432',
+        'TEST': {
+            'NAME': 'test_database',
+        }
     }
 }
 
