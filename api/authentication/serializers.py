@@ -36,34 +36,34 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
 
-        validate_password(password=validated_data.get('password',), 
-                user=validated_data.get('email'), 
+        validate_password(password=validated_data.get('password',),
+                user=validated_data.get('email'),
                 password_validators=None)
-        
+
         email = validated_data.get('email');
-        user = User.objects.create_user(**validated_data, user_type=3) 
+        user = User.objects.create_user(**validated_data, user_type=3)
         user.send_mail(email=email)
         return user
 
 
 class RecoverySerializer(serializers.ModelSerializer):
     email = serializers.CharField(max_length=64)
-    
+
     class Meta(object):
         model = User
         fields = ('email',)
-        
+
     def post(self, data):
         email = data.get('email', None)
-                
+
         user = User.objects.filter(Q(email=email)).distinct()
-                                 
+
         if user.exists() and user.count() == 1:
-            user_obj = user.first()                                
+            user_obj = user.first()
             user_obj.send_recovery_password(email=email)
         else:
             raise serializers.ValidationError("This email is not valid")
-        
+
         if user_obj:
             if not user_obj.is_active:
                 raise serializers.ValidationError("User not active")
@@ -82,7 +82,7 @@ class VerifyUserPassSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
         fields = ('code', 'password',)
-    
+
     def post(self, data, code):
         user = User.objects.get(code=code)
 
@@ -96,7 +96,7 @@ class DeleteUserSerializer(serializers.ModelSerializer):
     def delete(self, request, pk=None, **kwargs):
         request.user.is_active = False
         request.user.save()
-        
+
         return Response(status=204)
 
 
@@ -119,7 +119,7 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Student
         fields = (
-            'user', 
+            'user',
             'faculty',
             'profession',
             'acad_group',
@@ -127,7 +127,7 @@ class StudentSerializer(serializers.ModelSerializer):
 
 
 class FindUserSerializer(serializers.ModelSerializer):
-    date_joined = serializers.ReadOnlyField() 
+    date_joined = serializers.ReadOnlyField()
     email = serializers.ReadOnlyField()
     student = StudentSerializer(many=False, read_only=True)
     teacher = TeacherSerializer(many=False, read_only=True)
@@ -143,10 +143,10 @@ class FindUserSerializer(serializers.ModelSerializer):
                 'bio',
                 'avatar',
                 'date_of_birth',
-            
+
                 'date_joined',
                 'last_update',
-            
+
                 'news_subscription',
                 'is_moderator',
                 'is_active',
@@ -157,7 +157,7 @@ class FindUserSerializer(serializers.ModelSerializer):
                 'student',
                 'teacher',
             )
- 
+
 
 class UserSerializer(serializers.ModelSerializer):
     date_of_birth = serializers.ReadOnlyField()
@@ -175,10 +175,10 @@ class UserSerializer(serializers.ModelSerializer):
             'bio',
             'avatar',
             'date_of_birth',
-            
+
             'date_joined',
             'last_update',
-            
+
             'news_subscription',
             'is_active',
             'is_admin',
@@ -196,7 +196,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UpdateUserSerializer(serializers.ModelSerializer):
-   
+
     class Meta(object):
         model = User
         fields = (
@@ -223,7 +223,7 @@ class BulkUpdateUserSerializer(serializers.ModelSerializer):
 
 
 class DeleteAllSerializer(serializers.ModelSerializer):
-    
+
     class Meta(object):
         model = User
         fields = ('email',
@@ -244,7 +244,7 @@ class CreateTeacherSerializer(serializers.ModelSerializer):
 
 
 class UpdateTeacherSerializer(serializers.ModelSerializer):
-   
+
     class Meta(object):
         model = Teacher
         fields = (
@@ -276,10 +276,7 @@ class CreateStudentSerializer(serializers.ModelSerializer):
 
 
 class UpdateStudentSerializer(serializers.ModelSerializer):
-    faculty = serializers.CharField(max_length=128)
-    profession = serializers.CharField(max_length=128)
-    acad_group = serializers.CharField(max_length=128)
-    
+
     class Meta(object):
         model = Student
         fields = (
@@ -289,17 +286,14 @@ class UpdateStudentSerializer(serializers.ModelSerializer):
 
 
 class BulkUpdateStudentSerializer(serializers.ModelSerializer):
-    faculty = serializers.CharField(max_length=128)
-    profession = serializers.CharField(max_length=128)
-    acad_group = serializers.CharField(max_length=128)
-    
+
     class Meta(object):
         model = Student
         fields = (
                 'faculty',
                 'profession',
                 'acad_group',)
- 
+
 
 class SetModeratorSerializer(serializers.ModelSerializer):
 
@@ -315,4 +309,3 @@ class NewsSubscriptionSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'id', 'news_subscription',)
-
