@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faNewspaper, faGraduationCap, faEdit, faChalkboardTeacher, faBlog } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-students',
@@ -9,6 +9,11 @@ import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 export class StudentsComponent implements OnInit {
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
+  faNewspaper = faNewspaper;
+  faGraduationCap = faGraduationCap;
+  faEdit = faEdit;
+  faChalkboardTeacher = faChalkboardTeacher;
+  faBlog = faBlog;
 
   constructor() { }
 

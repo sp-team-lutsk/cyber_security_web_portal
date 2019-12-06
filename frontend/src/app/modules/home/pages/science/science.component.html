@@ -1,32 +1,5 @@
+<app-header></app-header>
 <div class="header">
-  <nav class="navbar navbar-expand-md navbar-dark position">
-    <a class="navbar-brand" routerLink="/"><img class="logo_img" src="" alt="=("></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbar1" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbar1">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item Otstup">
-          <a class="nav__link text-2" href="#"><img src="" alt=")"></a>
-          <a class="nav__link text-2" href="#"><img src="" alt=")"></a>
-        </li>
-        <li class="nav-item Otstup">
-          <a class="nav__link text-2" href="#">Реєстрація <span class="sr-only">(current)</span></a>
-          <a class="nav__link text-2" href="#">Вхід</a>
-        </li>
-      </ul>
-      <div class="input-group col-md-3 mx-xs-auto">
-        <label for="example-search-input"></label><input class="form-control py-2 border-right-0 border" type="" value="" id="example-search-input">
-        <span class="input-group-append">
-                  <button class="btn border-left-0 border QQQ" type="button">
-                    <i class="fa fa-search"><img src="" alt=")"></i>
-                  </button>
-                </span>
-      </div>
-    </div>
-  </nav>
-
   <div class="dvs dvs-1">
     <div class="col"></div>
     <div class="col">
@@ -54,15 +27,15 @@
 
 <div class="body">
   <div class="control_panel">
-    <a href=""><img src="" alt="(">Статистика</a>
-    <a href=""><img src="" alt="(">Навчальні матеріали</a>
+    <a href=""><li><fa-icon [icon]="faChartLine" class="faChartLine icon-footer"></fa-icon></li>Статистика</a>
+    <a href=""><li><fa-icon [icon]="faEdit" class="faEdit icon-footer"></fa-icon></li>Навчальні матеріали</a>
   </div>
 
   <div class="statistic_block">
-    <p><img src="" alt="(">Статистика</p>
+    <p><li><fa-icon [icon]="faChartLine" class="faChartLine icon"></fa-icon></li>Статистика</p>
   </div>
   <div class="educational_materials">
-    <p><img src="" alt="(">Навчальні матеріали</p>
+    <p><li><fa-icon [icon]="faEdit" class="faEdit icon"></fa-icon></li>Навчальні матеріали</p>
   </div>
 
   <div class="content_materials">
@@ -82,3 +55,5 @@
     <button>Пошук</button>
   </div>
 </div>
+
+<app-footer></app-footer>

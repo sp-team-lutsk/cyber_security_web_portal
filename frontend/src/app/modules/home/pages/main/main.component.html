@@ -1,8 +1,38 @@
 <app-header></app-header>
+<div style="
+    background: url(assets/img/img1.jpg);
+    background-size: cover;
+    padding-top: 100px;">
+<div class="dvs dvs-1">
+      <div class="col"></div>
+      <div class="col">
+        <a class="butt" routerLink="/">головна</a>
+        <a class="butt" routerLink="students">студенту</a>
+        <a class="butt" routerLink="science">наука</a>
+        <a class="butt" routerLink="about">про нас</a></div>
+      <div class="col"></div>
+    </div>
+
+    <div class="HOUSE">
+       <li><fa-icon [icon]="faUniversity" class="faUniversity icon-header"></fa-icon></li>
+    </div>
+
+    <div class="text-1">
+      <div class="col"><p>ЛУЦЬКИЙ НАЦІОНАЛЬНИЙ ТЕХНІЧНИЙ УНІВЕРСИТЕТ</p></div>
+      <div class="w-100"></div>
+      <div class="col"><p>Кафедра комп'ютерної інженерії та кібербезпеки</p></div>
+
+    <div class="row justify-content-center no-gutters IMAGES">
+      <div class="col-auto"><p><img class="Images-1" src="assets/img/img3.jpg" alt="=("></p></div>
+      <div class="col-auto"><p><img class="Images-2" src="assets/img/img2.jpg" alt="=("></p></div>
+      <div class="col-auto"><p><img class="Images-3" src="assets/img/img4.jpg" alt="=("></p></div>
+    </div>
+  </div>
+</div>
 <div class="body">
   <div class="row blok-1">
-    <div class="col-md-1 col-6 outer">
-      <img class="image-1" src="assets/icon/img16.jpg" alt="(">
+    <div class="col-md-1 col-6 icon-position">
+        <li><fa-icon [icon]="faGraduationCap" class="faGraduationCap icon"></fa-icon></li>
     </div>
     <div class="col-md-4 col-6 outer-2">
       <p class="text-1">КАФЕДРА КОМП'ЮТЕРНОЇ
@@ -130,3 +160,4 @@
     </div>
   </div>
 </div>
+<app-footer></app-footer>

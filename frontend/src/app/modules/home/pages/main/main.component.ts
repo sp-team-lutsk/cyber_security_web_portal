@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { faGraduationCap, faUniversity } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-main',
@@ -7,6 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
+  faGraduationCap = faGraduationCap;
+  faUniversity = faUniversity;
+ // faAngleUp = faAngleUp;
+ // faAngleUp = faAngleUp;
+ // faAngleUp = faAngleUp;
+ // faAngleUp = faAngleUp;
+  
   constructor() { }
 
   ngOnInit() {
