@@ -10,6 +10,7 @@ from utils.permissions import (IsAdminUser, AllowAny)
 
 from authentication.models import StdUser
 from ext_news.models import News
+from int_news.models import NewsInt
 from utils.serializers import (
     SendMailSerializer,
     MassMailSerializer,

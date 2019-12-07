@@ -28,8 +28,8 @@ class PostUpdInt(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id,*args, **kwargs):
-        news = self.get_int_news(id)
+    def delete(self, request, id):
+        news = get_int_news(id)
         news.delete()
         return Response({'status': 'ok'}, status=status.HTTP_200_OK)
 
