@@ -10,11 +10,6 @@ from ext_news.models import News
 from utils.decorators import permission
 from utils.views import get_ext_news
 
-"""class Post(ListCreateAPIView):
-    queryset = News.objects.all()
-    permission_classes = [AllowAny, ]
-    serializer_class = NewsSerializer"""
-
 
 class PostUpd(APIView):
     queryset = News.objects.all()
@@ -74,7 +69,6 @@ class News_Bulk(APIView):
         news = News.objects.all()
         news.delete()
         return Response({'Status': 'OK'}, status = status.HTTP_200_OK)
-
 
 
 class ModeratorCheckNewsAPIView(APIView):

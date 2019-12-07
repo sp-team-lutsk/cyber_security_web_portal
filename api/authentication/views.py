@@ -391,12 +391,11 @@ class AdminUserAPIView(APIView):
         user.is_active = True
         password = request.data.get('password')
         user.set_password(password)
-        user.save()
         serializer.is_valid(raise_exception=True)
-
+        user.save()
         return Response(
-                data={"success": "User '{}' created successfully".format(str(request.data.get('email')))},
-                status=status.HTTP_201_CREATED)
+                    data={"success": "User '{}' created successfully".format(str(request.data.get('email')))},
+                    status=status.HTTP_201_CREATED)
 
     @permission("IsAdminUser")
     def delete(self, request, *args, **kwargs):

@@ -3,7 +3,7 @@
 
 docker-compose up -d
 
-docker exec -it dpg_api python manage.py shell -c "from authentication.models import StdUser; Admin=StdUser(); Admin.email='admin@example.com'; Moderator.set_password('Admin123!'); Admin.is_active=True; Admin.is_admin=True; Admin.first_name='test_Admin'; Admin.save()"
+docker exec -it dpg_api python manage.py shell -c "from authentication.models import StdUser; Admin=StdUser(); Admin.email='admin@example.com'; Admin.set_password('Admin123!'); Admin.is_active=True; Admin.is_admin=True; Admin.first_name='test_Admin'; Admin.save()"
 
 docker exec -it dpg_api python manage.py shell -c "from authentication.models import StdUser; Moderator=StdUser(); Moderator.email='moderator@example.com'; Moderator.set_password('Admin123!'); Moderator.is_active=True; Moderator.is_moderator=True; Moderator.first_name='test_Moderator'; Moderator.save()"
 
