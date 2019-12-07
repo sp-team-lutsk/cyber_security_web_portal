@@ -10,18 +10,19 @@ from ext_news.models import News
 from utils.decorators import permission
 from utils.views import get_ext_news
 
-class Post(ListCreateAPIView):
+"""class Post(ListCreateAPIView):
     queryset = News.objects.all()
     permission_classes = [AllowAny, ]
-    serializer_class = NewsSerializer
+    serializer_class = NewsSerializer"""
 
 
 class PostUpd(APIView):
     queryset = News.objects.all()
     permission_classes = [AllowAny, ]
     serializer_class = NewsSerializer
+    lookup_field = 'id'
 
-    def get(self, request, id):
+    def get(self, request, id, *args, **kwargs):
         news = get_ext_news(id)
         serializer = NewsSerializer(news)
         return Response(serializer.data)
@@ -39,11 +40,49 @@ class PostUpd(APIView):
         news.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class News_Bulk(APIView):
+    permission_classes = [AllowAny, ]
+    serializer_class = NewsSerializer
+    queryset = News.objects.none()
+
+    def get(self, request, *args, **kwargs):
+        news = News.objects.all()
+        serializer = NewsSerializer(news, many = True)
+        return Response(serializer.data)
+
+
+    def post(self, request, *args, **kwargs):
+        self.serializer_class = NewsSerializer
+        serializer = self.serializer_class(data = request.data)
+        serializer.is_valid(raise_exception=True)
+        news_saved = serializer.save()
+        return Response(
+                        data={"success": "News '{}' created successfully".format((news_saved))},
+                        status = status.HTTP_201_CREATED)
+
+    def put(self, request, *args, **kwargs):
+        self.serializer_class = NewsSerializer
+        queryset = News.objects.all()
+        for new in list(queryset):
+            serializer = NewsSerializer(new, data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+        return Response(data = {'200': 'OK'}, status = status.HTTP_200_OK)
+
+
+    def delete(self, request, *args, **kwargs):
+        news = News.objects.all()
+        news.delete()
+        return Response({'Status': 'OK'}, status = status.HTTP_200_OK)
+
+
+
 class ModeratorCheckNewsAPIView(APIView):
     queryset = News.objects.none()
     permission_classes = [AllowAny, ]
     serializer_class = SetNewsSerializer
-    
+
+
     @permission("IsModeratorUser")
     def post(self, request, *args, **kwargs):
         news = get_news(request.data.get('id'))
