@@ -3,6 +3,7 @@ import brotli
 from .models import News
 from bs4 import BeautifulSoup
 
+
 headers = {"Host": "glavcom.ua",
            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0",
            "Accept": "text/css,*/*;q=0.1",
@@ -12,11 +13,13 @@ headers = {"Host": "glavcom.ua",
            "Connection": "keep-alive",
            "Cookie": "cfduid=d96a511dc113177453717c58ea2a775381566151570; xs=cec6ad7a6605ef7a5cb3dcb813cdb835; sa_userid=0; cbtYmTName=WSJ7MD17Y3toazg4Om84YThsO2s7bWw8eyQ4; 5183af98523bb467d9fc4781603dd09d=9abcd682a463cfd524eb5926652b4e83", }
 
+
 burl = "https://glavcom.ua/tags/ministerstvo-osviti-i-nauki.html"
 glavcom = "https://glavcom.ua/tags/ministerstvo-osviti-i-nauki/"
 pingvin = "https://pingvin.pro/category/gadgets/news-gadgets?"
 intnews = "https://www.itnews.com"
-########################################################################################################
+
+
 def get_html(url):
     req = urllib.request.Request(url, headers=headers)
     response = urllib.request.urlopen(req)
@@ -52,21 +55,23 @@ def parse(html):
 
     return projects
 
+
 def get_pages(html):
     soup = BeautifulSoup(html, 'html.parser')
 
     pages = soup.find_all('ul', class_='pagination').find_all('a')[-1].get('href')
 
-#######################################################################################################
 
 def get_html2(url):
     response = urllib.request.urlopen(url)
     return response.read()
 
+
 def get_page_count2(html):
     soup = BeautifulSoup(html, 'html.parser')
     paggination = soup.find('ul', class_='pagination')
     return int(paggination.find_all('li')[-2].text)
+
 
 def parse2(html):
     projects = []
@@ -98,16 +103,15 @@ def get_pages2(html):
 
     pages = soup.find_all('ul', class_='pagination').find_all('a',class_='page_numbers')[-1].get('href')
 
-########################################################################################################
 
 def get_html3(url):
     response = urllib.request.urlopen(url)
     return response.read()
 
+
 def parse3(html):
     projects = []
     soup = BeautifulSoup(html, 'html.parser')
-#################################################################
     body = soup.find('section', class_='bodee')
     first=body.find('div', class_='top-story')
     second=body.find('div', class_='item-info')
@@ -122,7 +126,6 @@ def parse3(html):
         'read_more': 'https://www.itnews.com'+third.find('a').get('href')
 
     })
-#################################################################
     all_news=body.find('div', class_='newsfeed news-col1')
     for new in all_news.find_all('div', class_='news-item'):
 
@@ -137,7 +140,6 @@ def parse3(html):
             'description': unic_bot,
             'read_more': unic_read
         })
-#################################################################
     main_second_col=body.find('div', class_='newsfeed news-col2')
     for second_col in  main_second_col.find_all('div', class_='news-item'):
         unic_im2 = second_col.find('figure').find('a').find('img').get('data-original')
@@ -151,9 +153,9 @@ def parse3(html):
             'description': unic_bot2,
             'read_more': unic_read2
         })
-#################################################################
 
     return projects
+
 
 def save(projects):
     for project in projects:

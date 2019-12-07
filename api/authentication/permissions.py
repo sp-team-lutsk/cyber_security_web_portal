@@ -1,5 +1,6 @@
 from rest_framework.permissions import BasePermission
 
+
 class AllowAny(BasePermission):
     """
     Allow any access.
@@ -8,8 +9,9 @@ class AllowAny(BasePermission):
     more explicit.
     """
 
-    def has_permission(self,request, view ):
+    def has_permission(self, request, view):
         return True
+
 
 class IsAuthenticated:
     """
@@ -19,6 +21,7 @@ class IsAuthenticated:
     def has_permission(user):
         return bool(user and user.is_authenticated)
 
+
 class IsAdminUser:
 
     def has_permission(user):
@@ -26,6 +29,7 @@ class IsAdminUser:
             return False
         else:
             return bool(user and user.is_admin)
+
 
 class IsStaffUser:
     
@@ -35,6 +39,7 @@ class IsStaffUser:
         else:
             return False
 
+
 class IsModeratorUser:
     """
     Allows access only to moderator users.
@@ -43,9 +48,10 @@ class IsModeratorUser:
     def has_permission(user):
         return bool(user and user.is_moderator)
 
+
 class IsUser:
 
-    def has_object_permission(user,obj):
+    def has_object_permission(user, obj):
         if (user.is_authenticated == True) and (user.id == obj.id):
             return True
         else:
