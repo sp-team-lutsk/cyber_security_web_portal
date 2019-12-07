@@ -103,13 +103,16 @@ Now you can find API docs in the same name dir in project's root
 | ---------------------------------------------------------- | ---------:|
 | <a href="https://github.com/Martinfree">Martinfree</a>     | Back-end  |
 | <a href="https://github.com/romaoksenyuk">romaoksenyuk</a> | Back-end  |
-| <a href="https://github.com/Green5tar">Green5tar</a>       | Parsing   |
+| <a href="https://github.com/Green5tar">Green5tar</a>       | Back-end  |
+| <a href="https://github.com/dzhyhalyuk">dzhyhalyuk</a>     | Back-end  |
 | <a href="https://github.com/joni2881">joni2881</a>         | Front-end |
+| <a href="https://github.com/Yuradovn">Yuradovn</a>         | Front-end |
 | <a href="https://github.com/vitalities">vitalities</a>     | Front-end |
 | <a href="https://github.com/Pavel1179">Pavel1179</a>       | Front-end |
+| <a href="https://github.com/vasya-ksm21">vasya-ksm21</a>   | Front-end |
 | <a href="https://github.com/Azrael-git">Azrael</a>         | PM        |
 | <a href="https://github.com/m-pasha">m-pasha</a>           | CEO       |
-| <a href="https://github.com/klekhaav">klekhaav</a>         | Boss      | 
+| <a href="https://github.com/klekhaav">klekhaav</a>         | CEO       | 
 
 ---
 
