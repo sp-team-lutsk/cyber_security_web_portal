@@ -401,7 +401,8 @@ class AdminUserAPIView(APIView):
     def delete(self, request, *args, **kwargs):
         self.serializer_class = SetModeratorSerializer
         serializer = SetModeratorSerializer(data=request.data)
-        queryset = get_user(id=request.data.get('id'))
+        id=request.data.get('id')
+        queryset = get_user(id)
         user = queryset
         user.is_active = False
         user.save()
