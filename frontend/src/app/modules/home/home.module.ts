@@ -8,6 +8,9 @@ import { AboutComponent } from './pages/about/about.component';
 import { MainComponent } from './pages/main/main.component';
 import { HomeRoutingModule } from './home-routing.module'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LogInComponent } from './components/modal-windows/log-in/log-in.component';
+import { RegistrationComponent } from './components/modal-windows/registration/registration.component';
+
 
 @NgModule({
   declarations: [
@@ -16,7 +19,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
       StudentsComponent, 
       ScienceComponent, 
       AboutComponent, 
-      MainComponent,
+      MainComponent, LogInComponent, RegistrationComponent,
   ],
   exports: [
     HeaderComponent,

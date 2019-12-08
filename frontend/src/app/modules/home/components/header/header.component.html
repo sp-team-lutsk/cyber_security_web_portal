@@ -1,1 +1,16 @@
-
+<div class="mainNav">
+  <div class="logo">
+    <img src="assets/img/l2-3.svg" alt="logo" class="imageLogo">
+  </div>
+  <label for="menu-checkbox" class="toggle-button" data-open="Menu" data-close="Close" onclick></label>
+  <nav role="navigation">
+  <label>
+    <input type="search" >
+    <span><li><fa-icon [icon]="faSearch" class="faSearch icon"></fa-icon></li></span>
+  </label>
+  <button id="regbutt" class="btn" (click)="toggle()">Реєстрація</button>
+  <button id="logbutt" class="btn" (click)="toggle()">Вхід</button>
+  <a href=""><img src="assets/icon/UKRAINE.png" alt="UA"></a>
+  <a href=""><img src="assets/icon/USA.png" alt="USA"></a>
+  </nav>
+</div>

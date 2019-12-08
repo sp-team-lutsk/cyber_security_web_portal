@@ -1,32 +1,5 @@
+<app-header></app-header>
 <div class="header">
-  <nav class="navbar navbar-expand-md navbar-dark position">
-    <a class="navbar-brand" routerLink="/"><img class="logo_img" src="" alt="=("></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbar1" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbar1">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item Otstup">
-          <a class="nav__link text-2" href="#"><img src="" alt="=("></a>
-          <a class="nav__link text-2" href="#"><img src="" alt="=("></a>
-        </li>
-        <li class="nav-item Otstup">
-          <a class="nav__link text-2" href="#">Реєстрація <span class="sr-only">(current)</span></a>
-          <a class="nav__link text-2" href="#">Вхід</a>
-        </li>
-      </ul>
-      <div class="input-group col-md-3 mx-xs-auto">
-        <label for="example-search-input"></label><input class="form-control py-2 border-right-0 border" type="" value="" id="example-search-input">
-        <span class="input-group-append">
-                  <button class="btn border-left-0 border QQQ" type="button">
-                    <i class="fa fa-search"><img src="" alt=""></i>
-                  </button>
-                </span>
-      </div>
-    </div>
-  </nav>
-
   <div class="dvs dvs-1">
     <div class="col"></div>
     <div class="col">
@@ -49,7 +22,7 @@
     </div>
 
     <div class="col-6 image1">
-      <img class="image-1-size" src="" alt="(">
+      <img class="image-1-size" src="assets/img/img18.jpg" alt="(">
     </div>
   </div>
 </div>
@@ -58,34 +31,34 @@
   <div class="row panel">
     <div class="col-12">
       <a routerLink="/students" class="my text1">
-        <img src="" alt="=(" class="image-size">
+        <li><fa-icon [icon]="faNewspaper" class="faNewspaper icon-footer"></fa-icon></li>
         <p>ОГОЛОШЕННЯ</p>
       </a>
 
       <a href="#" class="my text1">
-        <img src="" alt="=(" class="image-size">
+        <li><fa-icon [icon]="faGraduationCap" class="faGraduationCap icon-footer"></fa-icon></li>
         <p>ЗАНЯТТЯ</p>
       </a>
 
       <a href="#" class="my text1">
-        <img src="" alt="=(" class="image-size">
+        <li><fa-icon [icon]="faEdit" class="faEdit icon-footer"></fa-icon></li>
         <p>НАВЧАЛЬНІ МАТЕРІАЛИ</p>
       </a>
 
       <a href="#" class="my text1">
-        <img src="" alt="=(" class="image-size">
+        <li><fa-icon [icon]="faChalkboardTeacher" class="faChalkboardTeacher icon-footer"></fa-icon></li>
         <p>ЗДАЧА ОНЛАЙН</p>
       </a>
 
       <a href="#" class="my text1">
-        <img src="" alt="=(" class="image-size">
+        <li><fa-icon [icon]="faBlog" class="faBlog icon-footer"></fa-icon></li>
         <p>БЛОГ</p>
       </a>
     </div>
   </div>
   <div class="announcement">
     <div class="col-12 settings-announcement">
-      <img src="" alt="=(">
+      <li><fa-icon [icon]="faNewspaper" class="faNewspaper icon"></fa-icon></li>
       <p>ОГОЛОШЕННЯ</p>
     </div>
     <div class="announcement-blok">
@@ -93,16 +66,18 @@
       <p class="announcement-text"></p>
     </div>
     <div class="col-12 settings-announcement">
-      <img src="" alt="=(">
+      <li><fa-icon [icon]="faGraduationCap" class="faGraduationCap icon"></fa-icon></li>
       <p>ЗАНЯТТЯ</p>
     </div>
-    <div class="blok-lessons">
+    <div class="blok-lessons" style="
+    background: url(assets/img/img14.jpg);
+    -webkit-background-size: cover;">
       <nav class="dws-menu">
         <ul>
-          <li><a href="#">СПИСОК ЗАНЯТЬ <fa-icon [icon]="faAngleDown" class="faAngledown"></fa-icon></a></li>
-          <li><a href="#">СПИСОК ПРEДМЕТІВ <fa-icon [icon]="faAngleDown" class="faAngledown"></fa-icon></a></li>
-          <li><a href="#">ВІДВІДУВАННЯ <fa-icon [icon]="faAngleDown" class="faAngledown"></fa-icon></a></li>
-          <li><a href="#">УСПІШНІСТЬ <fa-icon [icon]="faAngleDown" class="faAngledown"></fa-icon></a></li>
+          <li><a href="#">СПИСОК ЗАНЯТЬ <fa-icon [icon]="faAngleDown" class="faAngleDown"></fa-icon></a></li>
+          <li><a href="#">СПИСОК ПРEДМЕТІВ <fa-icon [icon]="faAngleDown" class="faAngleDown"></fa-icon></a></li>
+          <li><a href="#">ВІДВІДУВАННЯ <fa-icon [icon]="faAngleDown" class="faAngleDown"></fa-icon></a></li>
+          <li><a href="#">УСПІШНІСТЬ <fa-icon [icon]="faAngleDown" class="faAngleDown"></fa-icon></a></li>
         </ul>
       </nav>
     </div>
@@ -134,7 +109,7 @@
     </div>
   </div>
   <div class="col-12 settings-announcement padding_45px">
-    <img src="" alt="=(">
+    <li><fa-icon [icon]="faEdit" class="faEdit icon"></fa-icon></li>
     <p>НАВЧАЛЬНІ МАТЕРІАЛИ</p>
   </div>
   <div class="row blou-blok">
@@ -150,7 +125,7 @@
     </div>
   </div>
   <div class="col-12 settings-announcement padding_45px">
-    <img src="" alt="=(">
+    <li><fa-icon [icon]="faChalkboardTeacher" class="faChalkboardTeacher icon"></fa-icon></li>
     <p>ЗДАЧА ОНЛАЙН</p>
   </div>
   <div class="test__online">
@@ -169,16 +144,18 @@
         </nav>
       </div>
       <div class="back__img">
-        <img src="" alt="=(">
+        <img src="assets/img/img15.jpg" alt="=(">
         <button class="button__img">Здати онлайн</button>
       </div>
     </div>
   </div>
   <div class="col-12 settings-announcement padding_45px">
-    <img src="" alt="=(">
+    <li><fa-icon [icon]="faBlog" class="faBlog icon"></fa-icon></li>
     <p>БЛОГ</p>
   </div>
-  <div class="blog__block">
+  <div class="blog__block" style="
+   background: url(assets/img/img16.jpg);
+   background-size: cover;">
     <div class="blog__field">
       <div class="blog__field__border">
         <div class="author">Анатолійович</div>
@@ -207,7 +184,7 @@
           </button></div>
       </div>
       <div class="backe-image">
-        <img src="" alt="=(" class="image">
+        <img src="assets/img/img10.jpg" alt="=(" class="image">
       </div>
       <div class="buttons">
         <button class="btn btn-light button-1" type="submit">Долучитися</button>
@@ -216,3 +193,5 @@
     </div>
   </div>
 </div>
+
+<app-footer></app-footer>

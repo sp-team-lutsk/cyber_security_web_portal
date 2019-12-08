@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faAngleDown, faAngleUp } from '@fortawesome/fontawesome-free';
+import { faAngleDown, faAngleUp, faChartLine, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-science',
@@ -10,6 +10,9 @@ export class ScienceComponent implements OnInit {
 
   faAngleDown = faAngleDown;
   faAngleUp = faAngleUp;
+  faChartLine = faChartLine;
+  faEdit = faEdit;
+
   constructor() { }
 
   ngOnInit() {

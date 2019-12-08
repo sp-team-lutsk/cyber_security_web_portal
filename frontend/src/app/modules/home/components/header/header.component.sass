@@ -1,0 +1,79 @@
+.mainNav
+  z-index: 1000
+  display: grid
+  grid-template-columns: 1fr auto
+  padding: 10px 7%
+  position: absolute
+  width: 100%
+
+nav
+  display: grid
+  grid-template-columns: repeat(5, auto)
+
+.toggle-button
+  display: none
+
+.imageLogo
+  width: 100px
+  height: auto
+
+.logo
+  justify-self: start
+  align-self: center
+
+label
+  display: grid
+  grid-template-columns: auto auto
+  padding: 0 10px
+
+label input
+  border: none
+  border-radius: 5px 0 0 5px
+  padding: 5px 10px
+  max-height: 37px
+  justify-self: center
+  align-self: center
+
+label span
+  color: black
+  justify-self: center
+  align-self: center
+  background-color: white
+  border-radius: 0 5px 5px 0
+  padding: 5px 10px
+
+.btn
+  color: white
+  justify-self: center
+  align-self: center
+  cursor: pointer
+  padding: 0 10px
+
+.btn:hover
+  color: #6bcad4
+
+a
+  justify-self: center
+  align-self: center
+  cursor: pointer
+  padding: 0 10px
+
+@media screen and (max-width: 820px)
+  nav
+    display: none
+
+  label
+    width: 100%
+
+  .btn
+    width: 50%
+
+  .toggle-button
+    display: block
+
+  .toggle-button:after
+    content: attr(data-open)
+    display: block
+
+  #menu-checkbox:checked + nav[role="navigation"] .btn
+    display: block
