@@ -161,7 +161,7 @@ class FindUserSerializer(serializers.ModelSerializer):
  
 
 class UserSerializer(serializers.ModelSerializer):
-    date_joined = serializers.ReadOnlyField() 
+    date_of_birth = serializers.ReadOnlyField()
     student = StudentSerializer(many=False, read_only=True)
     teacher = TeacherSerializer(many=False, read_only=True)
 
@@ -193,7 +193,6 @@ class UserSerializer(serializers.ModelSerializer):
 
             'password',
         )
-
         extra_kwargs = {'password': {'write_only': True}}
 
 
@@ -201,21 +200,14 @@ class UpdateUserSerializer(serializers.ModelSerializer):
    
     class Meta(object):
         model = User
-        exclude = (
-                'email',
-                'id',
-                'password',
-                'is_moderator', 
-                'is_active', 
-                'is_admin',
-                'is_student', 
-                'is_teacher',
-                'username',
-                'last_login',
-                'groups',
-                'code',
-                'user_permissions')
-
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+            'patronymic',
+            'bio',
+            'news_subscription'
+        )
 
 class BulkUpdateUserSerializer(serializers.ModelSerializer):
 
@@ -251,15 +243,6 @@ class CreateTeacherSerializer(serializers.ModelSerializer):
             'faculty',
         )
 
-    def create(self, validated_data):
-
-        validate_password(password=validated_data.get('password',), user=validated_data.get('email'), password_validators=None)
-        
-        email = validated_data.get('email')
-        user = User.objects.create_teacher(**validated_data) 
-        user.send_mail(email=email)
-        return user
-
 
 class UpdateTeacherSerializer(serializers.ModelSerializer):
    
@@ -267,6 +250,7 @@ class UpdateTeacherSerializer(serializers.ModelSerializer):
         model = Teacher
         fields = (
                 'faculty',)
+
 
 class BulkUpdateTeacherSerializer(serializers.ModelSerializer):
 
@@ -291,14 +275,6 @@ class CreateStudentSerializer(serializers.ModelSerializer):
             'acad_group',
         )
 
-    def create(self, validated_data):
-
-        validate_password(password=validated_data.get('password',), user=validated_data.get('email'), password_validators=None)
-        
-        email = validated_data.get('email')
-        user = User.objects.create_student(**validated_data) 
-        user.send_mail(email=email)
-        return user
 
 class UpdateStudentSerializer(serializers.ModelSerializer):
     faculty = serializers.CharField(max_length=128)
@@ -312,6 +288,7 @@ class UpdateStudentSerializer(serializers.ModelSerializer):
                 'profession',
                 'acad_group',)
 
+
 class BulkUpdateStudentSerializer(serializers.ModelSerializer):
     faculty = serializers.CharField(max_length=128)
     profession = serializers.CharField(max_length=128)
@@ -324,6 +301,7 @@ class BulkUpdateStudentSerializer(serializers.ModelSerializer):
                 'profession',
                 'acad_group',)
  
+
 class SetModeratorSerializer(serializers.ModelSerializer):
 
     class Meta(object):
