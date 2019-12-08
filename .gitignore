@@ -25,3 +25,5 @@ mongoenv/
 # Media
 media_files/
 
+# Logs
+**/**/*.log

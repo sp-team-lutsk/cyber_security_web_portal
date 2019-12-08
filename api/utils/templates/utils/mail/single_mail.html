@@ -16,15 +16,14 @@
 </div>
 
 <div style="background-color: #f1efe6; height: 50px; width: 600px; position: relative; top:170px">
-  <div style="font-size: 16px; color: #77786f; text-align: center; width: 600px; height: 30px; padding-top: 20px">ВІДНОВЛЕННЯ КОРИСТУВАЧА</div>
+    <div style="font-size: 16px; color: #77786f; text-align: center; width: 600px; height: 30px; padding-top: 20px">{{user.email}} </div>
 </div>
 
 <div style="background-color: #f1efe6; height: 170px; width: 600px; position: relative; top: 200px">
-  <div style="float: left; height: 40px;width: 600px; font-size: 16px; color: #77786f; text-align: right; padding-top: 10px">ШАНОВНИЙ, {{user}}. </div>
-  <div style="float: left; height: 70px;width: 600px; font-size: 14px; color: #77786f; text-align: center"> Вам прийшов цей лист, бо ви забажали відновити свій аккаунт. </div>
+    <div style="float: left; height: 40px;width: 600px; font-size: 16px; color: #77786f; text-align: right; padding-top: 10px">{{subject}}</div>
+  <div style="float: left; height: 70px;width: 600px; font-size: 14px; color: #77786f; text-align: center"> {{body}} </div>
 
   <div style="float: left; padding-left: 210px; padding-top: 20px">
-    <a href="http://{{ HOST }}{% url RECOVER_URL code=code %}"><button style="background-color: #6bcad4; width: 100px; height: 25px; font-size: 12px; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border: none">Тицяй сюди</button></a>
   </div>
 </div>
 
