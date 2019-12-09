@@ -23,7 +23,6 @@ from authentication.serializers import (
     TeacherSerializer,
     CreateTeacherSerializer,
     UpdateTeacherSerializer,
-    BulkUpdateTeacherSerializer,
     StudentSerializer,
     CreateStudentSerializer,
     UpdateStudentSerializer,
@@ -190,13 +189,12 @@ class TeachersAPIView(ListAPIView):
 
     @permission("IsModeratorUser")
     def put(self, request, *args, **kwargs):
-        self.serializer_class = BulkUpdateTeacherSerializer
         queryset = Teacher.objects.all()
         for user in list(queryset):
-            serializer = UpdateTeacherSerializer(user,  data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-        return Response(data={"200": "OK"}, status=status.HTTP_200_OK)
+            serializer = UpdateTeacherSerializer(user, data=request.data)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save(user, request.data)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     @permission("IsModeratorUser")
     def delete(self, request):

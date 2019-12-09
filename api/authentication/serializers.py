@@ -244,19 +244,21 @@ class CreateTeacherSerializer(serializers.ModelSerializer):
 
 
 class UpdateTeacherSerializer(serializers.ModelSerializer):
+    faculty = FacultySerializer(many=False, read_only=True)
 
     class Meta(object):
         model = Teacher
-        fields = (
-                'faculty',)
+        fields = ('faculty',)
 
+    def save(self, user, data):
+        try:
+            name = data.get('faculty').get('name')
+            f = Faculty.objects.get(name=name)
+            user.faculty = f
+            user.save()
 
-class BulkUpdateTeacherSerializer(serializers.ModelSerializer):
-
-    class Meta(object):
-        model = Teacher
-        fields = (
-                'faculty',)
+        except Faculty.DoesNotExist:
+            raise ValueError("Faculty does not exist")
 
 class CreateStudentSerializer(serializers.ModelSerializer):
     faculty = serializers.CharField(max_length=128)
