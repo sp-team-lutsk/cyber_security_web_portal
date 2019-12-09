@@ -370,7 +370,7 @@ class SetModeratorAPIView(APIView):
     @permission('IsAdminUser')
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        user = get_user(id=request.data.get('id'))
+        user = get_user(arg=request.data.get('id')) 
         set_check = request.data.get('is_moderator')
         user.is_moderator = set_check
         user.save()
