@@ -31,7 +31,7 @@ class PostUpdInt(APIView):
     def delete(self, request, id):
         news = get_int_news(id)
         news.delete()
-        return Response({'status': 'ok'}, status=status.HTTP_200_OK)
+        return Response({'Status': 'OK'}, status=status.HTTP_200_OK)
 
 
 class News_Bulk(APIView):
