@@ -222,6 +222,7 @@ class TestModerPermsAPIViews(TestAdminPermsAPIViews):
 
         nt.assert_equal(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
      
+    """ Test teacher put request """
 
 """ Tests active user access to api methonds """
 class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
