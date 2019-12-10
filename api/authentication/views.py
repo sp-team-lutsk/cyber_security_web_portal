@@ -26,7 +26,6 @@ from authentication.serializers import (
     StudentSerializer,
     CreateStudentSerializer,
     UpdateStudentSerializer,
-    BulkUpdateStudentSerializer,
     SetModeratorSerializer,
     NewsSubscriptionSerializer,)
 
@@ -280,19 +279,19 @@ class StudentsAPIView(ListAPIView):
                 data={"success": "User '{}' created successfully".format(str(user_saved))},
                 status=status.HTTP_201_CREATED)
 
-
     @permission("IsModeratorUser")
     def put(self, request, *args, **kwargs):
-        self.serializer_class = BulkUpdateStudentSerializer
         queryset = Student.objects.all()
 
         for user in list(queryset):
-            serializer = BulkUpdateStudentSerializer(user,  data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(data={"200": "OK"}, status=status.HTTP_200_OK)
+            serializer = UpdateStudentSerializer(user,  data=request.data)
+            if serializer.is_valid(raise_exception=True):
+                print(request.data)
+                serializer.save(user, request.data)
+                return Response(data=serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response(serializer.errors)
+
     @permission("IsModeratorUser")
     def delete(self, request):
         q = User.objects.filter(is_student=True)

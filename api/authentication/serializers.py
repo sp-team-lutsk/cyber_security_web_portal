@@ -251,6 +251,7 @@ class UpdateTeacherSerializer(serializers.ModelSerializer):
         fields = ('faculty',)
 
     def save(self, user, data):
+        print(data)
         try:
             name = data.get('faculty').get('name')
             f = Faculty.objects.get(name=name)
@@ -278,6 +279,8 @@ class CreateStudentSerializer(serializers.ModelSerializer):
 
 
 class UpdateStudentSerializer(serializers.ModelSerializer):
+    faculty = FacultySerializer(many=False, read_only=True)
+    profession = ProfessionSerializer(many=False, read_only=True)
 
     class Meta(object):
         model = Student
@@ -286,15 +289,22 @@ class UpdateStudentSerializer(serializers.ModelSerializer):
                 'profession',
                 'acad_group',)
 
+    def save(self, user, data):
+        try:
+            name = data.get('faculty').get('name')
+            f = Faculty.objects.get(name=name)
+            print(f)
+            user.faculty = f
 
-class BulkUpdateStudentSerializer(serializers.ModelSerializer):
+            name2 = data.get('profession').get('name')
+            f2 = Profession.objects.get(name=name2)
+            print(f2)
+            user.profession = f2
+            user.save()
 
-    class Meta(object):
-        model = Student
-        fields = (
-                'faculty',
-                'profession',
-                'acad_group',)
+        except Faculty.DoesNotExist:
+            raise ValueError("Faculty or Profession does not exist ")
+
 
 
 class SetModeratorSerializer(serializers.ModelSerializer):

@@ -59,10 +59,11 @@ class News_Bulk(APIView):
         queryset = NewsInt.objects.all()
         for nev in list(queryset):
             serializer = NewsIntSerializer(nev, data=request.data)
-            if serializer.is_valid():
+            if serializer.is_valid(raise_exception=True):
                 serializer.save()
-
         return Response(data={"200": "OK"}, status=status.HTTP_200_OK)
+
+
 
     def delete(self, request, *args, **kwargs):
         news = NewsInt.objects.all()
