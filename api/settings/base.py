@@ -1,7 +1,7 @@
 import datetime
 import os
 import sys
-
+import logging
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -15,7 +15,7 @@ SECRET_KEY = '#-+2%cfp05=)8q*u1s2itkffi$i^@ir5@bv%!9g3irbfi_)2h5'
 DEBUG = True
 
 # Update in prod it
-ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1', 'sp-lutsk.com']
+ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1', 'sp-lutsk.com', 'testserver']
 
 # Application definition
 INSTALLED_APPS = [
@@ -94,6 +94,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'utils/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -122,6 +123,9 @@ DATABASES = {
         'PASSWORD': 'Admin123!',
         'HOST': 'postgresql',    # if you use docker you should specify  'HOST': 'postgresql', but if it is locally 'HOST': '127.0.0.1'
         'PORT': '5432',
+        'TEST': {
+            'NAME': 'test_database',
+        }
     }
 }
 
@@ -256,4 +260,25 @@ CRONJOBS = [
   ('00 16  *   *   6', 'ext_news.cron.CronMailing'),
   ('00 16  *   *   6', 'ext_news.cron.CronParse')
 ]
+
+LOGGER = {
+        'handlers': {logging.FileHandler(filename='log.log')},
+        'level': logging.WARNING,
+        'style': '{',
+        'format': '[{levelname}] at {asctime}\n {message} ' ,
+        }
+
+
 SITE_ID = 2
+
+def setup_logger(config=None):
+    if config == None:
+        logger=logging.basicConfig(**LOGGER)  # TODO: config from LOGGING
+    else:
+        logger=logging.config.dictConfig(config) 
+    return logger
+
+LOG = setup_logger()
+
+SITE_ID = 2
+

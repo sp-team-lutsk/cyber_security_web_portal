@@ -8,6 +8,7 @@ import authentication.models as a_models
 
 client = Client()
 
+
 # Create your tests here.
 class TestNews(TestCase):
 

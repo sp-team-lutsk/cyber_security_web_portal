@@ -1,14 +1,15 @@
 import datetime
-import jwt
 
 from django.template.loader import render_to_string
-from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
-from django.core.signing import TimestampSigner, b64_encode,b64_decode, BadSignature, SignatureExpired,force_bytes
+from django.core.signing import (TimestampSigner, 
+        b64_encode, 
+        b64_decode, 
+        BadSignature,
+        force_bytes)
 from django.core.mail import EmailMessage
-from django.contrib.auth.models import UserManager
-from django.contrib.auth.models import AbstractBaseUser, AbstractUser, Group
+from django.contrib.auth.models import UserManager, AbstractUser, Group
 from django.conf import settings 
 
 ACAD_GROUPS_CHOICES = [
@@ -24,6 +25,12 @@ ACAD_GROUPS_CHOICES = [
     ("КСМс-21", "Комп'ютерні системи і мережі 2 курс (скорочений)"),
 ]
 
+USER_TYPES = {
+    "ADMIN": 1,
+    "MODERATOR": 2,
+    "USER": 3,
+}
+
 
 class StdUserManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
@@ -35,41 +42,33 @@ class StdUserManager(UserManager):
         user.save(using=self._db)
         return user
     
-    def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
+    def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_active', True)
 
         return self._create_user(email, password, **extra_fields)
 
-    def create_user(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_moderator', False)
-        extra_fields.setdefault('is_admin', False)
-        extra_fields.setdefault('is_active', False)
+    def create_user(self, email, password=None, user_type=3, **extra_fields):
+        if user_type == USER_TYPES["USER"]:
+            extra_fields.setdefault('is_moderator', False)
+            extra_fields.setdefault('is_admin', False)
+            extra_fields.setdefault('is_active', False)
+
+        elif user_type == USER_TYPES["ADMIN"]:
+            extra_fields.setdefault('is_admin', True)
+            extra_fields.setdefault('is_active', True)
+        
+        elif user_type == USER_TYPES["MODERATOR"]:
+            extra_fields.setdefault('is_moderator', True)
+            extra_fields.setdefault('is_active', True)
 
         return self._create_user(email, password, **extra_fields)
 
-    def create_admin(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_admin', True)
-        extra_fields.setdefault('is_active', True)
-
-        if extra_fields.get('is_admin') is not True:
-            raise ValueError('Superuser must have is_admin=True.')
-
-        return self._create_user(email, password, **extra_fields)
-
-    def create_moderator(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_moderator', True)
-        extra_fields.setdefault('is_active', True)
-
-        if extra_fields.get('is_moderator') is not True:
-            raise ValueError('Superuser must have is_admin=True.')
-
-        return self._create_user(email, password, **extra_fields)
-
-    def create_student(self, email, profession, faculty, password=None):
+    def create_student(self, email, profession, faculty, password=None): 
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError("Email must be set")
+
 
         user = self.model(
             email=self.normalize_email(email),
@@ -95,7 +94,7 @@ class StdUserManager(UserManager):
 
     def create_teacher(self, email, faculty, password=None):
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError("Email must be set")
 
         user = self.model(
             email=self.normalize_email(email),
@@ -113,21 +112,9 @@ class StdUserManager(UserManager):
         user.last_update = timezone.now()
         user.save(using=self._db)
 
-        teacher = Teacher.objects.create(user=user, faculty=faculty)
+        Teacher.objects.create(user=user, faculty=faculty)
 
         return user
-
-
-class SocialUserManager(UserManager):
-    def _create_user(self, email, **extra_fields):     
-        email = email                      
-        
-        user = self.model(email=email, **extra_fields)           
-        user.save(using=self._db)                                
-        return user                                              
-                                                             
-    def create_user(self, email, **extra_fields): 
-        return self._create_user(email, **extra_fields)
 
 
 # Base user class
@@ -146,7 +133,7 @@ class StdUser(AbstractUser):
     patronymic = models.CharField(max_length=64, blank=True, default="")  # Ivanovych
     avatar = models.ImageField(upload_to='static/media/', blank=True, max_length=1000)  # select image
     bio = models.CharField(max_length=512, blank=True, default="")
-    date_of_birth = models.DateField(default=timezone.now)
+    date_of_birth = models.DateTimeField(default=timezone.now)
     gender = models.CharField(max_length=64, blank=True, default="man") # Man/Wpman
     
     news_subscription = models.BooleanField(default=True)
@@ -162,7 +149,7 @@ class StdUser(AbstractUser):
     REQUIRED_FIELDS = []
     
     class Meta:
-        permissions = [('read_news','Читати новини',),]
+        permissions = [('read_news', 'Читати новини',),]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -176,10 +163,6 @@ class StdUser(AbstractUser):
         """ Returns short name """
         short_name = "%s" % self.first_name
         return short_name.strip()
-
-    def get_avatar(self):
-        """ Returns avatar (use Pillow) """
-        pass
 
     def get_verification_code(self, email):
         # verification token 
@@ -197,12 +180,13 @@ class StdUser(AbstractUser):
                 code = b64_decode(code)
                 code = code.decode()
                 email = signer.unsign(code, max_age=max_age)
-                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email, 'is_active':False})
+                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD: email, 'is_active': False})
                 user.is_active = True
                 user.code = "None code"
                 user.save()
+                
                 return True, ('Your account has been activated.')  
-            except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
+            except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError):
                 raise ValueError('Error')
             return False, ('Activation link is incorrect, please resend request')
         else:
@@ -220,12 +204,12 @@ class StdUser(AbstractUser):
                 code = code.decode()
                 email = signer.unsign(code, max_age=max_age)
                  
-                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD:email})
+                user = StdUser.objects.get(**{StdUser.USERNAME_FIELD: email})
                 user.set_password(password)
                 user.code = 'None code'
                 user.save()
                 return True
-            except (BadSignature, StdUser.DoesNotExist, TypeError, UnicodeDecodeError) as e:
+            except (BadSignature, AttributeError, StdUser.DoesNotExist, TypeError, UnicodeDecodeError):
                 raise ValueError('Error')
             return False, ('Activation link is incorrect, please resend request')
         else:
@@ -235,12 +219,13 @@ class StdUser(AbstractUser):
         verification_code = self.get_verification_code(email=email)
         context = {'user': self,
                    'VERIFICATION_URL': settings.VERIFICATION_URL,
+                   'HOST': settings.ALLOWED_HOSTS[0],
                    'code': verification_code.decode(),
                    'link': datetime.datetime.today() + datetime.timedelta(days=settings.VERIFICATION_CODE_EXPIRED)   
                 }
         
         msg = EmailMessage(subject='subject',
-                body=render_to_string('authentication/mail/verification_body.html',context),
+                body=render_to_string('authentication/mail/verification_body.html', context),
                 to=[email])
         msg.content_subtype = 'html'
         msg.send()
@@ -250,12 +235,13 @@ class StdUser(AbstractUser):
         
         context = {'user': self,
                    'RECOVER_URL': settings.RECOVER_URL,
+                   'HOST': settings.ALLOWED_HOSTS[0],
                    'code': verification_code.decode(),
                    'link': datetime.datetime.today() + datetime.timedelta(days=settings.RECOVER_CODE_EXPIRED)
                     }
         msg = EmailMessage(subject='subject',
                 body=render_to_string('authentication/mail/reset_body.html', context),
-                to = [email])
+                to=[email])
         msg.content_subtype = 'html'
         msg.send()
 
@@ -269,10 +255,6 @@ class Student(models.Model):
     profession = models.ForeignKey('Profession', on_delete=models.SET_DEFAULT, default="")
     faculty = models.ForeignKey("Faculty", on_delete=models.SET_DEFAULT, default="")
     acad_group = models.CharField(max_length=256, choices=ACAD_GROUPS_CHOICES, default="")  
-
-    def __str__(self):
-        return self.user.email
-
     class Meta:
         permissions = [('write_to_teacher', 'Писати викладачу'),]
 
@@ -281,24 +263,16 @@ class Teacher(models.Model):
     user = models.OneToOneField(StdUser, on_delete=models.CASCADE, default="")
     faculty = models.ForeignKey("Faculty", on_delete=models.SET_DEFAULT, default="")
 
-    def __str__(self):
-        return self.user.email
-
     class Meta:
         permissions = [('add_post', 'Створити пост'),
                        ('edit_post', 'Змiнювати пост'),
                        ('delete_post', 'Видалити пост'),
                        ('change_student_perm', 'Змiнювати права стундентiв'),]
 
+
 class Profession(Group):
-    
-    def __str__(self):
-        return self.name
+    pass
 
 
 class Faculty(Group):
-    
-    def __str__(self):
-        return self.name
-
-
+    pass

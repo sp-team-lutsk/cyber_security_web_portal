@@ -1,4 +1,79 @@
 /* You can add global styles to this file, and also import other style files */
+<<<<<<< HEAD
+=======
+@font-face {
+  font-family: "MyriadProRegular";
+  src: url("fonts/MyriadProRegular/MyriadProRegular.eot");
+  src: url("fonts/MyriadProRegular/MyriadProRegular.eot?#iefix")format("embedded-opentype"),
+  url("fonts/MyriadProRegular/MyriadProRegular.woff") format("woff"),
+  url("fonts/MyriadProRegular/MyriadProRegular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "MyriadProBold";
+  src: url("fonts/MyriadProBold/MyriadProBold.eot");
+  src: url("fonts/MyriadProBold/MyriadProBold.eot?#iefix")format("embedded-opentype"),
+  url("fonts/MyriadProBold/MyriadProBold.woff") format("woff"),
+  url("fonts/MyriadProBold/MyriadProBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "MyriadProItalic";
+  src: url("fonts/MyriadProItalic/MyriadProItalic.eot");
+  src: url("fonts/MyriadProItalic/MyriadProItalic.eot?#iefix")format("embedded-opentype"),
+  url("fonts/MyriadProItalic/MyriadProItalic.woff") format("woff"),
+  url("fonts/MyriadProItalic/MyriadProItalic.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "MyriadProSemiBold";
+  src: url("fonts/MyriadProSemiBold/MyriadProSemiBold.eot");
+  src: url("fonts/MyriadProSemiBold/MyriadProSemiBold.eot?#iefix")format("embedded-opentype"),
+  url("fonts/MyriadProSemiBold/MyriadProSemiBold.woff") format("woff"),
+  url("fonts/MyriadProSemiBold/MyriadProSemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "MyriadProBoldItalic";
+  src: url("fonts/MyriadProBoldItalic/MyriadProBoldItalic.eot");
+  src: url("fonts/MyriadProBoldItalic/MyriadProBoldItalic.eot?#iefix")format("embedded-opentype"),
+  url("fonts/MyriadProBoldItalic/MyriadProBoldItalic.woff") format("woff"),
+  url("fonts/MyriadProBoldItalic/MyriadProBoldItalic.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "MyriadProSemiBoldItalic";
+  src: url("fonts/MyriadProSemiBoldItalic/MyriadProSemiBoldItalic.eot");
+  src: url("fonts/MyriadProSemiBoldItalic/MyriadProSemiBoldItalic.eot?#iefix")format("embedded-opentype"),
+  url("fonts/MyriadProSemiBoldItalic/MyriadProSemiBoldItalic.woff") format("woff"),
+  url("fonts/MyriadProSemiBoldItalic/MyriadProSemiBoldItalic.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'MyriadProLight';
+  src: url('fonts/MyriadProLight/MyriadPro-Light.eot');
+  src: url('fonts/MyriadProLight/MyriadPro-Light.eot?#iefix') format('embedded-opentype'),
+  url('fonts/MyriadProLight/MyriadPro-Light.woff') format('woff'),
+  url('fonts/MyriadProLight/MyriadPro-Light.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+*{
+  border: none;
+  font-family: 'MyriadProSemiBold', sans-serif;
+}
+>>>>>>> master
 body {
   margin: 0;
   font-size: 18px;
