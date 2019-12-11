@@ -1,3 +1,38 @@
+/* Preloader */
+
+.preloader
+  width: 100%
+  height: 100vh
+  background-color: white
+  z-index: 10000
+  position: fixed
+  display: grid
+  transition: 1s all
+  opacity: 1
+  visibility: visible
+
+.loader
+  width: 75px
+  height: 75px
+  border: 10px solid white
+  border-radius: 50%
+  border-top-color: #6bcad4
+  margin: auto
+  align-self: center
+  animation: 0.5s spin infinite linear
+
+.done
+  opacity: 0
+  visibility: hidden
+
+@keyframes spin
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)
+
+/* End Preloader */
+
 /* You can add global styles to this file, and also import other style files */
 body
   margin: 0
@@ -59,7 +94,7 @@ ul
 .dvs
   top: 100%
   text-align: center
-  padding-top: 5vh
+  padding-top: 8vh
 
 .logo_img
   width: 70px
@@ -69,7 +104,7 @@ ul
 
 .dvs-1
   font-size: 13px
-
+  
 .butt
   position: relative
   border: none
@@ -159,7 +194,6 @@ ul
 .image-1-size
   width: 100%
   height: auto
-  max-height: 390px
 
 .white-line
   background-color: #273959
