@@ -143,7 +143,7 @@ class TeacherAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
         queryset = Teacher.objects.filter(user=number)
         serializer = UpdateTeacherSerializer(queryset[0],  data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(queryset[0],  data=request.data)
             return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors,status = status.HTTP_404_NOT_FOUND)
@@ -233,7 +233,7 @@ class StudentAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
         queryset = Student.objects.filter(user=number)
         serializer = UpdateStudentSerializer(queryset[0],  data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(queryset[0],  data=request.data)
             return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors)
@@ -283,7 +283,6 @@ class StudentsAPIView(ListAPIView):
         for user in list(queryset):
             serializer = UpdateStudentSerializer(user,  data=request.data)
             if serializer.is_valid(raise_exception=True):
-                print(request.data)
                 serializer.save(user, request.data)
                 return Response(data=serializer.data, status=status.HTTP_200_OK)
             else:
