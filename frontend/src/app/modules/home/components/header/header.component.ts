@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faUniversity } from '@fortawesome/free-solid-svg-icons';
+import { faUniversity, faSearch, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-header',
@@ -9,6 +9,8 @@ import { faUniversity } from '@fortawesome/free-solid-svg-icons';
 export class HeaderComponent implements OnInit {
 
   faUniversity = faUniversity;
+  faSearch = faSearch;
+  faArrowUp = faArrowUp;
 
   constructor() { }
 

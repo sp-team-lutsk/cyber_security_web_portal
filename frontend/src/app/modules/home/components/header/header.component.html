@@ -1,30 +1,23 @@
+<nav class="navbar navbar-expand-md navbar-dark position" id="myDIV">
+    <a class="navbar-brand" routerLink="/"><img class="logo_img" src="assets/img/l2-3.svg" alt="LOGO"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbar1" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
 
-<nav class="navbar navbar-expand-md navbar-dark position">
-      <a class="navbar-brand" routerLink="/"><img class="logo_img" src="assets/images/l2-3.svg" alt="=("></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbar1" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <div class="collapse navbar-collapse" id="navbar1">
+        <input type="text" placeholder=""><span>
+          <button class="search"><li><fa-icon [icon]="faSearch" class="faSearch"></fa-icon></li></button>
+        </span>
 
-      <div class="collapse navbar-collapse" id="navbar1">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-
-            <a class="nav__link text-2" href="#"><img src="assets/images/UKRAINE.png"></a>
-            <a class="nav__link text-2" href="#"><img src="assets/images/USA.png"></a>
-          </li>
-          <li class="nav-item">
-            <button id="regbutt" class="nav__link text-2" (click)="toggle()">Реєстрація</button>
-            <button id="logbutt" class="nav__link text-2" (click)="toggle1()">Вхід</button>
-
-          </li>
-        </ul>
-        <div class="input-group col-md-3 mx-xs-auto">
-          <input class="form-control py-2 border-right-0 border" type="" value="" id="example-search-input">
-          <span class="input-group-append">
-                  <button class="btn border-left-0 border QQQ" type="button">
-                    <i class="fa fa-search"><img src="assets/icon/img21.jpg" alt=""></i>
-                  </button>
-                </span>
+        <div class="language">
+          <a href=""><img class="UA" src="assets/img/UKRAINE.png" alt="UA"></a>
+          <a href=""><img class="USA" src="assets/img/USA.png" alt="USA"></a>
         </div>
-      </div>
+        <button onclick="logOn()" class="log-on">Регістрація</button>
+        <button onclick="logIn()" class="log-in">Вхід</button>
+    </div>
 </nav>
+
+<button onclick="topFunction()" id="return-to-top" class="scrol">
+    <li><fa-icon [icon]="faArrowUp" class="faArrowUp"></fa-icon></li>
+</button>

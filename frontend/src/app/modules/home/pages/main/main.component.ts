@@ -14,10 +14,28 @@ export class MainComponent implements OnInit {
  // faAngleUp = faAngleUp;
  // faAngleUp = faAngleUp;
  // faAngleUp = faAngleUp;
-  
+
+  public showRegistration = false;
+  public showLogin = false;
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  toggle(){
+    this.showRegistration = !this.showRegistration;
+    console.log(this.showRegistration);
+  }
+  closeRegistration(event) {
+    this.showRegistration = event;
+  }
+
+  toggle1(){
+    this.showLogin = !this.showLogin;
+    console.log(this.showLogin);
+  }
+  closeLogin(event) {
+    this.showLogin = event;
+  }
 }

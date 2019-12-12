@@ -31,7 +31,13 @@
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "src/styles.sass"
             ],
-            "scripts": []
+            "scripts": [
+             "node_modules/jquery/dist/jquery.min.js",
+             "node_modules/bootstrap/dist/js/bootstrap.js",
+             "src/assets/js/custom.js",
+             "src/assets/js/modal.js",
+             "src/assets/js/scrol.js"
+            ]
           },
           "configurations": {
             "production": {

@@ -3,7 +3,6 @@ FROM node:12.13.0
 WORKDIR /app
 COPY package.json package-lock.json /app/
 
-RUN npm install @angular-devkit/build-angular
 RUN npm install
 COPY . /app
 
