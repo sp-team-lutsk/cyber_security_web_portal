@@ -6,7 +6,7 @@
 	z-index: 1000
 	display: grid
 	grid-template-columns: 1fr 1fr
-	height: 160px
+	height: 210px
 	width: 100%
 	grid-template-rows: 1fr
 
@@ -29,7 +29,7 @@
 	font-size: 16px
 	color: grey
 	background: white
-	padding: 9px
+	padding: 10px
 	border-radius: 0 5px 5px 0
 
 .log-on,
@@ -54,9 +54,31 @@
 	display: grid
 	grid-template-columns: auto auto
 
+.language a
+	margin: 7px
+
+.scrol
+	position: fixed
+	border: 2px solid #6bcad4
+	border-radius: 50%
+	width: 50px
+	height: 50px
+	z-index: 9999
+	top: 90%
+	left: 95%
+	color: #6bcad4
+	background: rgba(0,0,0,0)
+
+.scrol:hover
+	border-color: #273959
+	color: #273959
+
 @media screen and (max-width: 1200px)
 	nav
 		grid-template-columns: 200px 1fr
+
+	.scrol
+		left: 92%
 
 
 @media screen and (max-width: 768px)
@@ -79,6 +101,14 @@
 	.USA
 		justify-self: start
 
+	.scrol
+		left: 86%
+
 @media screen and (max-width: 400px)
 	.collapse input
 		width: 65%
+
+	.scrol
+		width: 40px
+		height: 40px
+		left: 84%

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark position">
+<nav class="navbar navbar-expand-md navbar-dark position" id="myDIV">
     <a class="navbar-brand" routerLink="/"><img class="logo_img" src="assets/img/l2-3.svg" alt="LOGO"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbar1" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -13,7 +13,11 @@
           <a href=""><img class="UA" src="assets/img/UKRAINE.png" alt="UA"></a>
           <a href=""><img class="USA" src="assets/img/USA.png" alt="USA"></a>
         </div>
-        <button class="log-on">Регістрація</button>
-        <button class="log-in">Вхід</button>
+        <button onclick="logOn()" class="log-on">Регістрація</button>
+        <button onclick="logIn()" class="log-in">Вхід</button>
     </div>
 </nav>
+
+<button class="scrol">
+    <li><fa-icon [icon]="faArrowUp" class="faArrowUp"></fa-icon></li>
+</button>

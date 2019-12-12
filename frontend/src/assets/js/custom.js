@@ -25,3 +25,4 @@ function readMore() {
     text.style.opacity = "1";
   }
 }
+

@@ -135,6 +135,19 @@
   -o-transition: 0.5s ease-in-out
   transition: 0.5s ease-in-out
 
+.schedule
+  display: grid
+  grid-template-columns: 1fr 1fr
+
+.success,
+.visit
+  justify-self: center
+
+#lineChartSuccess,
+#lineChartVisit
+  width: 100%
+  min-width: 400px
+
 .menu
   ul
     border: 1px solid white
@@ -185,6 +198,9 @@
 @media (max-width: 992px)
   .first-blok .text p
     font-size: 18px
+
+  .schedule
+    grid-template-columns: 1fr
 
   .content_materials
     height: 130px
