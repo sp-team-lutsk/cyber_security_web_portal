@@ -45,9 +45,8 @@ class UserAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
 
     @permission("IsStaffUser")
     def get(self, request, *args, **kwargs):
-        number = args[0]
         try:
-            queryset = User.objects.get(id=number.get('id'))
+            queryset = User.objects.get(id=kwargs.get('id'))
             if queryset:
                 serializer = self.get_serializer(queryset)
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -59,8 +58,7 @@ class UserAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
 
     @permissions(["IsModeratorUser", "IsUser"],"kwargs")
     def put(self, request, *args, **kwargs):
-        number = args[0]
-        queryset = User.objects.filter(id=number.get('id'))
+        queryset = User.objects.filter(id=kwargs.get('id'))
         self.serializer_class = UpdateUserSerializer
         serializer = self.serializer_class(queryset[0],  data=request.data)
 
@@ -71,8 +69,7 @@ class UserAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
 
     @permissions(["IsModeratorUser", "IsUser"],"kwargs")
     def delete(self, request, *args, **kwargs):
-        number = args[0].get('id')
-        user = User.objects.get(id=number)
+        user = User.objects.get(id=kwargs.get('id'))
         user.is_active = False
         user.save()
         return Response(status=status.HTTP_200_OK)
@@ -82,7 +79,7 @@ class UsersAPIView(ListAPIView, CreateAPIView):
     permission_classes = [AllowAny,]
     serializer_class = UserSerializer
 
-    #@permission("IsStaffUser")
+    @permission("IsStaffUser")
     def get(self, request, *args, **kwargs):
         self.queryset = User.objects.all()
         serializer = self.serializer_class(self.queryset, many=True)
