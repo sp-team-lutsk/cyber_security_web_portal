@@ -132,7 +132,6 @@ class TeacherAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
         except StdUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-    @permissions(["IsModeratorUser", "IsUser"],"kwargs")
     def post(self, request, *args, **kwargs):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
@@ -143,10 +142,8 @@ class TeacherAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
         queryset = Teacher.objects.filter(user=number)
         serializer = UpdateTeacherSerializer(queryset[0],  data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors,status = status.HTTP_404_NOT_FOUND)
+            serializer.save(queryset[0], data=request.data)
+            return Response(status=status.HTTP_200_OK)
 
     @permissions(["IsModeratorUser", "IsUser"],"kwargs")
     def delete(self, request, *args, **kwargs):
@@ -157,7 +154,7 @@ class TeacherAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
         t.delete()
         user.is_teacher = False
         user.save()
-        return Response({'Status': 'OK'}, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
 
 class TeachersAPIView(ListAPIView):
@@ -171,17 +168,18 @@ class TeachersAPIView(ListAPIView):
     @permission("IsStaffUser")
     def get(self, request, *args, **kwargs):
         self.queryset = Teacher.objects.all()
-        return self.list(request, *args, **kwargs)
+        serializer = self.serializer_class(self.queryset, many=True)
 
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
     def post(self, request, *args, **kwargs):
         self.serializer_class = CreateTeacherSerializer
         serializer = self.serializer_class(data=request.data)
+        name = request.data.get('faculty').get('name')
         user = StdUser.objects.create_teacher(email=request.data.get('email'),
                                        password=request.data.get('password'),
-                                       faculty=Faculty.objects.get(name = request.data.get('faculty')))
-        return Response(
-            data={"success": "User '{}' created successfully".format(str(user))},
-            status=status.HTTP_201_CREATED)
+                                       faculty=Faculty.objects.get(name=name))
+        return Response(status=status.HTTP_201_CREATED)
 
     @permission("IsModeratorUser")
     def put(self, request, *args, **kwargs):
@@ -190,7 +188,7 @@ class TeachersAPIView(ListAPIView):
             serializer = UpdateTeacherSerializer(user, data=request.data)
             if serializer.is_valid(raise_exception=True):
                 serializer.save(user, request.data)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
     @permission("IsModeratorUser")
     def delete(self, request):
@@ -200,7 +198,7 @@ class TeachersAPIView(ListAPIView):
             t = Teacher.objects.filter(id=u.teacher.id)
             t.delete()
             u.save()
-        return Response({'Status': 'OK'}, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
 
 class StudentAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
@@ -213,18 +211,15 @@ class StudentAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
     def get(self, request, *args, **kwargs):
         number = kwargs.get('id')
         try:
-            queryset = User.objects.filter(id=number, is_student=True)
+            queryset = User.objects.get(id=number, is_student=True)
             if queryset:
-                serializer = self.get_serializer(queryset, many=True)
-                return Response({'Status': 'User found'},serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response({'Status': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        except:
-            return Response({'Status': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+                serializer = self.get_serializer(queryset)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+        except StdUser.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-    @permissions(["IsModeratorUser", "IsUser"],"kwargs")
     def post(self, request, *args, **kwargs):
-        return Response({'Status': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     @permissions(["IsModeratorUser", "IsUser"],"kwargs")
     def put(self, request, *args, **kwargs):
@@ -233,10 +228,8 @@ class StudentAPIView(ListAPIView, ListModelMixin, DestroyAPIView):
         queryset = Student.objects.filter(user=number)
         serializer = UpdateStudentSerializer(queryset[0],  data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response({'Status': 'Update success'}, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors)
+            serializer.save(queryset[0], data=request.data)
+            return Response(status=status.HTTP_200_OK)
 
     @permissions(["IsModeratorUser", "IsUser"],"kwargs")
     def delete(self, request, *args, **kwargs):
@@ -266,15 +259,13 @@ class StudentsAPIView(ListAPIView):
     def post(self, request, *args, **kwargs):
         self.serializer_class = CreateStudentSerializer
         serializer = self.serializer_class(data=request.data)
-
+        name1 = request.data.get('faculty').get('name')
+        name2 = request.data.get('profession').get('name')
         user_saved = StdUser.objects.create_student(email=request.data.get('email'),
                                        password=request.data.get('password'),
-                                       faculty=Faculty.objects.get(name = request.data.get('faculty')),
-                                       profession = Profession.objects.get(name = request.data.get('profession')))
-
-        return Response(
-                data={"success": "User '{}' created successfully".format(str(user_saved))},
-                status=status.HTTP_201_CREATED)
+                                       faculty=Faculty.objects.get(name=name1),
+                                       profession = Profession.objects.get(name=name2))
+        return Response(status=status.HTTP_201_CREATED)
 
     @permission("IsModeratorUser")
     def put(self, request, *args, **kwargs):
@@ -283,11 +274,8 @@ class StudentsAPIView(ListAPIView):
         for user in list(queryset):
             serializer = UpdateStudentSerializer(user,  data=request.data)
             if serializer.is_valid(raise_exception=True):
-                print(request.data)
                 serializer.save(user, request.data)
                 return Response(data=serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response(serializer.errors)
 
     @permission("IsModeratorUser")
     def delete(self, request):
@@ -299,7 +287,7 @@ class StudentsAPIView(ListAPIView):
             s.delete()
 
             u.save()
-        return Response({'Status': 'OK'}, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
 
 class VerifyUserAPIView(APIView):

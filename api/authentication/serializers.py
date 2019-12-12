@@ -251,7 +251,6 @@ class UpdateTeacherSerializer(serializers.ModelSerializer):
         fields = ('faculty',)
 
     def save(self, user, data):
-        print(data)
         try:
             name = data.get('faculty').get('name')
             f = Faculty.objects.get(name=name)
@@ -293,12 +292,10 @@ class UpdateStudentSerializer(serializers.ModelSerializer):
         try:
             name = data.get('faculty').get('name')
             f = Faculty.objects.get(name=name)
-            print(f)
             user.faculty = f
 
             name2 = data.get('profession').get('name')
             f2 = Profession.objects.get(name=name2)
-            print(f2)
             user.profession = f2
             user.save()
 

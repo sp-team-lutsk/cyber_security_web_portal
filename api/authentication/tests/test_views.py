@@ -12,11 +12,15 @@ from rest_framework.test import APITestCase
 from authentication.models import (
         StdUser,
         Teacher,
+        Student,
+        Profession,
         Faculty)
 from authentication.serializers import (
         UserSerializer,
         UpdateUserSerializer,
-        BulkUpdateUserSerializer,)
+        BulkUpdateUserSerializer,
+        TeacherSerializer,
+        StudentSerializer,)
 
 from settings.tests import *
 
@@ -37,10 +41,16 @@ class TestAdminPermsAPIViews(APITestCase):
                 email=TEST_EMAIL2,
                 password=TEST_PASSWORD)
         self.faculty = Faculty.objects.create(name=TEST_FACULTY)
+        self.profession = Profession.objects.create(name=TEST_PROFESSION)
         self.teacher = StdUser.objects.create_teacher(
                 email=TEST_TEACHER_EMAIL,
                 password=TEST_PASSWORD,
                 faculty=self.faculty)
+        self.student = StdUser.objects.create_student(
+                email=TEST_STUDENT_EMAIL,
+                password=TEST_PASSWORD,
+                faculty=self.faculty,
+                profession=self.profession)
 
         self.get_token()
 
@@ -152,6 +162,62 @@ class TestAdminPermsAPIViews(APITestCase):
         
         nt.assert_equal(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    """ Test get one student """
+    def test_get_one_student(self):
+        url = reverse('student', args=[self.student.id])
+        
+        serializer = UserSerializer(self.student)
+        response = self.client.get(url)
+        
+        nt.assert_equal(serializer.data, response.data)
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ Test get one student which not exist """
+    def test_get_one_student_which_not_exist(self):
+        url = reverse('student', args=[BAD_USER_ID])
+        
+        response = self.client.get(url)
+        
+        nt.assert_equal(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    """ Test post one stundet """
+    def test_post_one_student(self):
+        url = reverse('student', args=[self.student.id])
+
+        response = self.client.post(url)
+
+        nt.assert_equal(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    """ Test request to get teachers list """
+    def test_get_all_teachers(self):
+        url = reverse('teachers')
+        
+        response = self.client.get(url)
+    
+        users = Teacher.objects.all()
+        serializer = TeacherSerializer(users, many=True)
+        
+        nt.assert_equal(response.data, serializer.data)
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ Test of creating teacher """
+    def test_post_create_teacher(self):
+        url = reverse('teachers')
+        
+        data = {
+                "email": TEST_EMAIL4,
+                "password": TEST_PASSWORD,
+                "faculty": {
+                    "name": TEST_FACULTY
+                }
+        }
+
+        response = self.client.post(url, data, format='json') 
+        user = StdUser.objects.get(email=TEST_EMAIL4)
+
+        nt.assert_equal(response.status_code, status.HTTP_201_CREATED)
+        nt.assert_not_equal(user, None)
+
 
 """ Test moderator access to api """
 class TestModerPermsAPIViews(TestAdminPermsAPIViews):
@@ -221,8 +287,89 @@ class TestModerPermsAPIViews(TestAdminPermsAPIViews):
         response = self.client.post(url)
 
         nt.assert_equal(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-     
-    """ Test teacher put request """
+
+    """ Test put one teacher """
+    def test_put_one_teacher(self):
+        url = reverse('teacher', args=[self.teacher.id])
+        Faculty.objects.create(name=TEST_FACULTY2)
+
+        data = {
+                "faculty": {
+                    "name": TEST_FACULTY2
+                }
+        }
+    
+        response = self.client.put(url, data=data, format='json')
+
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ Test delete one teacher """
+    def test_delete_one_teacher(self):
+        url = reverse('teacher', args=[self.teacher.id])
+
+        response = self.client.delete(url, format='json')
+
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ Test put one student """
+    def test_put_one_student(self):
+        url = reverse('student', args=[self.student.id])
+        Faculty.objects.create(name=TEST_FACULTY2)
+        Profession.objects.create(name=TEST_PROFESSION2)
+
+        data = {
+                "faculty": {
+                    "name": TEST_FACULTY2
+                },
+                "profession": {
+                    "name": TEST_PROFESSION2
+                }
+        }
+    
+        response = self.client.put(url, data=data, format='json')
+
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ Test delete one student """
+    def test_delete_one_student(self):
+        url = reverse('student', args=[self.student.id])
+
+        response = self.client.delete(url, format='json')
+
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ Test put all teachers """
+    def test_put_all_teachers(self):
+        url = reverse('teachers')
+        
+        Faculty.objects.create(name=TEST_FACULTY2)
+
+        data = {
+            "faculty": {
+                "name": TEST_FACULTY2
+            }
+        }
+
+        response = self.client.put(url, data=data, format='json')
+
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ Test delete all teachers """
+    def test_delete_all_teachers(self):
+        url = reverse('teachers')
+
+        response = self.client.delete(url, format='json')
+
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ Test delete all students """
+    def test_delete_all_student(self):
+        url = reverse('students')
+
+        response = self.client.delete(url, format='json')
+
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
 
 """ Tests active user access to api methonds """
 class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
@@ -242,10 +389,16 @@ class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
                 email=TEST_EMAIL2,
                 password=TEST_PASSWORD)
         self.faculty = Faculty.objects.create(name=TEST_FACULTY)
+        self.profession = Profession.objects.create(name=TEST_PROFESSION)
         self.teacher = StdUser.objects.create_teacher(
                 email=TEST_TEACHER_EMAIL,
                 password=TEST_PASSWORD,
                 faculty=self.faculty)
+        self.student = StdUser.objects.create_student(
+                email=TEST_STUDENT_EMAIL,
+                password=TEST_PASSWORD,
+                faculty=self.faculty,
+                profession=self.profession)
         self.get_token()
 
     """ Standart user does not have such perms """
@@ -318,6 +471,83 @@ class TestActiveUserPermsAPIViews(TestAdminPermsAPIViews):
         
         response = self.client.get(url)
     
+    """ Test put one teacher """
+    def test_put_one_teacher(self):
+        url = reverse('teacher', args=[self.teacher.id])
+        Faculty.objects.create(name=TEST_FACULTY2)
+
+        data = {
+                "faculty": {
+                    "name": TEST_FACULTY2
+                    }
+                }
+    
+        response = self.client.put(url, data=data, format='json')
+
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+    
+    """ Test put one teacher """
+    def test_delete_one_teacher(self):
+        url = reverse('teacher', args=[self.teacher.id])
+
+        response = self.client.delete(url, format='json')
+
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ No such perm """
+    def test_get_one_student(self):
+        url = reverse('student', args=[self.student.id])
+        
+        response = self.client.get(url)
+        
+        nt.assert_equal(response.data, NO_SUCH_PERM)
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ No such perm """
+    @raises(StdUser.DoesNotExist)
+    def test_get_one_student_which_not_exist(self):
+        url = reverse('student', args=[BAD_USER_ID])
+        
+        response = self.client.get(url)
+    
+    """ Test put one student """
+    def test_put_one_student(self):
+        url = reverse('student', args=[self.student.id])
+        Faculty.objects.create(name=TEST_FACULTY2)
+        Profession.objects.create(name=TEST_PROFESSION2)
+
+        data = {
+                "faculty": {
+                    "name": TEST_FACULTY2
+                },
+                "profession": {
+                    "name": TEST_PROFESSION2
+                }
+        }
+    
+        response = self.client.put(url, data=data, format='json')
+
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ Test delete one student """
+    def test_delete_one_student(self):
+        url = reverse('student', args=[self.student.id])
+
+        response = self.client.delete(url, format='json')
+
+        nt.assert_equal(response.status_code, status.HTTP_200_OK)
+
+    """ Standart user does not have such perms """
+    def test_get_all_teachers(self):
+        url = reverse('teachers')
+        
+        response = self.client.get(url)
+    
+        users = Teacher.objects.all()
+        serializer = TeacherSerializer(users, many=True)
+        
+        nt.assert_equal(response.data, NO_SUCH_PERM)
+
 
 """ Tests inactive users access to api methods """
 class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
@@ -335,6 +565,12 @@ class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
                 email=TEST_EMAIL2,
                 password=TEST_PASSWORD)
         self.faculty = Faculty.objects.create(name=TEST_FACULTY)
+        self.profession = Profession.objects.create(name=TEST_PROFESSION)
+        self.student = StdUser.objects.create_student(
+                email=TEST_STUDENT_EMAIL,
+                password=TEST_PASSWORD,
+                faculty=self.faculty,
+                profession=self.profession)
         self.teacher = StdUser.objects.create_teacher(
                 email=TEST_TEACHER_EMAIL,
                 password=TEST_PASSWORD,
@@ -387,6 +623,30 @@ class TestInactiveUserPermsAPIViews(TestAdminPermsAPIViews):
     def test_get_one_teacher_which_not_exist(self):
         self.get_token()
         super.test_get_one_teacher_which_not_exist()
+
+    """ Must be active """
+    @raises(KeyError)
+    def test_get_one_student(self):
+        self.get_token()
+        super.test_get_one_student()
+
+    """ Must be active """
+    @raises(KeyError)
+    def test_get_one_student_which_not_exist(self):
+        self.get_token()
+        super.test_get_one_student_which_not_exist()
+
+    """ Standart user does not have such perms, so it will raise KeyError """
+    @raises(KeyError)
+    def test_get_all_teachers(self):
+        self.get_token()
+        super().test_get_all_teachers()
+    
+    """ StdUser must be active """
+    @raises(KeyError)
+    def test_post_create_teacher(self):
+        self.get_token()
+        super().test_post_create_teacher()
 
 
 """ Tests API of all user list """

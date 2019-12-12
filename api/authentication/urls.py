@@ -38,7 +38,7 @@ urlpatterns = [
     path('mailing/subscribe/', NewsSubscriptionAPIView.as_view(), name='set_subscribe'),
     path('mailing/unsubscribe/', NewsSubscriptionAPIView.as_view(), name='unset_subscribe'),
     # teacher api
-    path('teachers/', TeachersAPIView.as_view(), name='teahers'),
+    path('teachers/', TeachersAPIView.as_view(), name='teachers'),
     path('teachers/<int:id>/', TeacherAPIView.as_view(), name='teacher'),
     # students api
     path('students/', StudentsAPIView.as_view(), name='students'),
