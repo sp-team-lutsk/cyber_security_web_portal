@@ -297,7 +297,17 @@ class UpdateStudentSerializer(serializers.ModelSerializer):
             name2 = data.get('profession').get('name')
             f2 = Profession.objects.get(name=name2)
             user.profession = f2
-            user.save()
+
+
+            name3 = data.get('acad_group')
+            i=list(ACAD_GROUPS_CHOICES)
+
+            for x in i:
+                if user.acad_group == x[0] and x[0] == name3:
+                    user.save()
+                elif x[0]==name3:
+                    user.acad_group=x[0]
+                    user.save()
 
         except Faculty.DoesNotExist:
             raise ValueError("Faculty or Profession does not exist ")
