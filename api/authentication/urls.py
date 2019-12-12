@@ -34,6 +34,7 @@ urlpatterns = [
     path('users/verify/<str:code>/', VerifyUserAPIView.as_view(), name='verify'),
     path('users/recovery/<str:code>/', VerifyPassUserAPIView.as_view(), name='completerecover'),
     path('users/send_mail/', SendMailAPIView.as_view(), name='send_mail'),
+    #mailing api
     path('mailing/subscribe/', NewsSubscriptionAPIView.as_view(), name='set_subscribe'),
     path('mailing/unsubscribe/', NewsSubscriptionAPIView.as_view(), name='unset_subscribe'),
     # teacher api

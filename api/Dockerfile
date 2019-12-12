@@ -6,6 +6,7 @@ RUN mkdir -p $WORKDIR
 WORKDIR $WORKDIR
 ADD . $WORKDIR
 
+#RUN apt-get install python3-dev
 RUN pip install --upgrade pip
 RUN pip install -r $WORKDIR/requirements/dev.txt
 

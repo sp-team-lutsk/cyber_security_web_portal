@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import PostUpdInt, PostInt
+from .views import PostUpdInt, News_Bulk
 
 urlpatterns = [
-    path('<int:pk>/', PostUpdInt.as_view(), name='update'),
-    path('', PostInt.as_view(), name='list'),
+    path('<int:id>/', PostUpdInt.as_view(), name='update'),
+    path('', News_Bulk.as_view(), name='bulk_update'),
  ]
