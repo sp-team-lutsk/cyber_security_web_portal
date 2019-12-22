@@ -36,7 +36,8 @@
              "node_modules/bootstrap/dist/js/bootstrap.js",
              "src/assets/js/custom.js",
              "src/assets/js/modal.js",
-             "src/assets/js/scrol.js"
+             "src/assets/js/scrol.js",
+             "src/assets/js/dashboard.js"
             ]
           },
           "configurations": {

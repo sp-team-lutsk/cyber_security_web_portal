@@ -1,1 +1,153 @@
-<p>moderator works!</p>
+<div class="conteiner">
+
+	<div class="o-side-menu">
+		<div class="side-menu-logo">
+			<img src="" alt="Logo" class="logo">
+		</div>
+		<nav class="side-menu--nav">
+			<div class="nav-button">
+				<button class="nav-button-single">Головна</button>
+			</div>
+			<div class="nav-button">
+				<button class="nav-button-single">Повідомлення</button>
+			</div>
+			<div class="nav-button">
+				<button class="nav-button-single">Користувачі</button>
+			</div>
+			<div class="nav-button">
+				<button onclick="buttonMenu(this)"><span class="name">Блог</span><span class="arrow"><li id="arrow"><fa-icon [icon]="faAngleLeft" class="faAngleLeft nav-button-icon"></fa-icon></li></span></button>
+				<ul class="nav-button-menu">
+					<li class="menu-element">1</li>
+					<li class="menu-element">2</li>
+					<li class="menu-element">3</li>
+				</ul>
+			</div>
+			<div class="nav-button">
+				<button onclick="buttonMenu(this)"><span class="name">Розсилки</span><span class="arrow"><li id="arrow"><fa-icon [icon]="faAngleLeft" class="faAngleLeft nav-button-icon"></fa-icon></li></span></button>
+				<ul class="nav-button-menu">
+					<li class="menu-element">1</li>
+					<li class="menu-element">2</li>
+					<li class="menu-element">3</li>
+				</ul>
+			</div>
+		</nav>
+		<div class="user">
+			<div class="avatar" style="background: url(assets/img/img10.jpg);
+			background-size: cover;"></div>
+			<div class="info-user">
+				<div class="user-privilege">Moderator</div>
+				<div class="online-user"><div class="online-round"></div>online</div>
+			</div>
+			<div class="exit"><li><fa-icon [icon]="faSignOutAlt" class="faSignOutAlt"></fa-icon></li></div>
+		</div>
+	</div>
+
+	<div class="o-head-menu">
+		<div class="name-page"></div>
+		<div class="message"><li><fa-icon [icon]="faBell" class="faBell"></fa-icon></li></div>
+		<div class="placeholder">
+			<input type="text" placeholder=""><span>
+	          <button class="search"><li><fa-icon [icon]="faSearch" class="faSearch"></fa-icon></li></button>
+	        </span>
+        </div>
+		<div class="language">
+          <a href=""><img class="UA" src="assets/img/UKRAINE.png" alt="UA"></a>
+          <a href=""><img class="USA" src="assets/img/USA.png" alt="USA"></a>
+        </div>
+		<div class="settings"><li><fa-icon [icon]="faCog" class="faCog"></fa-icon></li></div>		
+	</div>
+
+	<div class="content">
+		<div class="blog-content">
+			<div class="blog-logo"><li><fa-icon [icon]="faBlog" class="faBlog"></fa-icon></li>Блог</div>
+			<div class="fasting">
+				<div class="fasting-title">Пости</div>
+				<div class="fasting-card">
+					<div class="card-img">
+						<img src="assets/img/img12.jpg" alt="">
+					</div>
+					<div class="card-text">
+						<div class="card-title">TEXT</div>
+						<div class="info-text">text</div>
+					</div>
+					<div class="card-data">
+						<p class="card-data-title">Дата створення</p>
+						<p class="card-data-text">23.11.19</p>
+					</div>
+					<div class="card-creater">
+						<p class="card-creater-title">Автор</p>
+						<p class="card-creater-text">Admin</p>
+					</div>
+					<div class="read-more-close">
+						<div class="read-more"><li><fa-icon [icon]="faEllipsisH" class="faEllipsisH"></fa-icon></li></div>
+						<div class="close"><li><fa-icon [icon]="faTimes" class="faTimes"></fa-icon></li></div>
+					</div>
+				</div>
+				<div class="fasting-card">
+					<div class="card-img">
+						<img src="assets/img/img12.jpg" alt="">
+					</div>
+					<div class="card-text">
+						<div class="card-title">TEXT</div>
+						<div class="info-text">text</div>
+					</div>
+					<div class="card-data">
+						<p class="card-data-title">Дата створення</p>
+						<p class="card-data-text">23.11.19</p>
+					</div>
+					<div class="card-creater">
+						<p class="card-creater-title">Автор</p>
+						<p class="card-creater-text">Admin</p>
+					</div>
+					<div class="read-more-close">
+						<div class="read-more"><li><fa-icon [icon]="faEllipsisH" class="faEllipsisH"></fa-icon></li></div>
+						<div class="close"><li><fa-icon [icon]="faTimes" class="faTimes"></fa-icon></li></div>
+					</div>
+				</div>
+				<div class="fasting-card">
+					<div class="card-img">
+						<img src="assets/img/img12.jpg" alt="">
+					</div>
+					<div class="card-text">
+						<div class="card-title">TEXT</div>
+						<div class="info-text">text</div>
+					</div>
+					<div class="card-data">
+						<p class="card-data-title">Дата створення</p>
+						<p class="card-data-text">23.11.19</p>
+					</div>
+					<div class="card-creater">
+						<p class="card-creater-title">Автор</p>
+						<p class="card-creater-text">Admin</p>
+					</div>
+					<div class="read-more-close">
+						<div class="read-more"><li><fa-icon [icon]="faEllipsisH" class="faEllipsisH"></fa-icon></li></div>
+						<div class="close"><li><fa-icon [icon]="faTimes" class="faTimes"></fa-icon></li></div>
+					</div>
+				</div>
+			</div>
+			<div class="comments">
+				<div class="comments-title">Коментарі</div>
+				<div class="comments-card">
+					<div class="read-more-close-comments">
+						<div class="close-comments"><li><fa-icon [icon]="faTimes" class="faTimes"></fa-icon></li></div>
+						<div class="read-more-comments"><li><fa-icon [icon]="faEllipsisH" class="faEllipsisH"></fa-icon></li></div>
+						<p><input type="checkbox"></p>
+					</div>
+					<div class="border">
+						<div class="comments-text">Text</div>
+						<div class="comments-data">
+							<p class="comments-data-title">Дата</p>
+							<p class="comments-data-text">23.11.19</p>
+						</div>
+						<div class="comments-creater">
+							<p class="comments-creater-title">Автор</p>
+							<p class="comments-creater-text">Admin</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

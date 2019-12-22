@@ -12,5 +12,6 @@ import { ModeratorComponent } from './moderator/moderator.component';
     CommonModule,
     DashboardRoutingModule,
   ]
+  
 })
 export class DashboardModule { }
